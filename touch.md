@@ -1,6 +1,6 @@
 author: Shigeru Oda
 summary: JAWS DAYS 2022 コンテナ ハンズオン
-id:jawsdays2022-container-handson
+id:docs
 categories: codelab,markdown
 environments: HandsOn
 status: Draft
