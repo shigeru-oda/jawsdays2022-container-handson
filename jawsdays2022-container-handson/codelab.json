@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2022-08-30T13:02:48+09:00",
+  "id": "jawsdays2022-container-handson",
+  "duration": 5,
+  "title": "CodeLabの紹介",
+  "summary": "JAWS DAYS 2022 コンテナ ハンズオン",
+  "source": "touch.md",
+  "theme": "",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "handson"
+  ],
+  "feedback": "https://github.com/shigeru-oda/jawsdays2022-container-handson",
+  "ga": "XXXXXXXX",
+  "url": "jawsdays2022-container-handson"
+}
