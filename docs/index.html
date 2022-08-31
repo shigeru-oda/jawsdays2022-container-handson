@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>CodeLabの紹介</title>
+  <title>[JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
@@ -23,11 +23,96 @@
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid="XXXXXXXX"
                   id="docs"
-                  title="CodeLabの紹介"
+                  title="[JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～"
                   environment="web"
                   feedback-link="https://github.com/shigeru-oda/jawsdays2022-container-handson">
     
       <google-codelab-step label="はじめに" duration="5">
+        <p>test</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="test2" duration="0">
+        <p>反映確認</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="VPC作成" duration="5">
+        <h2 is-upgraded>CloudShellの起動</h2>
+<h2 is-upgraded>VPCの作成</h2>
+<pre><code>aws ec2 create-vpc \
+    --cidr-block 10.0.0.0/16 \
+    --tag-specification ResourceType=vpc,Tags=[{Key=Name,Value=MyVpc}]
+</code></pre>
+<pre><code language="language-go" class="language-go">This block will be highlighted as Go source code.
+</code></pre>
+<pre>This block will not be syntax highlighted.
+</pre>
+<h2 is-upgraded>Subnetの作成</h2>
+<h2 is-upgraded>RouteTableの作成</h2>
+<h2 is-upgraded>RouteTableの作成</h2>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Cloud9作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ECR作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="VPCエンドポイント作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ALB作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fargate作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="動作確認" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="CodeBuild作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="CodeDeploy作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="CodePipeline作成" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Dockerコンテナ再ビルド(Codeシリーズを利用)" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="動作確認" duration="5">
+        
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="片付け" duration="5">
         <h2 is-upgraded>途中の見出し</h2>
 <aside class="special"><p>何かお知らせを書きたい時のボックス</p>
 </aside>
