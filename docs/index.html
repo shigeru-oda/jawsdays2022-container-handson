@@ -21,11 +21,11 @@
 </head>
 <body>
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
-  <google-codelab codelab-gaid="XXXXXXXX"
+  <google-codelab codelab-gaid=""
                   id="docs"
                   title="[JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～"
                   environment="web"
-                  feedback-link="https://github.com/shigeru-oda/jawsdays2022-container-handson">
+                  feedback-link="">
     
       <google-codelab-step label="はじめに" duration="5">
         <h2 is-upgraded>VPC?</h2>
@@ -46,7 +46,7 @@
     --tag-specification &#34;ResourceType=vpc,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code>{
+<pre><code language="language-result" class="language-result">{
     &#34;Vpc&#34;: {
         &#34;CidrBlock&#34;: &#34;10.0.0.0/16&#34;,
         &#34;DhcpOptionsId&#34;: &#34;dopt-d50f23b2&#34;,
@@ -77,67 +77,117 @@
 <h2 is-upgraded>変数設定</h2>
 <p>作成したVPC IDを取得します。</p>
 <h3 is-upgraded>cmd</h3>
-<pre><code>vpcid=`aws ec2 describe-vpcs \
+<pre><code>VpcId=`aws ec2 describe-vpcs \
     --query &#39;Vpcs[*].VpcId&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     --output text`
 
-echo $vpcid
+cat &lt;&lt; EOF
+VpcId : ${VpcId}
+EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code>vpc-08a77289b9b351429
+<p>IDが取得されていることを確認。以下は一例。</p>
+<pre><code language="language-con" class="language-con">VpcId : vpc-08a77289b9b351429
 </code></pre>
 <h2 is-upgraded>Subnetの作成</h2>
 <h3 is-upgraded>cmd1</h3>
 <pre><code>aws ec2 create-subnet \
     --vpc-id $vpcid \
+    --availability-zone ap-northeast-1a \
     --cidr-block 10.0.0.0/24 \
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>cmd2</h3>
 <pre><code>aws ec2 create-subnet \
     --vpc-id $vpcid \
+    --availability-zone ap-northeast-1c \
     --cidr-block 10.0.1.0/24 \
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
-<h3 is-upgraded>result1</h3>
-<pre><code>{
-    &#34;Subnet&#34;: {
-        &#34;AvailabilityZone&#34;: &#34;ap-northeast-1d&#34;,
-        &#34;AvailabilityZoneId&#34;: &#34;apne1-az2&#34;,
-        &#34;AvailableIpAddressCount&#34;: 251,
-        &#34;CidrBlock&#34;: &#34;10.0.0.0/24&#34;,
-        &#34;DefaultForAz&#34;: false,
-:...skipping...
-{
-    &#34;Subnet&#34;: {
-        &#34;AvailabilityZone&#34;: &#34;ap-northeast-1d&#34;,
-        &#34;AvailabilityZoneId&#34;: &#34;apne1-az2&#34;,
-        &#34;AvailableIpAddressCount&#34;: 251,
-        &#34;CidrBlock&#34;: &#34;10.0.0.0/24&#34;,
-        &#34;DefaultForAz&#34;: false,
-        &#34;MapPublicIpOnLaunch&#34;: false,
-        &#34;State&#34;: &#34;available&#34;,
-        &#34;SubnetId&#34;: &#34;subnet-09a994448454b186e&#34;,
-        &#34;VpcId&#34;: &#34;vpc-08a77289b9b351429&#34;,
-        &#34;OwnerId&#34;: &#34;378647896848&#34;,
-        &#34;AssignIpv6AddressOnCreation&#34;: false,
-        &#34;Ipv6CidrBlockAssociationSet&#34;: [],
-        &#34;Tags&#34;: [
-            {
-                &#34;Key&#34;: &#34;Name&#34;,
-                &#34;Value&#34;: &#34;ContainerHandsOn&#34;
-            }
-        ],
-        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:378647896848:subnet/subnet-09a994448454b186e&#34;
-    }
-}
+<h3 is-upgraded>変数取得</h3>
+<pre><code language="language-cmd1" class="language-cmd1">SubnetId1a=`aws ec2 describe-subnets \
+    --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
+    &#34;Name=availabilityZone,Values=ap-northeast-1a&#34; \
+    --query &#34;Subnets[*].SubnetId&#34; \
+    --output text`
 </code></pre>
-<h3 is-upgraded>result2</h3>
+<pre><code language="language-cmd2" class="language-cmd2">SubnetId1c=`aws ec2 describe-subnets \
+    --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
+    &#34;Name=availabilityZone,Values=ap-northeast-1c&#34; \
+    --query &#34;Subnets[*].SubnetId&#34; \
+    --output text`
+</code></pre>
+<pre><code>cat &lt;&lt; EOF
+VpcId : ${VpcId}
+InternetGatewayId : ${InternetGatewayId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
 <pre><code></code></pre>
-<h2 is-upgraded>RouteTableの作成</h2>
-<h2 is-upgraded>RouteTableの作成</h2>
+<h2 is-upgraded>InternetGatewayの作成</h2>
+<h3 is-upgraded>cmd1</h3>
+<pre><code>aws ec2 create-internet-gateway \
+    --tag-specifications &#34;ResourceType=internet-gateway,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
+</code></pre>
+<h3 is-upgraded>result1</h3>
+<pre><code></code></pre>
+<h2 is-upgraded>変数設定</h2>
+<p>作成したInternet GatewayのIDを取得します。</p>
+<pre><code language="language-cmd1" class="language-cmd1">InternetGatewayId=`aws ec2 describe-internet-gateways \
+    --query &#39;InternetGateways[*].InternetGatewayId&#39; \
+    --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
+    --output text`
+
+cat &lt;&lt; EOF
+VpcId : ${VpcId}
+InternetGatewayId : ${InternetGatewayId}
+EOF
+</code></pre>
+<p>変数が取得されていること、以下は一例。</p>
+<pre><code language="language-result1" class="language-result1">VpcId : vpc-08a77289b9b351429
+InternetGatewayId : igw-0db61da9fcd82b6eb
+</code></pre>
+<h2 is-upgraded>InternetGatewayをVPCにAttach</h2>
+<pre><code language="language-cmd1" class="language-cmd1">aws ec2 attach-internet-gateway \
+    --internet-gateway-id ${InternetGatewayId} \
+    --vpc-id ${VpcId}
+</code></pre>
+<pre><code language="language-result1" class="language-result1">何もなし
+</code></pre>
+<h2 is-upgraded>InternetGatewayをVPCにAttachされていることを確認</h2>
+<pre><code language="language-cmd1" class="language-cmd1">aws ec2 describe-internet-gateways \
+    --internet-gateway-ids ${InternetGatewayId} \
+    --query &#39;InternetGateways[*].Attachments&#39; \
+    --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn&#34;
+</code></pre>
+<p>Stateがavailableであること</p>
+<pre><code language="language-result1" class="language-result1">[
+    [
+        {
+            &#34;State&#34;: &#34;available&#34;,
+            &#34;VpcId&#34;: &#34;vpc-08a77289b9b351429&#34;
+        }
+    ]
+]
+</code></pre>
+<h2 is-upgraded>RouteTableにSubnetを関連付け</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-cmd1" class="language-cmd1">aws ec2 associate-route-table \
+    --route-table-id rtb-22574640 \
+    --subnet-id ${SubnetId1a}
+</code></pre>
+<pre><code language="language-cmd2" class="language-cmd2">aws ec2 associate-route-table \
+    --route-table-id rtb-22574640 \
+    --subnet-id ${SubnetId1c}
+</code></pre>
 
 
       </google-codelab-step>
