@@ -14,9 +14,9 @@ export PATH=$PATH:$GOROOT/bin
 ## EXPORT
 claat export <マークダウンファイル名>  
 claat export touch.md  
-git add .
-git commit -m "claat"
-git push
+git add .  
+git commit -m "claat"  
+git push  
 
 # 公開URL
 https://shigeru-oda.github.io/jawsdays2022-container-handson/docs/#0

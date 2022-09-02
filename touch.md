@@ -74,6 +74,7 @@ VpcId : vpc-08a77289b9b351429
 #### cmd1
 
 Subnetの1つ目を作成します。
+
 ```CloudShell
 aws ec2 create-subnet \
     --vpc-id $vpcid \
@@ -91,7 +92,9 @@ xxx
 ```
 
 #### cmd2
+
 Subnetの2つ目を作成します。
+
 ```CloudShell
 aws ec2 create-subnet \
     --vpc-id $vpcid \
@@ -262,6 +265,7 @@ EOF
 ```
 
 #### 変数設定確認
+
 ```CloudShell
 VpcId : vpc-08a77289b9b351429
 SubnetId1a : subnet-0ae475cbd47289960
@@ -270,7 +274,45 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId: rtb-01b343a22f94f5031
 ```
 
+### ■RouteTableにSubnetを紐付け
 
+#### cmd1
+
+```CloudShell
+aws ec2 associate-route-table \
+  --route-table-id ${RouteTableId} \
+  --subnet-id ${SubnetId1a}
+```
+
+#### result1
+
+```CloudShell
+{
+    "AssociationId": "rtbassoc-07e4b9476d5384320",
+    "AssociationState": {
+        "State": "associated"
+    }
+}
+```
+
+#### cmd2
+
+```CloudShell
+aws ec2 associate-route-table \
+  --route-table-id ${RouteTableId} \
+  --subnet-id ${SubnetId1c}
+```
+
+#### result2
+
+```CloudShell
+{
+    "AssociationId": "rtbassoc-001ad16bd1720e77c",
+    "AssociationState": {
+        "State": "associated"
+    }
+}
+```
 
 ## Cloud9作成
 

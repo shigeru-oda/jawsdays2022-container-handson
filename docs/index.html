@@ -194,6 +194,33 @@ SubnetId1c : subnet-051a32873cc5c562b
 InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId: rtb-01b343a22f94f5031
 </code></pre>
+<h2 is-upgraded>■RouteTableにSubnetを紐付け</h2>
+<h3 is-upgraded>cmd1</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
+  --route-table-id ${RouteTableId} \
+  --subnet-id ${SubnetId1a}
+</code></pre>
+<h3 is-upgraded>result1</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;AssociationId&#34;: &#34;rtbassoc-07e4b9476d5384320&#34;,
+    &#34;AssociationState&#34;: {
+        &#34;State&#34;: &#34;associated&#34;
+    }
+}
+</code></pre>
+<h3 is-upgraded>cmd2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
+  --route-table-id ${RouteTableId} \
+  --subnet-id ${SubnetId1c}
+</code></pre>
+<h3 is-upgraded>result2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;AssociationId&#34;: &#34;rtbassoc-001ad16bd1720e77c&#34;,
+    &#34;AssociationState&#34;: {
+        &#34;State&#34;: &#34;associated&#34;
+    }
+}
+</code></pre>
 
 
       </google-codelab-step>
