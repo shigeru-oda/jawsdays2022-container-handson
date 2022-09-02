@@ -260,7 +260,7 @@ VpcId : ${VpcId}
 SubnetId1a : ${SubnetId1a}
 SubnetId1c : ${SubnetId1c}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId: ${RouteTableId}
+RouteTableId : ${RouteTableId}
 EOF
 ```
 
@@ -271,7 +271,7 @@ VpcId : vpc-08a77289b9b351429
 SubnetId1a : subnet-0ae475cbd47289960
 SubnetId1c : subnet-051a32873cc5c562b
 InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableId: rtb-01b343a22f94f5031
+RouteTableId : rtb-01b343a22f94f5031
 ```
 
 ### ■RouteTableにSubnetを紐付け
@@ -311,6 +311,23 @@ aws ec2 associate-route-table \
     "AssociationState": {
         "State": "associated"
     }
+}
+```
+
+### ■RouteTableにInternetGatewayを紐付け
+
+#### cmd
+```CloudShell
+aws ec2 create-route \
+  --route-table-id ${RouteTableId} \
+  --destination-cidr-block "0.0.0.0/0" \
+  --gateway-id ${InternetGatewayId}
+```
+
+#### result
+```CloudShell
+{
+    "Return": true
 }
 ```
 

@@ -184,7 +184,7 @@ VpcId : ${VpcId}
 SubnetId1a : ${SubnetId1a}
 SubnetId1c : ${SubnetId1c}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId: ${RouteTableId}
+RouteTableId : ${RouteTableId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
@@ -192,7 +192,7 @@ EOF
 SubnetId1a : subnet-0ae475cbd47289960
 SubnetId1c : subnet-051a32873cc5c562b
 InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableId: rtb-01b343a22f94f5031
+RouteTableId : rtb-01b343a22f94f5031
 </code></pre>
 <h2 is-upgraded>■RouteTableにSubnetを紐付け</h2>
 <h3 is-upgraded>cmd1</h3>
@@ -219,6 +219,18 @@ RouteTableId: rtb-01b343a22f94f5031
     &#34;AssociationState&#34;: {
         &#34;State&#34;: &#34;associated&#34;
     }
+}
+</code></pre>
+<h2 is-upgraded>■RouteTableにInternetGatewayを紐付け</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route \
+  --route-table-id ${RouteTableId} \
+  --destination-cidr-block &#34;0.0.0.0/0&#34; \
+  --gateway-id ${InternetGatewayId}
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Return&#34;: true
 }
 </code></pre>
 
