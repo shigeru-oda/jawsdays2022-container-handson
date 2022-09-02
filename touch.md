@@ -17,9 +17,9 @@ Duration: 0:05:00
 
 Duration: 0:05:00
 
-### CloudShellの起動
+### ■CloudShellの起動
 
-### VPCの作成
+### ■VPCの作成
 
 VPCを新規に作成します。
 
@@ -66,7 +66,7 @@ IDが取得されていることを確認。ID等は個人個人異なります�
 VpcId : vpc-08a77289b9b351429
 ```
 
-### Subnetの作成
+### ■Subnetの作成
 
 作成したVPCの中にSubnetを2つ作成します。
 
@@ -145,7 +145,7 @@ SubnetId1a : subnet-0ae475cbd47289960
 SubnetId1c : subnet-051a32873cc5c562b
 ```
 
-### InternetGatewayの作成
+### ■InternetGatewayの作成
 
 Internetに繋がるInternetGatewayを作成します。
 
@@ -162,7 +162,7 @@ aws ec2 create-internet-gateway \
 xxx
 ```
 
-### 変数設定
+#### 変数設定
 
 作成したInternet GatewayのIDを取得します。
 
@@ -183,7 +183,7 @@ InternetGatewayId : ${InternetGatewayId}
 EOF
 ```
 
-### 変数設定確認
+#### 変数設定確認
 
 変数が取得されていることを確認します。
 
@@ -212,7 +212,7 @@ aws ec2 attach-internet-gateway \
 何もなし
 ```
 
-### InternetGatewayをVPCにAttachされていることを確認
+### ■InternetGatewayをVPCにAttachされていることを確認
 
 紐付けが正しく行われたことを確認します。
 
@@ -235,7 +235,7 @@ aws ec2 describe-internet-gateways \
 available
 ```
 
-### RouteTableの確認
+### ■RouteTableの確認
 
 VPC作成時にデフォルトのRouteTableがあるので、このIDを取得します。
 

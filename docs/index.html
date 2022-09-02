@@ -33,8 +33,8 @@
       </google-codelab-step>
     
       <google-codelab-step label="VPC作成" duration="5">
-        <h2 is-upgraded>CloudShellの起動</h2>
-<h2 is-upgraded>VPCの作成</h2>
+        <h2 is-upgraded>■CloudShellの起動</h2>
+<h2 is-upgraded>■VPCの作成</h2>
 <p>VPCを新規に作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <p>CloudShellに以下cmdをCopy &amp; Paste</p>
@@ -63,7 +63,7 @@ EOF
 <p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
 </code></pre>
-<h2 is-upgraded>Subnetの作成</h2>
+<h2 is-upgraded>■Subnetの作成</h2>
 <p>作成したVPCの中にSubnetを2つ作成します。</p>
 <h3 is-upgraded>cmd1</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
@@ -118,7 +118,7 @@ EOF
 SubnetId1a : subnet-0ae475cbd47289960
 SubnetId1c : subnet-051a32873cc5c562b
 </code></pre>
-<h2 is-upgraded>InternetGatewayの作成</h2>
+<h2 is-upgraded>■InternetGatewayの作成</h2>
 <p>Internetに繋がるInternetGatewayを作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-internet-gateway \
@@ -127,7 +127,7 @@ SubnetId1c : subnet-051a32873cc5c562b
 <h3 is-upgraded>result1</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">xxx
 </code></pre>
-<h2 is-upgraded>変数設定</h2>
+<h3 is-upgraded>変数設定</h3>
 <p>作成したInternet GatewayのIDを取得します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">InternetGatewayId=`aws ec2 describe-internet-gateways \
     --query &#39;InternetGateways[*].InternetGatewayId&#39; \
@@ -144,7 +144,7 @@ SubnetId1c : ${SubnetId1c}
 InternetGatewayId : ${InternetGatewayId}
 EOF
 </code></pre>
-<h2 is-upgraded>変数設定確認</h2>
+<h3 is-upgraded>変数設定確認</h3>
 <p>変数が取得されていることを確認します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
 SubnetId1a : subnet-0ae475cbd47289960
@@ -161,7 +161,7 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
 <h3 is-upgraded>result</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">何もなし
 </code></pre>
-<h2 is-upgraded>InternetGatewayをVPCにAttachされていることを確認</h2>
+<h2 is-upgraded>■InternetGatewayをVPCにAttachされていることを確認</h2>
 <p>紐付けが正しく行われたことを確認します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-internet-gateways \
@@ -175,7 +175,7 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
 <p>結果がavailableであること</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">available
 </code></pre>
-<h2 is-upgraded>RouteTableの確認</h2>
+<h2 is-upgraded>■RouteTableの確認</h2>
 <p>VPC作成時にデフォルトのRouteTableがあるので、このIDを取得します。</p>
 <h3 is-upgraded>変数設定</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
