@@ -132,10 +132,8 @@ SubnetId1c : subnet-051a32873cc5c562b
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     --output text`
-
-
-
-cat &lt;&lt; EOF
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">cat &lt;&lt; EOF
 VpcId : ${VpcId}
 SubnetId1a : ${SubnetId1a}
 SubnetId1c : ${SubnetId1c}
@@ -149,7 +147,7 @@ SubnetId1a : subnet-0ae475cbd47289960
 SubnetId1c : subnet-051a32873cc5c562b
 InternetGatewayId : igw-0db61da9fcd82b6eb
 </code></pre>
-<h2 is-upgraded>InternetGatewayをVPCにAttach</h2>
+<h2 is-upgraded>■InternetGatewayをVPCにAttach</h2>
 <p>作成したInternetGatewayをVPCに紐付けします。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 attach-internet-gateway \
@@ -157,7 +155,7 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
     --vpc-id ${VpcId}
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">何もなし
+<pre><code language="language-CloudShell" class="language-CloudShell">（何もなし）
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCにAttachされていることを確認</h2>
 <p>紐付けが正しく行われたことを確認します。</p>
@@ -176,16 +174,25 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
 <h2 is-upgraded>■RouteTableの確認</h2>
 <p>VPC作成時にデフォルトのRouteTableがあるので、このIDを取得します。</p>
 <h3 is-upgraded>変数設定</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>変数設定確認</h3>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-cmd1" class="language-cmd1">aws ec2 associate-route-table \
-    --route-table-id rtb-22574640 \
-    --subnet-id ${SubnetId1a}
+<pre><code language="language-CloudShell" class="language-CloudShell">RouteTableId=`aws ec2 describe-route-tables \
+  --query &#34;RouteTables[*].RouteTableId&#34; \
+  --filters &#34;Name=vpc-id,Values=${VpcId}&#34; \
+  --output text`
 </code></pre>
-<pre><code language="language-cmd2" class="language-cmd2">aws ec2 associate-route-table \
-    --route-table-id rtb-22574640 \
-    --subnet-id ${SubnetId1c}
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId: ${RouteTableId}
+EOF
+</code></pre>
+<h3 is-upgraded>変数設定確認</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+InternetGatewayId : igw-0db61da9fcd82b6eb
+RouteTableId: rtb-01b343a22f94f5031
 </code></pre>
 
 

@@ -175,9 +175,9 @@ InternetGatewayId=`aws ec2 describe-internet-gateways \
     --filters "Name=tag-key,Values=Name" \
     "Name=tag-value,Values=ContainerHandsOn" \
     --output text`
+```
 
-
-
+``` CloudShell
 cat << EOF
 VpcId : ${VpcId}
 SubnetId1a : ${SubnetId1a}
@@ -197,7 +197,7 @@ SubnetId1c : subnet-051a32873cc5c562b
 InternetGatewayId : igw-0db61da9fcd82b6eb
 ```
 
-### InternetGatewayをVPCにAttach
+### ■InternetGatewayをVPCにAttach
 
 作成したInternetGatewayをVPCに紐付けします。
 
@@ -212,7 +212,7 @@ aws ec2 attach-internet-gateway \
 #### result
 
 ```CloudShell
-何もなし
+（何もなし）
 ```
 
 ### ■InternetGatewayをVPCにAttachされていることを確認
@@ -245,23 +245,32 @@ VPC作成時にデフォルトのRouteTableがあるので、このIDを取得�
 #### 変数設定
 
 ```CloudShell
+RouteTableId=`aws ec2 describe-route-tables \
+  --query "RouteTables[*].RouteTableId" \
+  --filters "Name=vpc-id,Values=${VpcId}" \
+  --output text`
+```
+
+```CloudShell
+clear; cat << EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId: ${RouteTableId}
+EOF
 ```
 
 #### 変数設定確認
-
-#### cmd
-
-```cmd1
-aws ec2 associate-route-table \
-    --route-table-id rtb-22574640 \
-    --subnet-id ${SubnetId1a}
+```CloudShell
+VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+InternetGatewayId : igw-0db61da9fcd82b6eb
+RouteTableId: rtb-01b343a22f94f5031
 ```
 
-```cmd2
-aws ec2 associate-route-table \
-    --route-table-id rtb-22574640 \
-    --subnet-id ${SubnetId1c}
-```
+
 
 ## Cloud9作成
 
