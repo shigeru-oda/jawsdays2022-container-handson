@@ -53,9 +53,8 @@
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     --output text`
-
-
-cat &lt;&lt; EOF
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
 EOF
 </code></pre>
@@ -66,6 +65,7 @@ EOF
 <h2 is-upgraded>■Subnetの作成</h2>
 <p>作成したVPCの中にSubnetを2つ作成します。</p>
 <h3 is-upgraded>cmd1</h3>
+<p>Subnetの1つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $vpcid \
     --availability-zone ap-northeast-1a \
@@ -77,6 +77,7 @@ EOF
 <pre><code language="language-CloudShell" class="language-CloudShell">xxx
 </code></pre>
 <h3 is-upgraded>cmd2</h3>
+<p>Subnetの2つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $vpcid \
     --availability-zone ap-northeast-1c \
@@ -95,18 +96,15 @@ EOF
     &#34;Name=availabilityZone,Values=ap-northeast-1a&#34; \
     --query &#34;Subnets[*].SubnetId&#34; \
     --output text`
-
-
-
-SubnetId1c=`aws ec2 describe-subnets \
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1c=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     &#34;Name=availabilityZone,Values=ap-northeast-1c&#34; \
     --query &#34;Subnets[*].SubnetId&#34; \
     --output text`
-
-
-cat &lt;&lt; EOF
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
 SubnetId1a : ${SubnetId1a}
 SubnetId1c : ${SubnetId1c}

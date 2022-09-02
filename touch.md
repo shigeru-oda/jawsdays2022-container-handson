@@ -51,9 +51,10 @@ VpcId=`aws ec2 describe-vpcs \
     --filters "Name=tag-key,Values=Name" \
     "Name=tag-value,Values=ContainerHandsOn" \
     --output text`
+```
 
-
-cat << EOF
+```CloudShell
+clear; cat << EOF
 VpcId : ${VpcId}
 EOF
 ```
@@ -72,6 +73,7 @@ VpcId : vpc-08a77289b9b351429
 
 #### cmd1
 
+Subnetの1つ目を作成します。
 ```CloudShell
 aws ec2 create-subnet \
     --vpc-id $vpcid \
@@ -89,7 +91,7 @@ xxx
 ```
 
 #### cmd2
-
+Subnetの2つ目を作成します。
 ```CloudShell
 aws ec2 create-subnet \
     --vpc-id $vpcid \
@@ -117,18 +119,19 @@ SubnetId1a=`aws ec2 describe-subnets \
     "Name=availabilityZone,Values=ap-northeast-1a" \
     --query "Subnets[*].SubnetId" \
     --output text`
+```
 
-
-
+```CloudShell
 SubnetId1c=`aws ec2 describe-subnets \
     --filters "Name=tag-key,Values=Name" \
     "Name=tag-value,Values=ContainerHandsOn" \
     "Name=availabilityZone,Values=ap-northeast-1c" \
     --query "Subnets[*].SubnetId" \
     --output text`
+```
 
-
-cat << EOF
+```CloudShell
+clear; cat << EOF
 VpcId : ${VpcId}
 SubnetId1a : ${SubnetId1a}
 SubnetId1c : ${SubnetId1c}
