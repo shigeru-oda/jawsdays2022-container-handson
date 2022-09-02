@@ -28,157 +28,158 @@
                   feedback-link="">
     
       <google-codelab-step label="はじめに" duration="5">
-        <h2 is-upgraded>VPC?</h2>
-<p>xx</p>
-<h2 is-upgraded>CloudShell?</h2>
-<p>xx</p>
-
+        
 
       </google-codelab-step>
     
       <google-codelab-step label="VPC作成" duration="5">
         <h2 is-upgraded>CloudShellの起動</h2>
 <h2 is-upgraded>VPCの作成</h2>
-<p>東京リージョンにVPCを新規に作成します。</p>
+<p>VPCを新規に作成します。</p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-cmd" class="language-cmd">aws ec2 create-vpc \
+<p>CloudShellに以下cmdをCopy &amp; Paste</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-vpc \
     --cidr-block 10.0.0.0/16 \
     --tag-specification &#34;ResourceType=vpc,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-result" class="language-result">{
-    &#34;Vpc&#34;: {
-        &#34;CidrBlock&#34;: &#34;10.0.0.0/16&#34;,
-        &#34;DhcpOptionsId&#34;: &#34;dopt-d50f23b2&#34;,
-        &#34;State&#34;: &#34;pending&#34;,
-        &#34;VpcId&#34;: &#34;vpc-00ee8367984814805&#34;,
-        &#34;OwnerId&#34;: &#34;378647896848&#34;,
-        &#34;InstanceTenancy&#34;: &#34;default&#34;,
-        &#34;Ipv6CidrBlockAssociationSet&#34;: [],
-        &#34;CidrBlockAssociationSet&#34;: [
-            {
-                &#34;AssociationId&#34;: &#34;vpc-cidr-assoc-08913abf335aba6a4&#34;,
-                &#34;CidrBlock&#34;: &#34;10.0.0.0/16&#34;,
-                &#34;CidrBlockState&#34;: {
-                    &#34;State&#34;: &#34;associated&#34;
-                }
-            }
-        ],
-        &#34;IsDefault&#34;: false,
-        &#34;Tags&#34;: [
-            {
-                &#34;Key&#34;: &#34;Name&#34;,
-                &#34;Value&#34;: &#34;ContainerHandsOn&#34;
-            }
-        ]
-    }
-}
+<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">xx
 </code></pre>
-<h2 is-upgraded>変数設定</h2>
-<p>作成したVPC IDを取得します。</p>
-<h3 is-upgraded>cmd</h3>
-<pre><code>VpcId=`aws ec2 describe-vpcs \
+<h3 is-upgraded>変数設定</h3>
+<p>VPC IDを取得します、CloudShellに以下cmdをCopy &amp; Paste。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">VpcId=`aws ec2 describe-vpcs \
     --query &#39;Vpcs[*].VpcId&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     --output text`
 
+
 cat &lt;&lt; EOF
 VpcId : ${VpcId}
 EOF
 </code></pre>
-<h3 is-upgraded>result</h3>
-<p>IDが取得されていることを確認。以下は一例。</p>
-<pre><code language="language-con" class="language-con">VpcId : vpc-08a77289b9b351429
+<h3 is-upgraded>変数設定確認</h3>
+<p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
 </code></pre>
 <h2 is-upgraded>Subnetの作成</h2>
+<p>作成したVPCの中にSubnetを2つ作成します。</p>
 <h3 is-upgraded>cmd1</h3>
-<pre><code>aws ec2 create-subnet \
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $vpcid \
     --availability-zone ap-northeast-1a \
     --cidr-block 10.0.0.0/24 \
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
+<h3 is-upgraded>result1</h3>
+<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+</code></pre>
 <h3 is-upgraded>cmd2</h3>
-<pre><code>aws ec2 create-subnet \
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $vpcid \
     --availability-zone ap-northeast-1c \
     --cidr-block 10.0.1.0/24 \
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
+<h3 is-upgraded>result2</h3>
+<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+</code></pre>
 <h3 is-upgraded>変数取得</h3>
-<pre><code language="language-cmd1" class="language-cmd1">SubnetId1a=`aws ec2 describe-subnets \
+<p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1a=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     &#34;Name=availabilityZone,Values=ap-northeast-1a&#34; \
     --query &#34;Subnets[*].SubnetId&#34; \
     --output text`
-</code></pre>
-<pre><code language="language-cmd2" class="language-cmd2">SubnetId1c=`aws ec2 describe-subnets \
+
+
+
+SubnetId1c=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     &#34;Name=availabilityZone,Values=ap-northeast-1c&#34; \
     --query &#34;Subnets[*].SubnetId&#34; \
     --output text`
-</code></pre>
-<pre><code>cat &lt;&lt; EOF
+
+
+cat &lt;&lt; EOF
 VpcId : ${VpcId}
-InternetGatewayId : ${InternetGatewayId}
 SubnetId1a : ${SubnetId1a}
 SubnetId1c : ${SubnetId1c}
 EOF
 </code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code></code></pre>
+<h3 is-upgraded>変数設定確認</h3>
+<p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+</code></pre>
 <h2 is-upgraded>InternetGatewayの作成</h2>
-<h3 is-upgraded>cmd1</h3>
-<pre><code>aws ec2 create-internet-gateway \
+<p>Internetに繋がるInternetGatewayを作成します。</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-internet-gateway \
     --tag-specifications &#34;ResourceType=internet-gateway,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result1</h3>
-<pre><code></code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+</code></pre>
 <h2 is-upgraded>変数設定</h2>
 <p>作成したInternet GatewayのIDを取得します。</p>
-<pre><code language="language-cmd1" class="language-cmd1">InternetGatewayId=`aws ec2 describe-internet-gateways \
+<pre><code language="language-CloudShell" class="language-CloudShell">InternetGatewayId=`aws ec2 describe-internet-gateways \
     --query &#39;InternetGateways[*].InternetGatewayId&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     --output text`
 
+
+
 cat &lt;&lt; EOF
 VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
 InternetGatewayId : ${InternetGatewayId}
 EOF
 </code></pre>
-<p>変数が取得されていること、以下は一例。</p>
-<pre><code language="language-result1" class="language-result1">VpcId : vpc-08a77289b9b351429
+<h2 is-upgraded>変数設定確認</h2>
+<p>変数が取得されていることを確認します。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
 InternetGatewayId : igw-0db61da9fcd82b6eb
 </code></pre>
 <h2 is-upgraded>InternetGatewayをVPCにAttach</h2>
-<pre><code language="language-cmd1" class="language-cmd1">aws ec2 attach-internet-gateway \
+<p>作成したInternetGatewayをVPCに紐付けします。</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 attach-internet-gateway \
     --internet-gateway-id ${InternetGatewayId} \
     --vpc-id ${VpcId}
 </code></pre>
-<pre><code language="language-result1" class="language-result1">何もなし
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">何もなし
 </code></pre>
 <h2 is-upgraded>InternetGatewayをVPCにAttachされていることを確認</h2>
-<pre><code language="language-cmd1" class="language-cmd1">aws ec2 describe-internet-gateways \
+<p>紐付けが正しく行われたことを確認します。</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-internet-gateways \
     --internet-gateway-ids ${InternetGatewayId} \
-    --query &#39;InternetGateways[*].Attachments&#39; \
+    --query &#39;InternetGateways[*].Attachments[*].State&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
-    &#34;Name=tag-value,Values=ContainerHandsOn&#34;
+    &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
+    --output text
 </code></pre>
-<p>Stateがavailableであること</p>
-<pre><code language="language-result1" class="language-result1">[
-    [
-        {
-            &#34;State&#34;: &#34;available&#34;,
-            &#34;VpcId&#34;: &#34;vpc-08a77289b9b351429&#34;
-        }
-    ]
-]
+<h3 is-upgraded>result</h3>
+<p>結果がavailableであること</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">available
 </code></pre>
-<h2 is-upgraded>RouteTableにSubnetを関連付け</h2>
+<h2 is-upgraded>RouteTableの確認</h2>
+<p>VPC作成時にデフォルトのRouteTableがあるので、このIDを取得します。</p>
+<h3 is-upgraded>変数設定</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<h3 is-upgraded>変数設定確認</h3>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-cmd1" class="language-cmd1">aws ec2 associate-route-table \
     --route-table-id rtb-22574640 \

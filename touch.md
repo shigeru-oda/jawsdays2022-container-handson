@@ -13,14 +13,6 @@ analytics account: XXXXXXXX
 
 Duration: 0:05:00
 
-### VPC?
-
-xx
-
-### CloudShell?
-
-xx
-
 ## VPC作成
 
 Duration: 0:05:00
@@ -29,11 +21,13 @@ Duration: 0:05:00
 
 ### VPCの作成
 
-東京リージョンにVPCを新規に作成します。
+VPCを新規に作成します。
 
 #### cmd
 
-``` cmd
+CloudShellに以下cmdをCopy & Paste
+
+``` CloudShell
 aws ec2 create-vpc \
     --cidr-block 10.0.0.0/16 \
     --tag-specification "ResourceType=vpc,Tags=[{Key=Name,Value=ContainerHandsOn}]"
@@ -41,67 +35,44 @@ aws ec2 create-vpc \
 
 #### result
 
-```result
-{
-    "Vpc": {
-        "CidrBlock": "10.0.0.0/16",
-        "DhcpOptionsId": "dopt-d50f23b2",
-        "State": "pending",
-        "VpcId": "vpc-00ee8367984814805",
-        "OwnerId": "378647896848",
-        "InstanceTenancy": "default",
-        "Ipv6CidrBlockAssociationSet": [],
-        "CidrBlockAssociationSet": [
-            {
-                "AssociationId": "vpc-cidr-assoc-08913abf335aba6a4",
-                "CidrBlock": "10.0.0.0/16",
-                "CidrBlockState": {
-                    "State": "associated"
-                }
-            }
-        ],
-        "IsDefault": false,
-        "Tags": [
-            {
-                "Key": "Name",
-                "Value": "ContainerHandsOn"
-            }
-        ]
-    }
-}
+CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。
+
+```CloudShell
+xx
 ```
 
-### 変数設定
+#### 変数設定
 
-作成したVPC IDを取得します。
+VPC IDを取得します、CloudShellに以下cmdをCopy & Paste。
 
-#### cmd
-
-```
+```CloudShell
 VpcId=`aws ec2 describe-vpcs \
     --query 'Vpcs[*].VpcId' \
     --filters "Name=tag-key,Values=Name" \
     "Name=tag-value,Values=ContainerHandsOn" \
     --output text`
 
+
 cat << EOF
 VpcId : ${VpcId}
 EOF
 ```
 
-#### result
+#### 変数設定確認
 
-IDが取得されていることを確認。以下は一例。
+IDが取得されていることを確認。ID等は個人個人異なります。
 
-```con
+```CloudShell
 VpcId : vpc-08a77289b9b351429
 ```
 
 ### Subnetの作成
 
+作成したVPCの中にSubnetを2つ作成します。
+
 #### cmd1
 
-```
+```CloudShell
 aws ec2 create-subnet \
     --vpc-id $vpcid \
     --availability-zone ap-northeast-1a \
@@ -109,9 +80,17 @@ aws ec2 create-subnet \
     --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
+#### result1
+
+CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。
+
+```CloudShell
+xxx
+```
+
 #### cmd2
 
-```
+```CloudShell
 aws ec2 create-subnet \
     --vpc-id $vpcid \
     --availability-zone ap-northeast-1c \
@@ -119,114 +98,153 @@ aws ec2 create-subnet \
     --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
+#### result2
+
+CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。
+
+```CloudShell
+xxx
+```
+
 #### 変数取得
 
-```cmd1
+IDが取得されていることを確認。ID等は個人個人異なります。
+
+```CloudShell
 SubnetId1a=`aws ec2 describe-subnets \
     --filters "Name=tag-key,Values=Name" \
     "Name=tag-value,Values=ContainerHandsOn" \
     "Name=availabilityZone,Values=ap-northeast-1a" \
     --query "Subnets[*].SubnetId" \
     --output text`
-```
 
-```cmd2
+
+
 SubnetId1c=`aws ec2 describe-subnets \
     --filters "Name=tag-key,Values=Name" \
     "Name=tag-value,Values=ContainerHandsOn" \
     "Name=availabilityZone,Values=ap-northeast-1c" \
     --query "Subnets[*].SubnetId" \
     --output text`
-```
 
-```
+
 cat << EOF
 VpcId : ${VpcId}
-InternetGatewayId : ${InternetGatewayId}
 SubnetId1a : ${SubnetId1a}
 SubnetId1c : ${SubnetId1c}
 EOF
 ```
 
-#### result
+#### 変数設定確認
 
-```
+IDが取得されていることを確認。ID等は個人個人異なります。
+
+```CloudShell
+VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
 ```
 
 ### InternetGatewayの作成
 
-#### cmd1
+Internetに繋がるInternetGatewayを作成します。
 
-```
+#### cmd
+
+```CloudShell
 aws ec2 create-internet-gateway \
     --tag-specifications "ResourceType=internet-gateway,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
 #### result1
 
-```
+```CloudShell
+xxx
 ```
 
 ### 変数設定
 
 作成したInternet GatewayのIDを取得します。
 
-``` cmd1
+``` CloudShell
 InternetGatewayId=`aws ec2 describe-internet-gateways \
     --query 'InternetGateways[*].InternetGatewayId' \
     --filters "Name=tag-key,Values=Name" \
     "Name=tag-value,Values=ContainerHandsOn" \
     --output text`
 
+
+
 cat << EOF
 VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
 InternetGatewayId : ${InternetGatewayId}
 EOF
 ```
 
-変数が取得されていること、以下は一例。
+### 変数設定確認
 
-``` result1
+変数が取得されていることを確認します。
+
+``` CloudShell
 VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
 InternetGatewayId : igw-0db61da9fcd82b6eb
 ```
 
 ### InternetGatewayをVPCにAttach
 
-```cmd1
+作成したInternetGatewayをVPCに紐付けします。
+
+#### cmd
+
+```CloudShell
 aws ec2 attach-internet-gateway \
     --internet-gateway-id ${InternetGatewayId} \
     --vpc-id ${VpcId}
 ```
 
-```result1
+#### result
+
+```CloudShell
 何もなし
 ```
 
 ### InternetGatewayをVPCにAttachされていることを確認
 
-```cmd1
+紐付けが正しく行われたことを確認します。
+
+#### cmd
+
+```CloudShell
 aws ec2 describe-internet-gateways \
     --internet-gateway-ids ${InternetGatewayId} \
-    --query 'InternetGateways[*].Attachments' \
+    --query 'InternetGateways[*].Attachments[*].State' \
     --filters "Name=tag-key,Values=Name" \
-    "Name=tag-value,Values=ContainerHandsOn"
+    "Name=tag-value,Values=ContainerHandsOn" \
+    --output text
 ```
 
-Stateがavailableであること
+#### result
 
-```result1
-[
-    [
-        {
-            "State": "available",
-            "VpcId": "vpc-08a77289b9b351429"
-        }
-    ]
-]
+結果がavailableであること
+
+```CloudShell
+available
 ```
 
-### RouteTableにSubnetを関連付け
+### RouteTableの確認
+
+VPC作成時にデフォルトのRouteTableがあるので、このIDを取得します。
+
+#### 変数設定
+
+```CloudShell
+```
+
+#### 変数設定確認
 
 #### cmd
 
