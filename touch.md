@@ -391,11 +391,12 @@ Duration: 0:05:00
 
 ### ■ECRの作成
 #### cmd
+```Cloud9
 aws ecr create-repository \
     --repository-name jaws-days-2022/container-hands-on \
     --tags "Key=Name,Value=ContainerHandsOn"
-```Cloud9
 ```
+
 #### result
 ```Cloud9
 {
@@ -419,6 +420,57 @@ aws ecr create-repository \
 ## VPCエンドポイント作成
 
 Duration: 0:05:00
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+#### cmd
+```CloudShell
+```
+#### result
+```CloudShell
+```
+
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+#### cmd
+```CloudShell
+```
+#### result
+```CloudShell
+```
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+#### cmd
+```CloudShell
+```
+#### result
+```CloudShell
+```
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+#### cmd
+```CloudShell
+```
+#### result
+```CloudShell
+```
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+#### cmd
+```CloudShell
+```
+#### result
+```CloudShell
+```
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+#### cmd
+```CloudShell
+```
+#### result
+```CloudShell
+```
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+#### cmd
+```CloudShell
+```
+#### result
+```CloudShell
+```
+
 
 ## ALB作成
 
