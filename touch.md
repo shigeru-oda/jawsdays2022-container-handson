@@ -317,6 +317,7 @@ aws ec2 associate-route-table \
 ### ■RouteTableにInternetGatewayを紐付け
 
 #### cmd
+
 ```CloudShell
 aws ec2 create-route \
   --route-table-id ${RouteTableId} \
@@ -325,19 +326,95 @@ aws ec2 create-route \
 ```
 
 #### result
+
 ```CloudShell
 {
     "Return": true
 }
 ```
 
+### ■変数をメモ
+
+次章で使うため、取得した変数をエディターに残して下さい。
+
+#### cmd
+
+```CloudShell
+clear; cat << EOF
+export VpcId="${VpcId}"
+export SubnetId1a="${SubnetId1a}"
+export SubnetId1c="${SubnetId1c}"
+export InternetGatewayId="${InternetGatewayId}"
+export RouteTableId="${RouteTableId}"
+EOF
+```
+
+#### result
+
+```CloudShell
+export VpcId="vpc-08a77289b9b351429"
+export SubnetId1a="subnet-0ae475cbd47289960"
+export SubnetId1c="subnet-051a32873cc5c562b"
+export InternetGatewayId="igw-0db61da9fcd82b6eb"
+export RouteTableId="rtb-01b343a22f94f5031"
+```
+
 ## Cloud9作成
 
 Duration: 0:05:00
 
+### ■Cloud9の作成
+
+#### cmd
+
+```CloudShell
+aws cloud9 create-environment-ec2 \
+  --name ContainerHandsOn \
+  --description "ContainerHandsOn" \
+  --instance-type t3.small  \
+  --subnet-id ${SubnetId1a}  \
+  --automatic-stop-time-minutes 60  \
+  --tags "Key=Name,Value=ContainerHandsOn"
+```
+
+#### result
+
+```CloudShell
+{
+    "environmentId": "96614b2a3f434be7a83b5dffb22a1f0a"
+}
+```
+
 ## ECR作成
 
 Duration: 0:05:00
+
+### ■ECRの作成
+#### cmd
+aws ecr create-repository \
+    --repository-name jaws-days-2022/container-hands-on \
+    --tags "Key=Name,Value=ContainerHandsOn"
+```Cloud9
+```
+#### result
+```Cloud9
+{
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:ap-northeast-1:378647896848:repository/jaws-days-2022/container-hands-on",
+        "registryId": "378647896848",
+        "repositoryName": "jaws-days-2022/container-hands-on",
+        "repositoryUri": "378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on",
+        "createdAt": 1662173179.0,
+        "imageTagMutability": "MUTABLE",
+        "imageScanningConfiguration": {
+            "scanOnPush": false
+        },
+        "encryptionConfiguration": {
+            "encryptionType": "AES256"
+        }
+    }
+}
+```
 
 ## VPCエンドポイント作成
 

@@ -233,17 +233,75 @@ RouteTableId : rtb-01b343a22f94f5031
     &#34;Return&#34;: true
 }
 </code></pre>
+<h2 is-upgraded>■変数をメモ</h2>
+<p>次章で使うため、取得した変数をエディターに残して下さい。</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+export VpcId=&#34;${VpcId}&#34;
+export SubnetId1a=&#34;${SubnetId1a}&#34;
+export SubnetId1c=&#34;${SubnetId1c}&#34;
+export InternetGatewayId=&#34;${InternetGatewayId}&#34;
+export RouteTableId=&#34;${RouteTableId}&#34;
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">export VpcId=&#34;vpc-08a77289b9b351429&#34;
+export SubnetId1a=&#34;subnet-0ae475cbd47289960&#34;
+export SubnetId1c=&#34;subnet-051a32873cc5c562b&#34;
+export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
+export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
+</code></pre>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Cloud9作成" duration="5">
-        
+        <h2 is-upgraded>■Cloud9の作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws cloud9 create-environment-ec2 \
+  --name ContainerHandsOn \
+  --description &#34;ContainerHandsOn&#34; \
+  --instance-type t3.small  \
+  --subnet-id ${SubnetId1a}  \
+  --automatic-stop-time-minutes 60  \
+  --tags &#34;Key=Name,Value=ContainerHandsOn&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;environmentId&#34;: &#34;96614b2a3f434be7a83b5dffb22a1f0a&#34;
+}
+</code></pre>
+
 
       </google-codelab-step>
     
       <google-codelab-step label="ECR作成" duration="5">
-        
+        <h2 is-upgraded>■ECRの作成</h2>
+<h3 is-upgraded>cmd</h3>
+<p>aws ecr create-repository </p>
+<pre><code>--repository-name jaws-days-2022/container-hands-on \
+--tags &#34;Key=Name,Value=ContainerHandsOn&#34;
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;repository&#34;: {
+        &#34;repositoryArn&#34;: &#34;arn:aws:ecr:ap-northeast-1:378647896848:repository/jaws-days-2022/container-hands-on&#34;,
+        &#34;registryId&#34;: &#34;378647896848&#34;,
+        &#34;repositoryName&#34;: &#34;jaws-days-2022/container-hands-on&#34;,
+        &#34;repositoryUri&#34;: &#34;378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on&#34;,
+        &#34;createdAt&#34;: 1662173179.0,
+        &#34;imageTagMutability&#34;: &#34;MUTABLE&#34;,
+        &#34;imageScanningConfiguration&#34;: {
+            &#34;scanOnPush&#34;: false
+        },
+        &#34;encryptionConfiguration&#34;: {
+            &#34;encryptionType&#34;: &#34;AES256&#34;
+        }
+    }
+}
+</code></pre>
+
 
       </google-codelab-step>
     
