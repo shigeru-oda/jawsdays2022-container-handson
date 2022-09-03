@@ -384,6 +384,9 @@ aws cloud9 create-environment-ec2 \
     "environmentId": "96614b2a3f434be7a83b5dffb22a1f0a"
 }
 ```
+### ■AWS コンソールでCloud9を起動
+- 上部の検索バーで`Cloud9`と検索
+- `AWS Cloud9 > Your environments`に`ContainerHandsOn`が作成されているので`Open IDE`ボタン押下
 
 ## ECR作成
 
