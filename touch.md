@@ -333,9 +333,9 @@ aws ec2 create-route \
 }
 ```
 
-### ■変数をメモ
+### ■環境変数をメモ
 
-次章で使うため、取得した変数をエディターに残して下さい。
+Cloud9で使うため、取得した変数をエディターに残して下さい。
 
 #### cmd
 
@@ -384,16 +384,53 @@ aws cloud9 create-environment-ec2 \
     "environmentId": "96614b2a3f434be7a83b5dffb22a1f0a"
 }
 ```
+
 ### ■AWS コンソールでCloud9を起動
+
 - 上部の検索バーで`Cloud9`と検索
 - `AWS Cloud9 > Your environments`に`ContainerHandsOn`が作成されているので`Open IDE`ボタン押下
+- Cloud9の画面が表示される。
 
 ## ECR作成
 
 Duration: 0:05:00
 
-### ■ECRの作成
+### ■環境変数を貼り付け
+
 #### cmd
+
+```Cloud9
+export VpcId="vpc-08a77289b9b351429"
+export SubnetId1a="subnet-0ae475cbd47289960"
+export SubnetId1c="subnet-051a32873cc5c562b"
+export InternetGatewayId="igw-0db61da9fcd82b6eb"
+export RouteTableId="rtb-01b343a22f94f5031"
+```
+
+``` Cloud9
+clear; cat << EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId : ${RouteTableId}
+EOF
+```
+
+#### result
+
+``` Cloud9
+VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+InternetGatewayId : igw-0db61da9fcd82b6eb
+RouteTableId : rtb-01b343a22f94f5031
+```
+
+### ■ECRの作成
+
+#### cmd
+
 ```Cloud9
 aws ecr create-repository \
     --repository-name jaws-days-2022/container-hands-on \
@@ -401,6 +438,7 @@ aws ecr create-repository \
 ```
 
 #### result
+
 ```Cloud9
 {
     "repository": {
@@ -420,60 +458,171 @@ aws ecr create-repository \
 }
 ```
 
+## DockerImage作成
+
+Duration: 0:05:00
+
+### ■Cloud9上にdockerがあることを確認
+
+#### cmd
+
+```Cloud9
+docker -v
+```
+
+#### result
+
+```Cloud9
+Docker version 20.10.13, build a224086
+```
+
+### ■Cloud9上にDockerfileを作成
+
+#### cmd
+
+```Cloud9
+cat << EOF > Dockerfile
+FROM 'nginx:latest'
+RUN echo 'Hello! Jaws Days 2022!!' > /usr/share/nginx/html/index.html
+RUN service nginx start
+EXPOSE 80
+EOF
+```
+
+```Cloud9
+ls -l Dockerfile;
+cat Dockerfile;
+```
+
+#### result
+
+```Cloud9
+FROM 'nginx:latest'
+RUN echo 'Hello! Jaws Days 2022!!' > /usr/share/nginx/html/index.html
+RUN service nginx start
+EXPOSE 80
+```
+
+docker build -t jaws-days-2022/container-hands-on .
+docker run --name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest
+### ■AWS Account IDの取得
+#### cmd
+```Cloud9
+AccoutID=`aws sts get-caller-identity --query Account --output text`
+```
+
+```Cloud9
+clear; cat << EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId : ${RouteTableId}
+AccoutID : ${AccoutID}
+EOF
+```
+#### result
+```Cloud9
+```
+
+aws sts get-caller-identity --query Account --output text
+### ■DockerImageにTag付けを行う
+#### cmd
+```Cloud9
+docker tag jaws-days-2022/container-hands-on:latest 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+```
+
+### ■DockerImageをECRにPush
+#### 認証トークンを取得し、レジストリに対して Docker クライアントを認証します。
+aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com
+
 ## VPCエンドポイント作成
 
 Duration: 0:05:00
+
 ### ■VPCからECRに繋ぐVPCエンドポイントを作成
+
 #### cmd
+
 ```CloudShell
 ```
+
 #### result
+
 ```CloudShell
 ```
 
 ### ■VPCからECRに繋ぐVPCエンドポイントを作成
+
 #### cmd
-```CloudShell
-```
-#### result
-```CloudShell
-```
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-#### cmd
-```CloudShell
-```
-#### result
-```CloudShell
-```
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-#### cmd
-```CloudShell
-```
-#### result
-```CloudShell
-```
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-#### cmd
-```CloudShell
-```
-#### result
-```CloudShell
-```
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-#### cmd
-```CloudShell
-```
-#### result
-```CloudShell
-```
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-#### cmd
-```CloudShell
-```
-#### result
+
 ```CloudShell
 ```
 
+#### result
+
+```CloudShell
+```
+
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+
+#### cmd
+
+```CloudShell
+```
+
+#### result
+
+```CloudShell
+```
+
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+
+#### cmd
+
+```CloudShell
+```
+
+#### result
+
+```CloudShell
+```
+
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+
+#### cmd
+
+```CloudShell
+```
+
+#### result
+
+```CloudShell
+```
+
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+
+#### cmd
+
+```CloudShell
+```
+
+#### result
+
+```CloudShell
+```
+
+### ■VPCからECRに繋ぐVPCエンドポイントを作成
+
+#### cmd
+
+```CloudShell
+```
+
+#### result
+
+```CloudShell
+```
 
 ## ALB作成
 

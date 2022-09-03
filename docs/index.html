@@ -233,8 +233,8 @@ RouteTableId : rtb-01b343a22f94f5031
     &#34;Return&#34;: true
 }
 </code></pre>
-<h2 is-upgraded>■変数をメモ</h2>
-<p>次章で使うため、取得した変数をエディターに残して下さい。</p>
+<h2 is-upgraded>■環境変数をメモ</h2>
+<p>Cloud9で使うため、取得した変数をエディターに残して下さい。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 export VpcId=&#34;${VpcId}&#34;
@@ -275,13 +275,37 @@ export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
 <ul>
 <li>上部の検索バーで<code>Cloud9</code>と検索</li>
 <li><code>AWS Cloud9 &gt; Your environments</code>に<code>ContainerHandsOn</code>が作成されているので<code>Open IDE</code>ボタン押下</li>
+<li>Cloud9の画面が表示される。</li>
 </ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="ECR作成" duration="5">
-        <h2 is-upgraded>■ECRの作成</h2>
+        <h2 is-upgraded>■環境変数を貼り付け</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">export VpcId=&#34;vpc-08a77289b9b351429&#34;
+export SubnetId1a=&#34;subnet-0ae475cbd47289960&#34;
+export SubnetId1c=&#34;subnet-051a32873cc5c562b&#34;
+export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
+export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId : ${RouteTableId}
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+InternetGatewayId : igw-0db61da9fcd82b6eb
+RouteTableId : rtb-01b343a22f94f5031
+</code></pre>
+<h2 is-upgraded>■ECRの作成</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecr create-repository \
     --repository-name jaws-days-2022/container-hands-on \
@@ -305,6 +329,60 @@ export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
     }
 }
 </code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="DockerImage作成" duration="5">
+        <h2 is-upgraded>■Cloud9上にdockerがあることを確認</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">docker -v
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">Docker version 20.10.13, build a224086
+</code></pre>
+<h2 is-upgraded>■Cloud9上にDockerfileを作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; Dockerfile
+FROM &#39;nginx:latest&#39;
+RUN echo &#39;Hello! Jaws Days 2022!!&#39; &gt; /usr/share/nginx/html/index.html
+RUN service nginx start
+EXPOSE 80
+EOF
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">ls -l Dockerfile;
+cat Dockerfile;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">FROM &#39;nginx:latest&#39;
+RUN echo &#39;Hello! Jaws Days 2022!!&#39; &gt; /usr/share/nginx/html/index.html
+RUN service nginx start
+EXPOSE 80
+</code></pre>
+<p>docker build -t jaws-days-2022/container-hands-on . docker run –name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest</p>
+<h2 is-upgraded>■AWS Account IDの取得</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID=`aws sts get-caller-identity --query Account --output text`
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId : ${RouteTableId}
+AccoutID : ${AccoutID}
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<p>aws sts get-caller-identity –query Account –output text</p>
+<h2 is-upgraded>■DockerImageにTag付けを行う</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">docker tag jaws-days-2022/container-hands-on:latest 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+</code></pre>
+<h2 is-upgraded>■DockerImageをECRにPush</h2>
+<h3 is-upgraded>認証トークンを取得し、レジストリに対して Docker クライアントを認証します。</h3>
+<p>aws ecr get-login-password –region ap-northeast-1 | docker login –username AWS –password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com</p>
 
 
       </google-codelab-step>
