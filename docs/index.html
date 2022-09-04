@@ -623,10 +623,13 @@ latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId : ${RouteTableId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
 AccoutID : ${AccoutID}
 InterfaceGroupId : ${InterfaceGroupId}
 EOF
@@ -635,11 +638,21 @@ EOF
 <pre><code></code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.dkr</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">    --vpc-id ${VpcId} \
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
-    --route-table-ids ${RouteTableIdPrivate} \
-    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+    --subnet-ids ${SubnetId1aPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
+    --subnet-ids ${SubnetId1cPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>

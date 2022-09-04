@@ -904,10 +904,13 @@ InterfaceGroupId=`aws ec2 describe-security-groups \
 ```Cloud9
 clear; cat << EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId : ${RouteTableId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
 AccoutID : ${AccoutID}
 InterfaceGroupId : ${InterfaceGroupId}
 EOF
@@ -923,11 +926,23 @@ EOF
 #### cmd
 
 ```Cloud9
+aws ec2 create-vpc-endpoint \
     --vpc-id ${VpcId} \
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
-    --route-table-ids ${RouteTableIdPrivate} \
-    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
+    --subnet-ids ${SubnetId1aPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
+```
+
+```Cloud9
+aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
+    --subnet-ids ${SubnetId1cPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
 ```
 
 #### result
