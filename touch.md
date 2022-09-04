@@ -537,7 +537,8 @@ export SubnetId1cPublic="subnet-051a32873cc5c562b"
 export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
 export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
 export InternetGatewayId="igw-0db61da9fcd82b6eb"
-export RouteTableId="rtb-01b343a22f94f5031"
+export RouteTableIdPublic="rtb-0cfcfe4b74de83091"
+export RouteTableIdPrivate="rtb-089389ec79a044951"
 ```
 
 ``` Cloud9
@@ -548,7 +549,8 @@ SubnetId1cPublic : ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
 SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId : ${RouteTableId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 ```
 
@@ -561,7 +563,8 @@ SubnetId1cPublic : subnet-051a32873cc5c562b
 SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
 SubnetId1cPrivate : subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableId : rtb-01b343a22f94f5031
+RouteTableIdPublic : rtb-0cfcfe4b74de83091
+RouteTableIdPrivate : rtb-089389ec79a044951
 ```
 
 ### ■ECRの作成

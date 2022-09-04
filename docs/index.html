@@ -373,7 +373,8 @@ export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
 export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
 export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
 export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
-export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
+export RouteTableIdPublic=&#34;rtb-0cfcfe4b74de83091&#34;
+export RouteTableIdPrivate=&#34;rtb-089389ec79a044951&#34;
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
@@ -382,7 +383,8 @@ SubnetId1cPublic : ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
 SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId : ${RouteTableId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
@@ -392,7 +394,8 @@ SubnetId1cPublic : subnet-051a32873cc5c562b
 SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
 SubnetId1cPrivate : subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableId : rtb-01b343a22f94f5031
+RouteTableIdPublic : rtb-0cfcfe4b74de83091
+RouteTableIdPrivate : rtb-089389ec79a044951
 </code></pre>
 <h2 is-upgraded>■ECRの作成</h2>
 <h3 is-upgraded>cmd</h3>
