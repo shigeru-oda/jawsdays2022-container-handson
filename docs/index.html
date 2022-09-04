@@ -431,39 +431,7 @@ RouteTableIdPrivate : rtb-089389ec79a044951
       </google-codelab-step>
     
       <google-codelab-step label="Docker Image作成" duration="5">
-        <h2 is-upgraded>■CloudShellで作成した環境変数を貼り付け</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export VpcId=&#34;vpc-08a77289b9b351429&#34;
-export SubnetId1aPublic=&#34;subnet-0ae475cbd47289960&#34;
-export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
-export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
-export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
-export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
-export RouteTableIdPublic=&#34;rtb-0cfcfe4b74de83091&#34;
-export RouteTableIdPrivate=&#34;rtb-089389ec79a044951&#34;
-</code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-VpcId : ${VpcId}
-SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic : ${SubnetId1cPublic}
-SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate : ${SubnetId1cPrivate}
-InternetGatewayId : ${InternetGatewayId}
-RouteTableIdPublic : ${RouteTableIdPublic}
-RouteTableIdPrivate : ${RouteTableIdPrivate}
-EOF
-</code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">VpcId : vpc-08a77289b9b351429
-SubnetId1aPublic : subnet-0ae475cbd47289960
-SubnetId1cPublic : subnet-051a32873cc5c562b
-SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
-SubnetId1cPrivate : subnet-0819c13fe959a0d1a
-InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableIdPublic : rtb-0cfcfe4b74de83091
-RouteTableIdPrivate : rtb-089389ec79a044951
-</code></pre>
-<h2 is-upgraded>■Cloud9上にdockerセットアップされていることを確認</h2>
+        <h2 is-upgraded>■Cloud9上にdockerセットアップされていることを確認</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker -v
 </code></pre>
@@ -611,33 +579,6 @@ d5c24541b3aa: Pushed
 1a996540f50f: Pushed 
 latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754d77d943 size: 1155
 </code></pre>
-<h2 is-upgraded>■環境変数をメモ</h2>
-<p>取得した変数をエディターに残して下さい。</p>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-export VpcId=&#34;${VpcId}&#34;
-export SubnetId1aPublic=&#34;${SubnetId1aPublic}&#34;
-export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
-export SubnetId1aPrivate=&#34;${SubnetId1aPrivate}&#34;
-export SubnetId1cPrivate=&#34;${SubnetId1cPrivate}&#34;
-export InternetGatewayId=&#34;${InternetGatewayId}&#34;
-export RouteTableIdPublic=&#34;${RouteTableIdPublic}&#34;
-export RouteTableIdPrivate=&#34;${RouteTableIdPrivate}&#34;
-export AccoutID=&#34;${AccoutID}&#34;
-EOF
-</code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export VpcId=&#34;vpc-08a77289b9b351429&#34;
-export SubnetId1aPublic=&#34;subnet-0ae475cbd47289960&#34;
-export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
-export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
-export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
-export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
-export RouteTableIdPublic=&#34;rtb-0cfcfe4b74de83091&#34;
-export RouteTableIdPrivate=&#34;rtb-089389ec79a044951&#34;
-export AccoutID=&#34;378647896848&#34;
-</code></pre>
-<h2 is-upgraded>■環境変数をメモ</h2>
 
 
       </google-codelab-step>

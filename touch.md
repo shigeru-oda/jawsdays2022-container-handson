@@ -613,47 +613,6 @@ aws ecr create-repository \
 
 Duration: 0:05:00
 
-### ■CloudShellで作成した環境変数を貼り付け
-
-#### cmd
-
-```Cloud9
-export VpcId="vpc-08a77289b9b351429"
-export SubnetId1aPublic="subnet-0ae475cbd47289960"
-export SubnetId1cPublic="subnet-051a32873cc5c562b"
-export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
-export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
-export InternetGatewayId="igw-0db61da9fcd82b6eb"
-export RouteTableIdPublic="rtb-0cfcfe4b74de83091"
-export RouteTableIdPrivate="rtb-089389ec79a044951"
-```
-
-``` Cloud9
-clear; cat << EOF
-VpcId : ${VpcId}
-SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic : ${SubnetId1cPublic}
-SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate : ${SubnetId1cPrivate}
-InternetGatewayId : ${InternetGatewayId}
-RouteTableIdPublic : ${RouteTableIdPublic}
-RouteTableIdPrivate : ${RouteTableIdPrivate}
-EOF
-```
-
-#### result
-
-``` Cloud9
-VpcId : vpc-08a77289b9b351429
-SubnetId1aPublic : subnet-0ae475cbd47289960
-SubnetId1cPublic : subnet-051a32873cc5c562b
-SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
-SubnetId1cPrivate : subnet-0819c13fe959a0d1a
-InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableIdPublic : rtb-0cfcfe4b74de83091
-RouteTableIdPrivate : rtb-089389ec79a044951
-```
-
 ### ■Cloud9上にdockerセットアップされていることを確認
 
 #### cmd
@@ -883,42 +842,6 @@ d5c24541b3aa: Pushed
 1a996540f50f: Pushed 
 latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754d77d943 size: 1155
 ```
-
-### ■環境変数をメモ
-
-取得した変数をエディターに残して下さい。
-
-#### cmd
-
-```Cloud9
-clear; cat << EOF
-export VpcId="${VpcId}"
-export SubnetId1aPublic="${SubnetId1aPublic}"
-export SubnetId1cPublic="${SubnetId1cPublic}"
-export SubnetId1aPrivate="${SubnetId1aPrivate}"
-export SubnetId1cPrivate="${SubnetId1cPrivate}"
-export InternetGatewayId="${InternetGatewayId}"
-export RouteTableIdPublic="${RouteTableIdPublic}"
-export RouteTableIdPrivate="${RouteTableIdPrivate}"
-export AccoutID="${AccoutID}"
-EOF
-```
-
-#### result
-
-```Cloud9
-export VpcId="vpc-08a77289b9b351429"
-export SubnetId1aPublic="subnet-0ae475cbd47289960"
-export SubnetId1cPublic="subnet-051a32873cc5c562b"
-export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
-export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
-export InternetGatewayId="igw-0db61da9fcd82b6eb"
-export RouteTableIdPublic="rtb-0cfcfe4b74de83091"
-export RouteTableIdPrivate="rtb-089389ec79a044951"
-export AccoutID="378647896848"
-```
-
-### ■環境変数をメモ
 
 ## VPCエンドポイント作成
 
