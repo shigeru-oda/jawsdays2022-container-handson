@@ -462,6 +462,38 @@ aws ecr create-repository \
 
 Duration: 0:05:00
 
+### ■環境変数を貼り付け
+
+#### cmd
+
+```Cloud9
+export VpcId="vpc-08a77289b9b351429"
+export SubnetId1a="subnet-0ae475cbd47289960"
+export SubnetId1c="subnet-051a32873cc5c562b"
+export InternetGatewayId="igw-0db61da9fcd82b6eb"
+export RouteTableId="rtb-01b343a22f94f5031"
+```
+
+``` Cloud9
+clear; cat << EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId : ${RouteTableId}
+EOF
+```
+
+#### result
+
+``` Cloud9
+VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+InternetGatewayId : igw-0db61da9fcd82b6eb
+RouteTableId : rtb-01b343a22f94f5031
+```
+
 ### ■Cloud9上にdockerがあることを確認
 
 #### cmd
@@ -620,21 +652,61 @@ RouteTableId : rtb-01b343a22f94f5031
 AccoutID : 378647896848
 ```
 
-aws sts get-caller-identity --query Account --output text
-
 ### ■DockerImageにTag付けを行う
 
 #### cmd
 
 ```Cloud9
-docker tag jaws-days-2022/container-hands-on:latest 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+docker tag jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
+#### result
+
+```Cloud9
+（なし）
+```
+
+### ■DockerImageにTag付けの確認
+
+#### cmd
+
+```Cloud9
+docker images --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+
+```
+
+#### result
+
+```Cloud9
+REPOSITORY                                                                            TAG       IMAGE ID       CREATED          SIZE
+378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    fed9645afaae   21 minutes ago   202MB
+```
+
+### ■認証トークンを取得し、レジストリに対して Docker クライアントを認証します
+
+#### cmd
+
+```Cloud9
+aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com
+```
+
+#### result
+
+```Cloud9
+WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+```
+
+
 ### ■DockerImageをECRにPush
+#### cmd
 
-#### 認証トークンを取得し、レジストリに対して Docker クライアントを認証します
-
-aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com
+```Cloud9
+docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+```
 
 ## VPCエンドポイント作成
 
