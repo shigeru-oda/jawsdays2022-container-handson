@@ -69,7 +69,8 @@ VpcId : vpc-08a77289b9b351429
 
 ### ■Subnetの作成
 
-作成したVPCの中にSubnetを2つ作成します。
+作成したVPCの中にSubnetを4つ作成します。
+Private Subnetが2つ、Public Subnetが2つです。
 
 #### cmd1
 
@@ -77,10 +78,10 @@ Subnetの1つ目を作成します。
 
 ```CloudShell
 aws ec2 create-subnet \
-    --vpc-id $vpcid \
+    --vpc-id $VpcId \
     --availability-zone ap-northeast-1a \
     --cidr-block 10.0.0.0/24 \
-    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]"
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]"
 ```
 
 #### result1
@@ -97,13 +98,52 @@ Subnetの2つ目を作成します。
 
 ```CloudShell
 aws ec2 create-subnet \
-    --vpc-id $vpcid \
+    --vpc-id $VpcId \
     --availability-zone ap-northeast-1c \
     --cidr-block 10.0.1.0/24 \
-    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]"
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]"
 ```
 
 #### result2
+
+CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。
+
+```CloudShell
+xxx
+```
+
+#### cmd3
+
+Subnetの3つ目を作成します。
+
+```CloudShell
+aws ec2 create-subnet \
+    --vpc-id $VpcId \
+    --availability-zone ap-northeast-1a \
+    --cidr-block 10.0.2.0/24 \
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]"
+```
+
+#### result3
+
+CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。
+
+```CloudShell
+xxx
+```
+#### cmd4
+
+Subnetの4つ目を作成します。
+
+```CloudShell
+aws ec2 create-subnet \
+    --vpc-id $VpcId \
+    --availability-zone ap-northeast-1c \
+    --cidr-block 10.0.3.0/24 \
+    --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]"
+```
+
+#### result4
 
 CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。
 
@@ -116,18 +156,34 @@ xxx
 IDが取得されていることを確認。ID等は個人個人異なります。
 
 ```CloudShell
-SubnetId1a=`aws ec2 describe-subnets \
+SubnetId1aPublic=`aws ec2 describe-subnets \
     --filters "Name=tag-key,Values=Name" \
-    "Name=tag-value,Values=ContainerHandsOn" \
+    "Name=tag-value,Values=ContainerHandsOnPublic" \
     "Name=availabilityZone,Values=ap-northeast-1a" \
     --query "Subnets[*].SubnetId" \
     --output text`
 ```
 
 ```CloudShell
-SubnetId1c=`aws ec2 describe-subnets \
+SubnetId1cPublic=`aws ec2 describe-subnets \
     --filters "Name=tag-key,Values=Name" \
-    "Name=tag-value,Values=ContainerHandsOn" \
+    "Name=tag-value,Values=ContainerHandsOnPublic" \
+    "Name=availabilityZone,Values=ap-northeast-1c" \
+    --query "Subnets[*].SubnetId" \
+    --output text`
+```
+```CloudShell
+SubnetId1aPrivate=`aws ec2 describe-subnets \
+    --filters "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOnPrivate" \
+    "Name=availabilityZone,Values=ap-northeast-1a" \
+    --query "Subnets[*].SubnetId" \
+    --output text`
+```
+```CloudShell
+SubnetId1cPrivate=`aws ec2 describe-subnets \
+    --filters "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOnPrivate" \
     "Name=availabilityZone,Values=ap-northeast-1c" \
     --query "Subnets[*].SubnetId" \
     --output text`
@@ -136,8 +192,10 @@ SubnetId1c=`aws ec2 describe-subnets \
 ```CloudShell
 clear; cat << EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate: ${SubnetId1cPrivate}
 EOF
 ```
 
@@ -147,8 +205,10 @@ IDが取得されていることを確認。ID等は個人個人異なります�
 
 ```CloudShell
 VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic: subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 ```
 
 ### ■InternetGatewayの作成
@@ -183,8 +243,10 @@ InternetGatewayId=`aws ec2 describe-internet-gateways \
 ``` CloudShell
 cat << EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate: ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 EOF
 ```
@@ -195,8 +257,10 @@ EOF
 
 ``` CloudShell
 VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic: subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 ```
 
@@ -257,8 +321,10 @@ RouteTableId=`aws ec2 describe-route-tables \
 ```CloudShell
 clear; cat << EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate: ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableId : ${RouteTableId}
 EOF
@@ -268,8 +334,10 @@ EOF
 
 ```CloudShell
 VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic: subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId : rtb-01b343a22f94f5031
 ```
@@ -342,8 +410,10 @@ Cloud9で使うため、取得した変数をエディターに残して下さ�
 ```CloudShell
 clear; cat << EOF
 export VpcId="${VpcId}"
-export SubnetId1a="${SubnetId1a}"
-export SubnetId1c="${SubnetId1c}"
+export SubnetId1aPublic="${SubnetId1aPublic}"
+export SubnetId1cPublic="${SubnetId1cPublic}"
+export SubnetId1aPrivate="${SubnetId1aPrivate}"
+export SubnetId1cPrivate="${SubnetId1cPrivate}"
 export InternetGatewayId="${InternetGatewayId}"
 export RouteTableId="${RouteTableId}"
 EOF
@@ -353,8 +423,10 @@ EOF
 
 ```CloudShell
 export VpcId="vpc-08a77289b9b351429"
-export SubnetId1a="subnet-0ae475cbd47289960"
-export SubnetId1c="subnet-051a32873cc5c562b"
+export SubnetId1aPublic="subnet-0ae475cbd47289960"
+export SubnetId1cPublic="subnet-051a32873cc5c562b"
+export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
+export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
 export InternetGatewayId="igw-0db61da9fcd82b6eb"
 export RouteTableId="rtb-01b343a22f94f5031"
 ```
@@ -372,7 +444,7 @@ aws cloud9 create-environment-ec2 \
   --name ContainerHandsOn \
   --description "ContainerHandsOn" \
   --instance-type t3.small  \
-  --subnet-id ${SubnetId1a}  \
+  --subnet-id ${SubnetId1aPublic}  \
   --automatic-stop-time-minutes 60  \
   --tags "Key=Name,Value=ContainerHandsOn"
 ```
@@ -401,8 +473,10 @@ Duration: 0:05:00
 
 ```Cloud9
 export VpcId="vpc-08a77289b9b351429"
-export SubnetId1a="subnet-0ae475cbd47289960"
-export SubnetId1c="subnet-051a32873cc5c562b"
+export SubnetId1aPublic="subnet-0ae475cbd47289960"
+export SubnetId1cPublic="subnet-051a32873cc5c562b"
+export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
+export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
 export InternetGatewayId="igw-0db61da9fcd82b6eb"
 export RouteTableId="rtb-01b343a22f94f5031"
 ```
@@ -410,8 +484,10 @@ export RouteTableId="rtb-01b343a22f94f5031"
 ``` Cloud9
 clear; cat << EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableId : ${RouteTableId}
 EOF
@@ -421,8 +497,10 @@ EOF
 
 ``` Cloud9
 VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic : subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate : subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId : rtb-01b343a22f94f5031
 ```
@@ -458,18 +536,20 @@ aws ecr create-repository \
 }
 ```
 
-## DockerImage作成
+## Docker Image作成
 
 Duration: 0:05:00
 
-### ■環境変数を貼り付け
+### ■CloudShellで作成した環境変数を貼り付け
 
 #### cmd
 
 ```Cloud9
 export VpcId="vpc-08a77289b9b351429"
-export SubnetId1a="subnet-0ae475cbd47289960"
-export SubnetId1c="subnet-051a32873cc5c562b"
+export SubnetId1aPublic="subnet-0ae475cbd47289960"
+export SubnetId1cPublic="subnet-051a32873cc5c562b"
+export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
+export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
 export InternetGatewayId="igw-0db61da9fcd82b6eb"
 export RouteTableId="rtb-01b343a22f94f5031"
 ```
@@ -477,8 +557,10 @@ export RouteTableId="rtb-01b343a22f94f5031"
 ``` Cloud9
 clear; cat << EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableId : ${RouteTableId}
 EOF
@@ -488,13 +570,15 @@ EOF
 
 ``` Cloud9
 VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic : subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate : subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId : rtb-01b343a22f94f5031
 ```
 
-### ■Cloud9上にdockerがあることを確認
+### ■Cloud9上にdockerセットアップされていることを確認
 
 #### cmd
 

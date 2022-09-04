@@ -63,14 +63,14 @@ EOF
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
 </code></pre>
 <h2 is-upgraded>■Subnetの作成</h2>
-<p>作成したVPCの中にSubnetを2つ作成します。</p>
+<p>作成したVPCの中にSubnetを4つ作成します。 Private Subnetが2つ、Public Subnetが2つです。</p>
 <h3 is-upgraded>cmd1</h3>
 <p>Subnetの1つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
-    --vpc-id $vpcid \
+    --vpc-id $VpcId \
     --availability-zone ap-northeast-1a \
     --cidr-block 10.0.0.0/24 \
-    --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
+    --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]&#34;
 </code></pre>
 <h3 is-upgraded>result1</h3>
 <p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
@@ -79,42 +79,84 @@ EOF
 <h3 is-upgraded>cmd2</h3>
 <p>Subnetの2つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
-    --vpc-id $vpcid \
+    --vpc-id $VpcId \
     --availability-zone ap-northeast-1c \
     --cidr-block 10.0.1.0/24 \
-    --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
+    --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]&#34;
 </code></pre>
 <h3 is-upgraded>result2</h3>
 <p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">xxx
 </code></pre>
+<h3 is-upgraded>cmd3</h3>
+<p>Subnetの3つ目を作成します。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
+    --vpc-id $VpcId \
+    --availability-zone ap-northeast-1a \
+    --cidr-block 10.0.2.0/24 \
+    --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]&#34;
+</code></pre>
+<h3 is-upgraded>result3</h3>
+<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+</code></pre>
+<h3 is-upgraded>cmd4</h3>
+<p>Subnetの4つ目を作成します。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
+    --vpc-id $VpcId \
+    --availability-zone ap-northeast-1c \
+    --cidr-block 10.0.3.0/24 \
+    --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]&#34;
+</code></pre>
+<h3 is-upgraded>result4</h3>
+<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
+<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+</code></pre>
 <h3 is-upgraded>変数取得</h3>
 <p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1a=`aws ec2 describe-subnets \
+<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1aPublic=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
-    &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOnPublic&#34; \
     &#34;Name=availabilityZone,Values=ap-northeast-1a&#34; \
     --query &#34;Subnets[*].SubnetId&#34; \
     --output text`
 </code></pre>
-<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1c=`aws ec2 describe-subnets \
+<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1cPublic=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
-    &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOnPublic&#34; \
+    &#34;Name=availabilityZone,Values=ap-northeast-1c&#34; \
+    --query &#34;Subnets[*].SubnetId&#34; \
+    --output text`
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1aPrivate=`aws ec2 describe-subnets \
+    --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOnPrivate&#34; \
+    &#34;Name=availabilityZone,Values=ap-northeast-1a&#34; \
+    --query &#34;Subnets[*].SubnetId&#34; \
+    --output text`
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1cPrivate=`aws ec2 describe-subnets \
+    --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOnPrivate&#34; \
     &#34;Name=availabilityZone,Values=ap-northeast-1c&#34; \
     --query &#34;Subnets[*].SubnetId&#34; \
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate: ${SubnetId1cPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
 <p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic: subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 </code></pre>
 <h2 is-upgraded>■InternetGatewayの作成</h2>
 <p>Internetに繋がるInternetGatewayを作成します。</p>
@@ -135,16 +177,20 @@ SubnetId1c : subnet-051a32873cc5c562b
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">cat &lt;&lt; EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate: ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
 <p>変数が取得されていることを確認します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic: subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCにAttach</h2>
@@ -181,16 +227,20 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate: ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableId : ${RouteTableId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic: subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId : rtb-01b343a22f94f5031
 </code></pre>
@@ -238,16 +288,20 @@ RouteTableId : rtb-01b343a22f94f5031
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 export VpcId=&#34;${VpcId}&#34;
-export SubnetId1a=&#34;${SubnetId1a}&#34;
-export SubnetId1c=&#34;${SubnetId1c}&#34;
+export SubnetId1aPublic=&#34;${SubnetId1aPublic}&#34;
+export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
+export SubnetId1aPrivate=&#34;${SubnetId1aPrivate}&#34;
+export SubnetId1cPrivate=&#34;${SubnetId1cPrivate}&#34;
 export InternetGatewayId=&#34;${InternetGatewayId}&#34;
 export RouteTableId=&#34;${RouteTableId}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">export VpcId=&#34;vpc-08a77289b9b351429&#34;
-export SubnetId1a=&#34;subnet-0ae475cbd47289960&#34;
-export SubnetId1c=&#34;subnet-051a32873cc5c562b&#34;
+export SubnetId1aPublic=&#34;subnet-0ae475cbd47289960&#34;
+export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
+export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
+export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
 export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
 export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
 </code></pre>
@@ -262,7 +316,7 @@ export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
   --name ContainerHandsOn \
   --description &#34;ContainerHandsOn&#34; \
   --instance-type t3.small  \
-  --subnet-id ${SubnetId1a}  \
+  --subnet-id ${SubnetId1aPublic}  \
   --automatic-stop-time-minutes 60  \
   --tags &#34;Key=Name,Value=ContainerHandsOn&#34;
 </code></pre>
@@ -285,23 +339,29 @@ export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
         <h2 is-upgraded>■環境変数を貼り付け</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">export VpcId=&#34;vpc-08a77289b9b351429&#34;
-export SubnetId1a=&#34;subnet-0ae475cbd47289960&#34;
-export SubnetId1c=&#34;subnet-051a32873cc5c562b&#34;
+export SubnetId1aPublic=&#34;subnet-0ae475cbd47289960&#34;
+export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
+export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
+export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
 export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
 export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableId : ${RouteTableId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic : subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate : subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId : rtb-01b343a22f94f5031
 </code></pre>
@@ -333,31 +393,37 @@ RouteTableId : rtb-01b343a22f94f5031
 
       </google-codelab-step>
     
-      <google-codelab-step label="DockerImage作成" duration="5">
-        <h2 is-upgraded>■環境変数を貼り付け</h2>
+      <google-codelab-step label="Docker Image作成" duration="5">
+        <h2 is-upgraded>■CloudShellで作成した環境変数を貼り付け</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">export VpcId=&#34;vpc-08a77289b9b351429&#34;
-export SubnetId1a=&#34;subnet-0ae475cbd47289960&#34;
-export SubnetId1c=&#34;subnet-051a32873cc5c562b&#34;
+export SubnetId1aPublic=&#34;subnet-0ae475cbd47289960&#34;
+export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
+export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
+export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
 export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
 export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 VpcId : ${VpcId}
-SubnetId1a : ${SubnetId1a}
-SubnetId1c : ${SubnetId1c}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableId : ${RouteTableId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">VpcId : vpc-08a77289b9b351429
-SubnetId1a : subnet-0ae475cbd47289960
-SubnetId1c : subnet-051a32873cc5c562b
+SubnetId1aPublic : subnet-0ae475cbd47289960
+SubnetId1cPublic : subnet-051a32873cc5c562b
+SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
+SubnetId1cPrivate : subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
 RouteTableId : rtb-01b343a22f94f5031
 </code></pre>
-<h2 is-upgraded>■Cloud9上にdockerがあることを確認</h2>
+<h2 is-upgraded>■Cloud9上にdockerセットアップされていることを確認</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker -v
 </code></pre>
