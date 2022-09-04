@@ -18,6 +18,8 @@ Duration: 0:05:00
 Duration: 0:05:00
 
 ### ■CloudShellの起動
+![img](./image/img2-1.png)
+![img](./image/img2-2.png)
 
 ### ■VPCの作成
 
@@ -892,6 +894,46 @@ aws ec2 create-vpc-endpoint \
 
 ```Cloud9
 xxx
+```
+
+### ■インターフェース用のSecurityGroup作成
+#### cmd
+```Cloud9
+aws ec2 create-security-group \
+  --group-name InterfaceSecurityGroup \
+  --description "Interface Security Group" \
+  --vpc-id ${VpcId} \
+  --tag-specifications "ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-InterfaceSecurityGroup}]"
+```
+
+#### result
+```Cloud9
+xxx
+```
+
+#### 変数設定
+```Cloud9
+InterfaceGroupId=`aws ec2 describe-security-groups \
+  --query 'SecurityGroups[*].GroupId' \
+  --filters "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOn-InterfaceSecurityGroup" \
+    --output text`
+```
+
+```Cloud9
+clear; cat << EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId : ${RouteTableId}
+AccoutID : ${AccoutID}
+InterfaceGroupId : ${InterfaceGroupId}
+EOF
+```
+
+#### 変数設定確認
+```
 ```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.dkr

@@ -34,6 +34,7 @@
     
       <google-codelab-step label="VPC作成" duration="5">
         <h2 is-upgraded>■CloudShellの起動</h2>
+<p class="image-container"><img alt="img" src="img/1bbb070a4cf9999c.png"><img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■VPCの作成</h2>
 <p>VPCを新規に作成します。</p>
 <h3 is-upgraded>cmd</h3>
@@ -621,6 +622,36 @@ latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">xxx
 </code></pre>
+<h2 is-upgraded>■インターフェース用のSecurityGroup作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-security-group \
+  --group-name InterfaceSecurityGroup \
+  --description &#34;Interface Security Group&#34; \
+  --vpc-id ${VpcId} \
+  --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-InterfaceSecurityGroup}]&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+</code></pre>
+<h3 is-upgraded>変数設定</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">InterfaceGroupId=`aws ec2 describe-security-groups \
+  --query &#39;SecurityGroups[*].GroupId&#39; \
+  --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn-InterfaceSecurityGroup&#34; \
+    --output text`
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
+VpcId : ${VpcId}
+SubnetId1a : ${SubnetId1a}
+SubnetId1c : ${SubnetId1c}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableId : ${RouteTableId}
+AccoutID : ${AccoutID}
+InterfaceGroupId : ${InterfaceGroupId}
+EOF
+</code></pre>
+<h3 is-upgraded>変数設定確認</h3>
+<pre><code></code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.dkr</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">    --vpc-id ${VpcId} \
