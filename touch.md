@@ -478,35 +478,122 @@ Docker version 20.10.13, build a224086
 
 ### ■Cloud9上にDockerfileを作成
 
+[参考元](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/create-container-image.html)
+
 #### cmd
 
 ```Cloud9
 cat << EOF > Dockerfile
-FROM 'nginx:latest'
-RUN echo 'Hello! Jaws Days 2022!!' > /usr/share/nginx/html/index.html
-RUN service nginx start
+FROM ubuntu:18.04
+
+# Install dependencies
+RUN apt-get update && \
+ apt-get -y install apache2
+
+# Install apache and write hello world message
+RUN echo 'Hello! Jaws Days 2022!!' > /var/www/html/index.html
+
+# Configure apache
+RUN echo '. /etc/apache2/envvars' > /root/run_apache.sh && \
+ echo 'mkdir -p /var/run/apache2' >> /root/run_apache.sh && \
+ echo 'mkdir -p /var/lock/apache2' >> /root/run_apache.sh && \ 
+ echo '/usr/sbin/apache2 -D FOREGROUND' >> /root/run_apache.sh && \ 
+ chmod 755 /root/run_apache.sh
+
 EXPOSE 80
+
+CMD /root/run_apache.sh
 EOF
 ```
 
 ```Cloud9
-ls -l Dockerfile;
 cat Dockerfile;
 ```
 
 #### result
 
 ```Cloud9
-FROM 'nginx:latest'
-RUN echo 'Hello! Jaws Days 2022!!' > /usr/share/nginx/html/index.html
-RUN service nginx start
+FROM ubuntu:18.04
+
+# Install dependencies
+RUN apt-get update &&  apt-get -y install apache2
+
+# Install apache and write hello world message
+RUN echo 'Hello! Jaws Days 2022!!' > /var/www/html/index.html
+
+# Configure apache
+RUN echo '. /etc/apache2/envvars' > /root/run_apache.sh &&  echo 'mkdir -p /var/run/apache2' >> /root/run_apache.sh &&  echo 'mkdir -p /var/lock/apache2' >> /root/run_apache.sh && \ 
+ echo '/usr/sbin/apache2 -D FOREGROUND' >> /root/run_apache.sh && \ 
+ chmod 755 /root/run_apache.sh
+
 EXPOSE 80
+
+CMD /root/run_apache.sh
 ```
 
-docker build -t jaws-days-2022/container-hands-on .
-docker run --name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest
-### ■AWS Account IDの取得
+### ■Cloud9上でDocker イメージを構築
+
 #### cmd
+
+```Cloud9
+docker build -t jaws-days-2022/container-hands-on .
+```
+
+#### result
+
+```Cloud9
+（略）
+Successfully built fed9645afaae
+Successfully tagged jaws-days-2022/container-hands-on:latest
+```
+
+### ■Cloud9上でDocker イメージを構築されたことを確認
+
+#### cmd
+
+```cloud9
+docker images --filter reference= jaws-days-2022/container-hands-on:latest
+```
+
+#### result
+
+```cloud9
+REPOSITORY                          TAG       IMAGE ID       CREATED         SIZE
+jaws-days-2022/container-hands-on   latest    fed9645afaae   8 minutes ago   202MB
+```
+
+### ■Cloud9上でDocker イメージを起動
+
+#### cmd
+
+```Cloud9
+docker run --name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest
+```
+
+#### result
+
+```Cloud9
+dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
+```
+
+#### 画面
+
+xxx
+
+### ■（ご参考）Cloud9上でコンテナを停止・削除する方法
+
+#### cmd
+
+```Cloud9
+
+docker stop $(docker ps -q)
+docker rm $(docker ps -q -a)
+```
+
+### ■AWS Account IDの取得
+
+#### cmd
+
 ```Cloud9
 AccoutID=`aws sts get-caller-identity --query Account --output text`
 ```
@@ -521,19 +608,32 @@ RouteTableId : ${RouteTableId}
 AccoutID : ${AccoutID}
 EOF
 ```
+
 #### result
+
 ```Cloud9
+VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+InternetGatewayId : igw-0db61da9fcd82b6eb
+RouteTableId : rtb-01b343a22f94f5031
+AccoutID : 378647896848
 ```
 
 aws sts get-caller-identity --query Account --output text
+
 ### ■DockerImageにTag付けを行う
+
 #### cmd
+
 ```Cloud9
 docker tag jaws-days-2022/container-hands-on:latest 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
 ### ■DockerImageをECRにPush
-#### 認証トークンを取得し、レジストリに対して Docker クライアントを認証します。
+
+#### 認証トークンを取得し、レジストリに対して Docker クライアントを認証します
+
 aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com
 
 ## VPCエンドポイント作成

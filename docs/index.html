@@ -342,24 +342,81 @@ RouteTableId : rtb-01b343a22f94f5031
 <pre><code language="language-Cloud9" class="language-Cloud9">Docker version 20.10.13, build a224086
 </code></pre>
 <h2 is-upgraded>■Cloud9上にDockerfileを作成</h2>
+<p><a href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/create-container-image.html" target="_blank">参考元</a></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; Dockerfile
-FROM &#39;nginx:latest&#39;
-RUN echo &#39;Hello! Jaws Days 2022!!&#39; &gt; /usr/share/nginx/html/index.html
-RUN service nginx start
+FROM ubuntu:18.04
+
+# Install dependencies
+RUN apt-get update &amp;&amp; \
+ apt-get -y install apache2
+
+# Install apache and write hello world message
+RUN echo &#39;Hello! Jaws Days 2022!!&#39; &gt; /var/www/html/index.html
+
+# Configure apache
+RUN echo &#39;. /etc/apache2/envvars&#39; &gt; /root/run_apache.sh &amp;&amp; \
+ echo &#39;mkdir -p /var/run/apache2&#39; &gt;&gt; /root/run_apache.sh &amp;&amp; \
+ echo &#39;mkdir -p /var/lock/apache2&#39; &gt;&gt; /root/run_apache.sh &amp;&amp; \ 
+ echo &#39;/usr/sbin/apache2 -D FOREGROUND&#39; &gt;&gt; /root/run_apache.sh &amp;&amp; \ 
+ chmod 755 /root/run_apache.sh
+
 EXPOSE 80
+
+CMD /root/run_apache.sh
 EOF
 </code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">ls -l Dockerfile;
-cat Dockerfile;
+<pre><code language="language-Cloud9" class="language-Cloud9">cat Dockerfile;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">FROM &#39;nginx:latest&#39;
-RUN echo &#39;Hello! Jaws Days 2022!!&#39; &gt; /usr/share/nginx/html/index.html
-RUN service nginx start
+<pre><code language="language-Cloud9" class="language-Cloud9">FROM ubuntu:18.04
+
+# Install dependencies
+RUN apt-get update &amp;&amp;  apt-get -y install apache2
+
+# Install apache and write hello world message
+RUN echo &#39;Hello! Jaws Days 2022!!&#39; &gt; /var/www/html/index.html
+
+# Configure apache
+RUN echo &#39;. /etc/apache2/envvars&#39; &gt; /root/run_apache.sh &amp;&amp;  echo &#39;mkdir -p /var/run/apache2&#39; &gt;&gt; /root/run_apache.sh &amp;&amp;  echo &#39;mkdir -p /var/lock/apache2&#39; &gt;&gt; /root/run_apache.sh &amp;&amp; \ 
+ echo &#39;/usr/sbin/apache2 -D FOREGROUND&#39; &gt;&gt; /root/run_apache.sh &amp;&amp; \ 
+ chmod 755 /root/run_apache.sh
+
 EXPOSE 80
+
+CMD /root/run_apache.sh
 </code></pre>
-<p>docker build -t jaws-days-2022/container-hands-on . docker run –name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest</p>
+<h2 is-upgraded>■Cloud9上でDocker イメージを構築</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">docker build -t jaws-days-2022/container-hands-on .
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">（略）
+Successfully built fed9645afaae
+Successfully tagged jaws-days-2022/container-hands-on:latest
+</code></pre>
+<h2 is-upgraded>■Cloud9上でDocker イメージを構築されたことを確認</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-cloud9" class="language-cloud9">docker images --filter reference= jaws-days-2022/container-hands-on:latest
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-cloud9" class="language-cloud9">REPOSITORY                          TAG       IMAGE ID       CREATED         SIZE
+jaws-days-2022/container-hands-on   latest    fed9645afaae   8 minutes ago   202MB
+</code></pre>
+<h2 is-upgraded>■Cloud9上でDocker イメージを起動</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">docker run --name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
+</code></pre>
+<h3 is-upgraded>画面</h3>
+<p>xxx</p>
+<h2 is-upgraded>■（ご参考）Cloud9上でコンテナを停止・削除する方法</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">docker stop $(docker ps -q)
+docker rm $(docker ps -q -a)
+</code></pre>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">AccoutID=`aws sts get-caller-identity --query Account --output text`
@@ -374,14 +431,20 @@ AccoutID : ${AccoutID}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">VpcId : vpc-08a77289b9b351429
+SubnetId1a : subnet-0ae475cbd47289960
+SubnetId1c : subnet-051a32873cc5c562b
+InternetGatewayId : igw-0db61da9fcd82b6eb
+RouteTableId : rtb-01b343a22f94f5031
+AccoutID : 378647896848
+</code></pre>
 <p>aws sts get-caller-identity –query Account –output text</p>
 <h2 is-upgraded>■DockerImageにTag付けを行う</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker tag jaws-days-2022/container-hands-on:latest 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h2 is-upgraded>■DockerImageをECRにPush</h2>
-<h3 is-upgraded>認証トークンを取得し、レジストリに対して Docker クライアントを認証します。</h3>
+<h3 is-upgraded>認証トークンを取得し、レジストリに対して Docker クライアントを認証します</h3>
 <p>aws ecr get-login-password –region ap-northeast-1 | docker login –username AWS –password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com</p>
 
 
