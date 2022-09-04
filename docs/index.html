@@ -602,37 +602,41 @@ latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754
       </google-codelab-step>
     
       <google-codelab-step label="VPCエンドポイント作成" duration="5">
-        <h2 is-upgraded>■VPCからECRに繋ぐVPCエンドポイントを作成</h2>
+        <p>FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します。</p>
+<ul>
+<li>com.amazonaws.ap-northeast-1.s3</li>
+<li>com.amazonaws.ap-northeast-1.ecr.dkr</li>
+<li>com.amazonaws.ap-northeast-1.ecr.api</li>
+<li>com.amazonaws.ap-northeast-1.logs</li>
+</ul>
+<h2 is-upgraded>■com.amazonaws.ap-northeast-1.s3</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Gateway \
+    --service-name com.amazonaws.ap-northeast-1.s3 \
+    --route-table-ids ${RouteTableIdPrivate} \
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+</code></pre>
+<h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.dkr</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
+    --route-table-ids ${RouteTableIdPrivate} \
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.api</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h2 is-upgraded>■VPCからECRに繋ぐVPCエンドポイントを作成</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h2 is-upgraded>■VPCからECRに繋ぐVPCエンドポイントを作成</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h2 is-upgraded>■VPCからECRに繋ぐVPCエンドポイントを作成</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h2 is-upgraded>■VPCからECRに繋ぐVPCエンドポイントを作成</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h2 is-upgraded>■VPCからECRに繋ぐVPCエンドポイントを作成</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h2 is-upgraded>■VPCからECRに繋ぐVPCエンドポイントを作成</h2>
+<h2 is-upgraded>■com.amazonaws.ap-northeast-1.logs</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
 <h3 is-upgraded>result</h3>

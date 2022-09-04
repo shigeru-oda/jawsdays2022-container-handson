@@ -868,7 +868,50 @@ latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754
 
 Duration: 0:05:00
 
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
+FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します。
+
+- com.amazonaws.ap-northeast-1.s3
+- com.amazonaws.ap-northeast-1.ecr.dkr
+- com.amazonaws.ap-northeast-1.ecr.api
+- com.amazonaws.ap-northeast-1.logs
+
+### ■com.amazonaws.ap-northeast-1.s3
+
+#### cmd
+
+```Cloud9
+aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Gateway \
+    --service-name com.amazonaws.ap-northeast-1.s3 \
+    --route-table-ids ${RouteTableIdPrivate} \
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
+```
+
+#### result
+
+```Cloud9
+xxx
+```
+
+### ■com.amazonaws.ap-northeast-1.ecr.dkr
+
+#### cmd
+
+```Cloud9
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
+    --route-table-ids ${RouteTableIdPrivate} \
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
+```
+
+#### result
+
+```Cloud9
+```
+
+### ■com.amazonaws.ap-northeast-1.ecr.api
 
 #### cmd
 
@@ -880,67 +923,7 @@ Duration: 0:05:00
 ```CloudShell
 ```
 
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-
-#### cmd
-
-```CloudShell
-```
-
-#### result
-
-```CloudShell
-```
-
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-
-#### cmd
-
-```CloudShell
-```
-
-#### result
-
-```CloudShell
-```
-
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-
-#### cmd
-
-```CloudShell
-```
-
-#### result
-
-```CloudShell
-```
-
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-
-#### cmd
-
-```CloudShell
-```
-
-#### result
-
-```CloudShell
-```
-
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
-
-#### cmd
-
-```CloudShell
-```
-
-#### result
-
-```CloudShell
-```
-
-### ■VPCからECRに繋ぐVPCエンドポイントを作成
+### ■com.amazonaws.ap-northeast-1.logs
 
 #### cmd
 
