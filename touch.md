@@ -707,6 +707,15 @@ Login Succeeded
 ```Cloud9
 docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
+#### result
+
+```Cloud9
+61e740eb529d: Pushed 
+58f84848d392: Pushed 
+d5c24541b3aa: Pushed 
+1a996540f50f: Pushed 
+latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754d77d943 size: 1155
+```
 
 ## VPCエンドポイント作成
 
