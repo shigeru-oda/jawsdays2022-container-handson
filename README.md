@@ -18,6 +18,7 @@ export PATH=$PATH:$GOROOT/bin
 ## EXPORT
 
 claat export <マークダウンファイル名>  
+
 claat export touch.md  
 git add .  
 git commit -m "claat"  

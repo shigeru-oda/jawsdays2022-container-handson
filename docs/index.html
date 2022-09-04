@@ -217,12 +217,35 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
 <p>結果がavailableであること</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">available
 </code></pre>
+<h2 is-upgraded>■RouteTableの作成</h2>
+<h3 is-upgraded>cmd1</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route-table \
+  --vpc-id ${VpcId} \
+  --tag-specifications &#34;ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]&#34;
+</code></pre>
+<h3 is-upgraded>result1</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<h3 is-upgraded>cmd2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route-table \
+  --vpc-id ${VpcId} \
+  --tag-specifications &#34;ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]&#34;
+</code></pre>
+<h3 is-upgraded>result2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
 <h2 is-upgraded>■RouteTableの確認</h2>
-<p>VPC作成時にデフォルトのRouteTableがあるので、このIDを取得します。</p>
 <h3 is-upgraded>変数設定</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">RouteTableId=`aws ec2 describe-route-tables \
+<pre><code language="language-CloudShell" class="language-CloudShell">RouteTableIdPublic=`aws ec2 describe-route-tables \
   --query &#34;RouteTables[*].RouteTableId&#34; \
   --filters &#34;Name=vpc-id,Values=${VpcId}&#34; \
+  &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOnPublic&#34; \
+  --output text`
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">RouteTableIdPrivate=`aws ec2 describe-route-tables \
+  --query &#34;RouteTables[*].RouteTableId&#34; \
+  --filters &#34;Name=vpc-id,Values=${VpcId}&#34; \
+  &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOnPrivate&#34; \
   --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
@@ -232,7 +255,8 @@ SubnetId1cPublic: ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
 SubnetId1cPrivate: ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId : ${RouteTableId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
@@ -242,39 +266,42 @@ SubnetId1cPublic: subnet-051a32873cc5c562b
 SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
 SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableId : rtb-01b343a22f94f5031
+RouteTableIdPublic : rtb-0cfcfe4b74de83091
+RouteTableIdPrivate : rtb-089389ec79a044951
 </code></pre>
 <h2 is-upgraded>■RouteTableにSubnetを紐付け</h2>
 <h3 is-upgraded>cmd1</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
-  --route-table-id ${RouteTableId} \
-  --subnet-id ${SubnetId1a}
+  --route-table-id ${RouteTableIdPublic} \
+  --subnet-id ${SubnetId1aPublic}
 </code></pre>
 <h3 is-upgraded>result1</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">{
-    &#34;AssociationId&#34;: &#34;rtbassoc-07e4b9476d5384320&#34;,
-    &#34;AssociationState&#34;: {
-        &#34;State&#34;: &#34;associated&#34;
-    }
-}
-</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
 <h3 is-upgraded>cmd2</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
-  --route-table-id ${RouteTableId} \
-  --subnet-id ${SubnetId1c}
+  --route-table-id ${RouteTableIdPrivate} \
+  --subnet-id ${SubnetId1aPrivate}
 </code></pre>
 <h3 is-upgraded>result2</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">{
-    &#34;AssociationId&#34;: &#34;rtbassoc-001ad16bd1720e77c&#34;,
-    &#34;AssociationState&#34;: {
-        &#34;State&#34;: &#34;associated&#34;
-    }
-}
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<h3 is-upgraded>cmd2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
+  --route-table-id ${RouteTableIdPrivate} \
+  --subnet-id ${SubnetId1cPrivate}
 </code></pre>
+<h3 is-upgraded>result2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<h3 is-upgraded>cmd2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
+  --route-table-id ${RouteTableIdPublic} \
+  --subnet-id ${SubnetId1cPublic}
+</code></pre>
+<h3 is-upgraded>result2</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
 <h2 is-upgraded>■RouteTableにInternetGatewayを紐付け</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route \
-  --route-table-id ${RouteTableId} \
+  --route-table-id ${RouteTableIdPublic} \
   --destination-cidr-block &#34;0.0.0.0/0&#34; \
   --gateway-id ${InternetGatewayId}
 </code></pre>
@@ -293,7 +320,8 @@ export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
 export SubnetId1aPrivate=&#34;${SubnetId1aPrivate}&#34;
 export SubnetId1cPrivate=&#34;${SubnetId1cPrivate}&#34;
 export InternetGatewayId=&#34;${InternetGatewayId}&#34;
-export RouteTableId=&#34;${RouteTableId}&#34;
+export RouteTableIdPublic=&#34;${RouteTableIdPublic}&#34;
+export RouteTableIdPrivate=&#34;${RouteTableIdPrivate}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
@@ -303,7 +331,8 @@ export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
 export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
 export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
 export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
-export RouteTableId=&#34;rtb-01b343a22f94f5031&#34;
+export RouteTableIdPublic=&#34;rtb-0cfcfe4b74de83091&#34;
+export RouteTableIdPrivate=&#34;rtb-089389ec79a044951&#34;
 </code></pre>
 
 

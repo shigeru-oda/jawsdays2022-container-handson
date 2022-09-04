@@ -131,6 +131,7 @@ CloudShellに以下のような結果が返却されていることを確認下�
 ```CloudShell
 xxx
 ```
+
 #### cmd4
 
 Subnetの4つ目を作成します。
@@ -172,6 +173,7 @@ SubnetId1cPublic=`aws ec2 describe-subnets \
     --query "Subnets[*].SubnetId" \
     --output text`
 ```
+
 ```CloudShell
 SubnetId1aPrivate=`aws ec2 describe-subnets \
     --filters "Name=tag-key,Values=Name" \
@@ -180,6 +182,7 @@ SubnetId1aPrivate=`aws ec2 describe-subnets \
     --query "Subnets[*].SubnetId" \
     --output text`
 ```
+
 ```CloudShell
 SubnetId1cPrivate=`aws ec2 describe-subnets \
     --filters "Name=tag-key,Values=Name" \
@@ -305,16 +308,53 @@ aws ec2 describe-internet-gateways \
 available
 ```
 
-### ■RouteTableの確認
+### ■RouteTableの作成
 
-VPC作成時にデフォルトのRouteTableがあるので、このIDを取得します。
+#### cmd1
+
+```CloudShell
+aws ec2 create-route-table \
+  --vpc-id ${VpcId} \
+  --tag-specifications "ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]"
+```
+
+#### result1
+
+```CloudShell
+```
+
+#### cmd2
+
+```CloudShell
+aws ec2 create-route-table \
+  --vpc-id ${VpcId} \
+  --tag-specifications "ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]"
+```
+
+#### result2
+
+```CloudShell
+```
+
+### ■RouteTableの確認
 
 #### 変数設定
 
 ```CloudShell
-RouteTableId=`aws ec2 describe-route-tables \
+RouteTableIdPublic=`aws ec2 describe-route-tables \
   --query "RouteTables[*].RouteTableId" \
   --filters "Name=vpc-id,Values=${VpcId}" \
+  "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOnPublic" \
+  --output text`
+```
+
+```CloudShell
+RouteTableIdPrivate=`aws ec2 describe-route-tables \
+  --query "RouteTables[*].RouteTableId" \
+  --filters "Name=vpc-id,Values=${VpcId}" \
+  "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOnPrivate" \
   --output text`
 ```
 
@@ -326,7 +366,8 @@ SubnetId1cPublic: ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
 SubnetId1cPrivate: ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
-RouteTableId : ${RouteTableId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 ```
 
@@ -339,7 +380,8 @@ SubnetId1cPublic: subnet-051a32873cc5c562b
 SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
 SubnetId1cPrivate: subnet-0819c13fe959a0d1a
 InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableId : rtb-01b343a22f94f5031
+RouteTableIdPublic : rtb-0cfcfe4b74de83091
+RouteTableIdPrivate : rtb-089389ec79a044951
 ```
 
 ### ■RouteTableにSubnetを紐付け
@@ -348,38 +390,53 @@ RouteTableId : rtb-01b343a22f94f5031
 
 ```CloudShell
 aws ec2 associate-route-table \
-  --route-table-id ${RouteTableId} \
-  --subnet-id ${SubnetId1a}
+  --route-table-id ${RouteTableIdPublic} \
+  --subnet-id ${SubnetId1aPublic}
 ```
 
 #### result1
 
 ```CloudShell
-{
-    "AssociationId": "rtbassoc-07e4b9476d5384320",
-    "AssociationState": {
-        "State": "associated"
-    }
-}
+
 ```
 
 #### cmd2
 
 ```CloudShell
 aws ec2 associate-route-table \
-  --route-table-id ${RouteTableId} \
-  --subnet-id ${SubnetId1c}
+  --route-table-id ${RouteTableIdPrivate} \
+  --subnet-id ${SubnetId1aPrivate}
 ```
 
 #### result2
 
 ```CloudShell
-{
-    "AssociationId": "rtbassoc-001ad16bd1720e77c",
-    "AssociationState": {
-        "State": "associated"
-    }
-}
+```
+
+#### cmd2
+
+```CloudShell
+aws ec2 associate-route-table \
+  --route-table-id ${RouteTableIdPrivate} \
+  --subnet-id ${SubnetId1cPrivate}
+```
+
+#### result2
+
+```CloudShell
+```
+
+#### cmd2
+
+```CloudShell
+aws ec2 associate-route-table \
+  --route-table-id ${RouteTableIdPublic} \
+  --subnet-id ${SubnetId1cPublic}
+```
+
+#### result2
+
+```CloudShell
 ```
 
 ### ■RouteTableにInternetGatewayを紐付け
@@ -388,7 +445,7 @@ aws ec2 associate-route-table \
 
 ```CloudShell
 aws ec2 create-route \
-  --route-table-id ${RouteTableId} \
+  --route-table-id ${RouteTableIdPublic} \
   --destination-cidr-block "0.0.0.0/0" \
   --gateway-id ${InternetGatewayId}
 ```
@@ -415,7 +472,8 @@ export SubnetId1cPublic="${SubnetId1cPublic}"
 export SubnetId1aPrivate="${SubnetId1aPrivate}"
 export SubnetId1cPrivate="${SubnetId1cPrivate}"
 export InternetGatewayId="${InternetGatewayId}"
-export RouteTableId="${RouteTableId}"
+export RouteTableIdPublic="${RouteTableIdPublic}"
+export RouteTableIdPrivate="${RouteTableIdPrivate}"
 EOF
 ```
 
@@ -428,7 +486,8 @@ export SubnetId1cPublic="subnet-051a32873cc5c562b"
 export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
 export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
 export InternetGatewayId="igw-0db61da9fcd82b6eb"
-export RouteTableId="rtb-01b343a22f94f5031"
+export RouteTableIdPublic="rtb-0cfcfe4b74de83091"
+export RouteTableIdPrivate="rtb-089389ec79a044951"
 ```
 
 ## Cloud9作成
@@ -784,13 +843,14 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 Login Succeeded
 ```
 
-
 ### ■DockerImageをECRにPush
+
 #### cmd
 
 ```Cloud9
 docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
+
 #### result
 
 ```Cloud9
