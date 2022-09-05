@@ -67,6 +67,48 @@ EOF
 <p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
 </code></pre>
+<h3 is-upgraded>■DNS名前解決をONにする</h3>
+<h2 is-upgraded>cmd</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell"> aws ec2 modify-vpc-attribute \
+  --vpc-id ${VpcId}  \
+  --enable-dns-support  &#39;{&#34;Value&#34;:true}&#39; 
+</code></pre>
+<h2 is-upgraded>result</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell">（なし）
+</code></pre>
+<h3 is-upgraded>■DNS名前解決の状態確認</h3>
+<h2 is-upgraded>cmd</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-vpc-attribute \
+  --query EnableDnsSupport \
+  --vpc-id ${VpcId}  \
+  --attribute enableDnsSupport
+</code></pre>
+<h2 is-upgraded>result</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Value&#34;: true
+}
+</code></pre>
+<h3 is-upgraded>■DNSホスト名をONにする</h3>
+<h2 is-upgraded>cmd</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell"> aws ec2 modify-vpc-attribute \
+  --vpc-id ${VpcId}  \
+  --enable-dns-support  &#39;{&#34;Value&#34;:true}&#39; 
+</code></pre>
+<h2 is-upgraded>result</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell">（なし）
+</code></pre>
+<h3 is-upgraded>■DNSホスト名の状態確認</h3>
+<h2 is-upgraded>cmd</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-vpc-attribute \
+  --query EnableDnsHostnames \
+  --vpc-id ${VpcId}  \
+  --attribute enableDnsHostnames
+</code></pre>
+<h2 is-upgraded>result</h2>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Value&#34;: true
+}
+</code></pre>
 <h2 is-upgraded>■Subnetの作成</h2>
 <p>作成したVPCの中にSubnetを4つ作成します。 Private Subnetが2つ、Public Subnetが2つです。</p>
 <h3 is-upgraded>cmd1</h3>
@@ -642,30 +684,37 @@ EOF
     --vpc-id ${VpcId} \
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
-    --subnet-ids ${SubnetId1aPrivate} \
+    --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${InterfaceGroupId} \
-    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
-</code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
-    --vpc-id ${VpcId} \
-    --vpc-endpoint-type Interface \
-    --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
-    --subnet-ids ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
-    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.api</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.ecr.api \
+    --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+</code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+</code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.logs</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.logs \
+    --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+</code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
 
 
       </google-codelab-step>

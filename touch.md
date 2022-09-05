@@ -78,6 +78,76 @@ IDが取得されていることを確認。ID等は個人個人異なります�
 VpcId : vpc-08a77289b9b351429
 ```
 
+#### ■DNS名前解決をONにする
+
+### cmd
+
+```CloudShell
+ aws ec2 modify-vpc-attribute \
+  --vpc-id ${VpcId}  \
+  --enable-dns-support  '{"Value":true}' 
+```
+
+### result
+
+```CloudShell
+（なし）
+```
+
+#### ■DNS名前解決の状態確認
+
+### cmd
+
+```CloudShell
+aws ec2 describe-vpc-attribute \
+  --query EnableDnsSupport \
+  --vpc-id ${VpcId}  \
+  --attribute enableDnsSupport
+```
+
+### result
+
+```CloudShell
+{
+    "Value": true
+}
+```
+
+#### ■DNSホスト名をONにする
+
+### cmd
+
+```CloudShell
+ aws ec2 modify-vpc-attribute \
+  --vpc-id ${VpcId}  \
+  --enable-dns-support  '{"Value":true}' 
+```
+
+### result
+
+```CloudShell
+（なし）
+```
+
+#### ■DNSホスト名の状態確認
+
+### cmd
+
+```CloudShell
+aws ec2 describe-vpc-attribute \
+  --query EnableDnsHostnames \
+  --vpc-id ${VpcId}  \
+  --attribute enableDnsHostnames
+```
+
+### result
+
+```CloudShell
+{
+    "Value": true
+}
+```
+
 ### ■Subnetの作成
 
 作成したVPCの中にSubnetを4つ作成します。
@@ -930,19 +1000,9 @@ aws ec2 create-vpc-endpoint \
     --vpc-id ${VpcId} \
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
-    --subnet-ids ${SubnetId1aPrivate} \
+    --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${InterfaceGroupId} \
-    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
-```
-
-```Cloud9
-aws ec2 create-vpc-endpoint \
-    --vpc-id ${VpcId} \
-    --vpc-endpoint-type Interface \
-    --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
-    --subnet-ids ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
-    --tag-specifications ResourceType=vpc-endpoint,Tags=[{Key=service,Value=ContainerHands}]
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
 ```
 
 #### result
@@ -954,24 +1014,39 @@ aws ec2 create-vpc-endpoint \
 
 #### cmd
 
-```CloudShell
+```Cloud9
+aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.ecr.api \
+    --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
 ```
 
 #### result
 
-```CloudShell
+```Cloud9
+xxx
 ```
 
 ### ■com.amazonaws.ap-northeast-1.logs
 
 #### cmd
 
-```CloudShell
+```Cloud9
+aws ec2 create-vpc-endpoint \
+    --vpc-id ${VpcId} \
+    --vpc-endpoint-type Interface \
+    --service-name com.amazonaws.ap-northeast-1.logs \
+    --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
+    --security-group-id ${InterfaceGroupId} \
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
 ```
 
 #### result
 
-```CloudShell
+```Cloud9
 ```
 
 ## ALB作成
