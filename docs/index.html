@@ -36,9 +36,9 @@
         <h2 is-upgraded>■CloudShellの起動</h2>
 <h3 is-upgraded>AWS コンソールにログイン</h3>
 <h3 is-upgraded>CloudShellボタン押下</h3>
-<p>画面右上のCloudShellボタンを押下 <img alt="img" src="img/1bbb070a4cf9999c.png"></p>
+<p>画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
 <h3 is-upgraded>CloudShellを起動</h3>
-<p class="image-container"><img alt="img" src="img/9b0f4ff0313865b9.png"></p>
+<p>今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。 <img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■VPCの作成</h2>
 <p>VPCを新規に作成します。</p>
 <h3 is-upgraded>cmd</h3>
@@ -720,12 +720,32 @@ EOF
       </google-codelab-step>
     
       <google-codelab-step label="ALB作成" duration="5">
-        
+        <h2 is-upgraded>■アプリケーションロードバランサーの作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-load-balancer \
+    --name ContainerHandsOn \
+    --subnets ${SubnetId1aPublic} ${SubnetId1cPublic} \
+    --tags &#34;Key=Name,Value=ContainerHandsOn&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<h2 is-upgraded>■ターゲットグループの作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-target-group \
+    --name ContainerHandsOn \
+    --protocol TCP \
+    --port 80 \
+    --target-type ip \
+    --vpc-id ${VpcId}
+</code></pre>
+
 
       </google-codelab-step>
     
       <google-codelab-step label="Fargate作成" duration="5">
-        
+        <h2 is-upgraded>■</h2>
+<h2 is-upgraded>■</h2>
+
 
       </google-codelab-step>
     

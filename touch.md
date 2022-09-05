@@ -23,11 +23,12 @@ Duration: 0:05:00
 
 #### CloudShellボタン押下
 
-画面右上のCloudShellボタンを押下
+画面右上のCloudShellボタンを押下  
 ![img](./image/img2-1.png)
 
 #### CloudShellを起動
 
+今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。
 ![img](./image/img2-2.png)
 
 ### ■VPCの作成
@@ -1053,9 +1054,35 @@ aws ec2 create-vpc-endpoint \
 
 Duration: 0:05:00
 
-###
+### ■アプリケーションロードバランサーの作成
+
+#### cmd
+```Cloud9
+aws elbv2 create-load-balancer \
+    --name ContainerHandsOn \
+    --subnets ${SubnetId1aPublic} ${SubnetId1cPublic} \
+    --tags "Key=Name,Value=ContainerHandsOn"
+```
+
+#### result
+```Cloud9
+```
+
+### ■ターゲットグループの作成
+#### cmd
+```Cloud9
+aws elbv2 create-target-group \
+    --name ContainerHandsOn \
+    --protocol TCP \
+    --port 80 \
+    --target-type ip \
+    --vpc-id ${VpcId}
+```
+
 
 ## Fargate作成
+### ■
+### ■
 
 Duration: 0:05:00
 
