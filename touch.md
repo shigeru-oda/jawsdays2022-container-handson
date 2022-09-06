@@ -1005,15 +1005,14 @@ aws cloud9 create-environment-ec2 \
   --description "ContainerHandsOn" \
   --instance-type t3.small  \
   --subnet-id ${SubnetId1aPublic}  \
-  --automatic-stop-time-minutes 60  \
-  --tags "Key=Name,Value=ContainerHandsOn"
+  --automatic-stop-time-minutes 60 
 ```
 
 #### result
 
 ```CloudShell
 {
-    "environmentId": "96614b2a3f434be7a83b5dffb22a1f0a"
+    "environmentId": "aa2999a731eb4178aed99069f1b683aa"
 }
 ```
 
@@ -1032,18 +1031,22 @@ Duration: 0:05:00
 #### cmd
 
 ```Cloud9
-export VpcId="vpc-08a77289b9b351429"
-export SubnetId1aPublic="subnet-0ae475cbd47289960"
-export SubnetId1cPublic="subnet-051a32873cc5c562b"
-export SubnetId1aPrivate="subnet-01eb19ab0aeb0f6f1"
-export SubnetId1cPrivate="subnet-0819c13fe959a0d1a"
-export InternetGatewayId="igw-0db61da9fcd82b6eb"
-export RouteTableIdPublic="rtb-0cfcfe4b74de83091"
-export RouteTableIdPrivate="rtb-089389ec79a044951"
+export AccoutID="152767562250"
+export VpcId="vpc-0d3c1c88db46cfba7"
+export SubnetId1aPublic="subnet-0f66f257f167a1d47"
+export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
+export SubnetId1aPrivate="subnet-049f0119237ff00a0"
+export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
+export InternetGatewayId="igw-0a511ba68ceb84ed8"
+export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
+export RouteTableIdPrivate="rtb-0afaac377925bca9a"
+export PublicSecurityGroupsId="sg-01cc901415c240504"
+export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
 ```
 
 ``` Cloud9
 clear; cat << EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1052,20 +1055,25 @@ SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
 EOF
 ```
 
 #### result
 
 ``` Cloud9
-VpcId : vpc-08a77289b9b351429
-SubnetId1aPublic : subnet-0ae475cbd47289960
-SubnetId1cPublic : subnet-051a32873cc5c562b
-SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
-SubnetId1cPrivate : subnet-0819c13fe959a0d1a
-InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableIdPublic : rtb-0cfcfe4b74de83091
-RouteTableIdPrivate : rtb-089389ec79a044951
+AccoutID : 152767562250
+VpcId : vpc-0d3c1c88db46cfba7
+SubnetId1aPublic : subnet-0f66f257f167a1d47
+SubnetId1cPublic : subnet-0a1e2afffc8c140d8
+SubnetId1aPrivate : subnet-049f0119237ff00a0
+SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
+InternetGatewayId : igw-0a511ba68ceb84ed8
+RouteTableIdPublic : rtb-00cf30796b25b9bc9
+RouteTableIdPrivate : rtb-0afaac377925bca9a
+PublicSecurityGroupsId : sg-01cc901415c240504
+PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
 ### ■ECRの作成
@@ -1083,11 +1091,11 @@ aws ecr create-repository \
 ```Cloud9
 {
     "repository": {
-        "repositoryArn": "arn:aws:ecr:ap-northeast-1:378647896848:repository/jaws-days-2022/container-hands-on",
-        "registryId": "378647896848",
+        "repositoryArn": "arn:aws:ecr:ap-northeast-1:152767562250:repository/jaws-days-2022/container-hands-on",
+        "registryId": "152767562250",
         "repositoryName": "jaws-days-2022/container-hands-on",
-        "repositoryUri": "378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on",
-        "createdAt": 1662173179.0,
+        "repositoryUri": "152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on",
+        "createdAt": "2022-09-06T13:21:42+00:00",
         "imageTagMutability": "MUTABLE",
         "imageScanningConfiguration": {
             "scanOnPush": false
@@ -1119,57 +1127,43 @@ Docker version 20.10.13, build a224086
 
 ### ■Cloud9上にDockerfileを作成
 
-[参考元](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/create-container-image.html)
-
 #### cmd
 
 ```Cloud9
 cat << EOF > Dockerfile
-FROM ubuntu:18.04
-
-# Install dependencies
-RUN apt-get update && \
- apt-get -y install apache2
-
-# Install apache and write hello world message
-RUN echo 'Hello! Jaws Days 2022!!' > /var/www/html/index.html
-
-# Configure apache
-RUN echo '. /etc/apache2/envvars' > /root/run_apache.sh && \
- echo 'mkdir -p /var/run/apache2' >> /root/run_apache.sh && \
- echo 'mkdir -p /var/lock/apache2' >> /root/run_apache.sh && \ 
- echo '/usr/sbin/apache2 -D FOREGROUND' >> /root/run_apache.sh && \ 
- chmod 755 /root/run_apache.sh
-
-EXPOSE 80
-
-CMD /root/run_apache.sh
+FROM php:7.4.0-apache
+COPY src/ /var/www/html/
 EOF
 ```
 
 ```Cloud9
-cat Dockerfile;
+mkdir src
+```
+
+```Cloud9
+cat << EOF > ./src/index.php
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>Hello! Jaws Days 2022!!</title>
+  </head>
+  <body>
+    <p>Hello! Jaws Days 2022!!</p>
+    <?php echo gethostname(); ?>
+  </body>
+</html>
+EOF
+```
+
+```Cloud9
+ls -l ./Dockerfile  ./src/index.php
 ```
 
 #### result
 
 ```Cloud9
-FROM ubuntu:18.04
-
-# Install dependencies
-RUN apt-get update &&  apt-get -y install apache2
-
-# Install apache and write hello world message
-RUN echo 'Hello! Jaws Days 2022!!' > /var/www/html/index.html
-
-# Configure apache
-RUN echo '. /etc/apache2/envvars' > /root/run_apache.sh &&  echo 'mkdir -p /var/run/apache2' >> /root/run_apache.sh &&  echo 'mkdir -p /var/lock/apache2' >> /root/run_apache.sh && \ 
- echo '/usr/sbin/apache2 -D FOREGROUND' >> /root/run_apache.sh && \ 
- chmod 755 /root/run_apache.sh
-
-EXPOSE 80
-
-CMD /root/run_apache.sh
+-rw-rw-r-- 1 ec2-user ec2-user  47 Sep  6 13:26 ./Dockerfile
+-rw-rw-r-- 1 ec2-user ec2-user 190 Sep  6 13:26 ./src/index.php
 ```
 
 ### ■Cloud9上でDocker イメージを構築
@@ -1199,8 +1193,8 @@ docker images --filter reference= jaws-days-2022/container-hands-on:latest
 #### result
 
 ```cloud9
-REPOSITORY                          TAG       IMAGE ID       CREATED         SIZE
-jaws-days-2022/container-hands-on   latest    fed9645afaae   8 minutes ago   202MB
+REPOSITORY                          TAG       IMAGE ID       CREATED          SIZE
+jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   414MB
 ```
 
 ### ■Cloud9上でDocker イメージを起動
@@ -1219,7 +1213,10 @@ dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 
 #### 画面
 
-xxx
+- Cloud9のヘッダ部分の`Preview`-> `Preview Runnnig Application`のボタン押下
+-`Hello! Jaws Days 2022!!`と記載された画面が表示されること
+
+![img](./image/img4-1.png)
 
 ### ■（ご参考）Cloud9上でコンテナを停止・削除する方法
 
@@ -1231,41 +1228,6 @@ docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
 ```
 
-### ■AWS Account IDの取得
-
-#### cmd
-
-```Cloud9
-AccoutID=`aws sts get-caller-identity --query Account --output text`
-```
-
-```Cloud9
-clear; cat << EOF
-VpcId : ${VpcId}
-SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic : ${SubnetId1cPublic}
-SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate : ${SubnetId1cPrivate}
-InternetGatewayId : ${InternetGatewayId}
-RouteTableIdPublic : ${RouteTableIdPublic}
-RouteTableIdPrivate : ${RouteTableIdPrivate}
-AccoutID : ${AccoutID}
-EOF
-```
-
-#### result
-
-```Cloud9
-VpcId : vpc-08a77289b9b351429
-SubnetId1aPublic : subnet-0ae475cbd47289960
-SubnetId1cPublic : subnet-051a32873cc5c562b
-SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
-SubnetId1cPrivate : subnet-0819c13fe959a0d1a
-InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableIdPublic : rtb-0cfcfe4b74de83091
-RouteTableIdPrivate : rtb-089389ec79a044951
-AccoutID : 378647896848
-```
 
 ### ■DockerImageにTag付けを行う
 
@@ -1294,7 +1256,7 @@ docker images --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazo
 
 ```Cloud9
 REPOSITORY                                                                            TAG       IMAGE ID       CREATED          SIZE
-378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    fed9645afaae   21 minutes ago   202MB
+152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 minutes ago   414MB
 ```
 
 ### ■認証トークンを取得し、レジストリに対して Docker クライアントを認証します
@@ -1326,11 +1288,22 @@ docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-20
 #### result
 
 ```Cloud9
-61e740eb529d: Pushed 
-58f84848d392: Pushed 
-d5c24541b3aa: Pushed 
-1a996540f50f: Pushed 
-latest: digest: sha256:8d4d59636b92dffc4d4986c6a38a42fff9201d418aa21d96ad276a754d77d943 size: 1155
+The push refers to repository [152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
+9f8ad0ecf420: Pushed 
+536365481ed8: Pushed 
+4b3693c51878: Pushed 
+677c3ce9f0b4: Pushed 
+c08f4d9c281b: Pushed 
+ed13170590f7: Pushed 
+37cbdda31557: Pushed 
+9691e5d7a4c7: Pushed 
+6a4d393f0795: Pushed 
+e38834ac7561: Pushed 
+ec64f555d498: Pushed 
+840f3f414cf6: Pushed 
+17fce12edef0: Pushed 
+831c5620387f: Pushed 
+latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1cae3ffd3 size: 3242
 ```
 
 ## VPCエンドポイント作成
