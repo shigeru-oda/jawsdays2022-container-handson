@@ -1220,9 +1220,10 @@ dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 
 Positive
 : 何か間違ってコンテナを止めたい場合には以下を実行ください
-: docker stop $(docker ps -q)
-: docker rm $(docker ps -q -a)
-
+```
+docker stop $(docker ps -q)
+docker rm $(docker ps -q -a)
+```
 #### cmd
 
 ```Cloud9
@@ -1336,56 +1337,35 @@ aws ec2 create-vpc-endpoint \
 #### result
 
 ```Cloud9
-xxx
+{
+    "VpcEndpoint": {
+        "PolicyDocument": "{\"Version\":\"2008-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":\"*\",\"Resource\":\"*\"}]}", 
+        "VpcId": "vpc-0d3c1c88db46cfba7", 
+        "Tags": [
+            {
+                "Value": "ContainerHands", 
+                "Key": "Name"
+            }
+        ], 
+        "NetworkInterfaceIds": [], 
+        "SubnetIds": [], 
+        "RequesterManaged": false, 
+        "PrivateDnsEnabled": false, 
+        "State": "available", 
+        "ServiceName": "com.amazonaws.ap-northeast-1.s3", 
+        "RouteTableIds": [
+            "rtb-0afaac377925bca9a"
+        ], 
+        "Groups": [], 
+        "OwnerId": "152767562250", 
+        "VpcEndpointId": "vpce-035934e1a19b46f78", 
+        "VpcEndpointType": "Gateway", 
+        "CreationTimestamp": "2022-09-06T14:14:54.000Z", 
+        "DnsEntries": []
+    }
+}
 ```
 
-### ■インターフェース用のSecurityGroup作成
-
-#### cmd
-
-```Cloud9
-aws ec2 create-security-group \
-  --group-name InterfaceSecurityGroup \
-  --description "Interface Security Group" \
-  --vpc-id ${VpcId} \
-  --tag-specifications "ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-InterfaceSecurityGroup}]"
-```
-
-#### result
-
-```Cloud9
-xxx
-```
-
-#### 変数設定
-
-```Cloud9
-InterfaceGroupId=`aws ec2 describe-security-groups \
-  --query 'SecurityGroups[*].GroupId' \
-  --filters "Name=tag-key,Values=Name" \
-    "Name=tag-value,Values=ContainerHandsOn-InterfaceSecurityGroup" \
-    --output text`
-```
-
-```Cloud9
-clear; cat << EOF
-VpcId : ${VpcId}
-SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic : ${SubnetId1cPublic}
-SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate : ${SubnetId1cPrivate}
-InternetGatewayId : ${InternetGatewayId}
-RouteTableIdPublic : ${RouteTableIdPublic}
-RouteTableIdPrivate : ${RouteTableIdPrivate}
-AccoutID : ${AccoutID}
-InterfaceGroupId : ${InterfaceGroupId}
-EOF
-```
-
-#### 変数設定確認
-
-```
-```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.dkr
 
@@ -1397,13 +1377,69 @@ aws ec2 create-vpc-endpoint \
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
+    --security-group-id ${PrivateSecurityGroupsId} \
     --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
 ```
 
 #### result
 
 ```Cloud9
+{
+    "VpcEndpoint": {
+        "VpcId": "vpc-0d3c1c88db46cfba7", 
+        "Tags": [
+            {
+                "Value": "ContainerHands", 
+                "Key": "Name"
+            }
+        ], 
+        "NetworkInterfaceIds": [
+            "eni-09e0a49241653c549", 
+            "eni-05e27340a7008c6c5"
+        ], 
+        "SubnetIds": [
+            "subnet-0ea89b6bc85e0ec61", 
+            "subnet-049f0119237ff00a0"
+        ], 
+        "RequesterManaged": false, 
+        "PrivateDnsEnabled": true, 
+        "State": "pending", 
+        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.dkr", 
+        "RouteTableIds": [], 
+        "Groups": [
+            {
+                "GroupName": "PrivateSecurityGroup", 
+                "GroupId": "sg-040aff209e1fe59cc"
+            }
+        ], 
+        "OwnerId": "152767562250", 
+        "VpcEndpointId": "vpce-0dceb08e8bffc9a0c", 
+        "VpcEndpointType": "Interface", 
+        "CreationTimestamp": "2022-09-06T14:15:53.158Z", 
+        "DnsEntries": [
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-0dceb08e8bffc9a0c-nuehayud.dkr.ecr.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-0dceb08e8bffc9a0c-nuehayud-ap-northeast-1a.dkr.ecr.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-0dceb08e8bffc9a0c-nuehayud-ap-northeast-1c.dkr.ecr.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "ZONEIDPENDING", 
+                "DnsName": "dkr.ecr.ap-northeast-1.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "ZONEIDPENDING", 
+                "DnsName": "*.dkr.ecr.ap-northeast-1.amazonaws.com"
+            }
+        ]
+    }
+}
 ```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.api
@@ -1416,14 +1452,65 @@ aws ec2 create-vpc-endpoint \
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.api \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
+    --security-group-id ${PrivateSecurityGroupsId} \
     --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
 ```
 
 #### result
 
 ```Cloud9
-xxx
+{
+    "VpcEndpoint": {
+        "VpcId": "vpc-0d3c1c88db46cfba7", 
+        "Tags": [
+            {
+                "Value": "ContainerHands", 
+                "Key": "Name"
+            }
+        ], 
+        "NetworkInterfaceIds": [
+            "eni-084e01fac365b44eb", 
+            "eni-0f8846781b4fb82ee"
+        ], 
+        "SubnetIds": [
+            "subnet-0ea89b6bc85e0ec61", 
+            "subnet-049f0119237ff00a0"
+        ], 
+        "RequesterManaged": false, 
+        "PrivateDnsEnabled": true, 
+        "State": "pending", 
+        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.api", 
+        "RouteTableIds": [], 
+        "Groups": [
+            {
+                "GroupName": "PrivateSecurityGroup", 
+                "GroupId": "sg-040aff209e1fe59cc"
+            }
+        ], 
+        "OwnerId": "152767562250", 
+        "VpcEndpointId": "vpce-0e45e7f04848a0600", 
+        "VpcEndpointType": "Interface", 
+        "CreationTimestamp": "2022-09-06T14:16:25.698Z", 
+        "DnsEntries": [
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-0e45e7f04848a0600-kef4k347.api.ecr.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-0e45e7f04848a0600-kef4k347-ap-northeast-1c.api.ecr.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-0e45e7f04848a0600-kef4k347-ap-northeast-1a.api.ecr.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "ZONEIDPENDING", 
+                "DnsName": "api.ecr.ap-northeast-1.amazonaws.com"
+            }
+        ]
+    }
+}
 ```
 
 ### ■com.amazonaws.ap-northeast-1.logs
@@ -1436,13 +1523,65 @@ aws ec2 create-vpc-endpoint \
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.logs \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
+    --security-group-id ${PrivateSecurityGroupsId} \
     --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
 ```
 
 #### result
 
 ```Cloud9
+{
+    "VpcEndpoint": {
+        "VpcId": "vpc-0d3c1c88db46cfba7", 
+        "Tags": [
+            {
+                "Value": "ContainerHands", 
+                "Key": "Name"
+            }
+        ], 
+        "NetworkInterfaceIds": [
+            "eni-04b15926212e8ea31", 
+            "eni-0514bbba136ec6108"
+        ], 
+        "SubnetIds": [
+            "subnet-0ea89b6bc85e0ec61", 
+            "subnet-049f0119237ff00a0"
+        ], 
+        "RequesterManaged": false, 
+        "PrivateDnsEnabled": true, 
+        "State": "pending", 
+        "ServiceName": "com.amazonaws.ap-northeast-1.logs", 
+        "RouteTableIds": [], 
+        "Groups": [
+            {
+                "GroupName": "PrivateSecurityGroup", 
+                "GroupId": "sg-040aff209e1fe59cc"
+            }
+        ], 
+        "OwnerId": "152767562250", 
+        "VpcEndpointId": "vpce-05ae88af55de2bf71", 
+        "VpcEndpointType": "Interface", 
+        "CreationTimestamp": "2022-09-06T14:16:50.374Z", 
+        "DnsEntries": [
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-05ae88af55de2bf71-5ltns582.logs.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-05ae88af55de2bf71-5ltns582-ap-northeast-1c.logs.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "Z2E726K9Y6RL4W", 
+                "DnsName": "vpce-05ae88af55de2bf71-5ltns582-ap-northeast-1a.logs.ap-northeast-1.vpce.amazonaws.com"
+            }, 
+            {
+                "HostedZoneId": "ZONEIDPENDING", 
+                "DnsName": "logs.ap-northeast-1.amazonaws.com"
+            }
+        ]
+    }
+}
 ```
 
 ## ALB作成

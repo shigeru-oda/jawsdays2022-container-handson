@@ -932,9 +932,11 @@ jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   41
 </ul>
 <p class="image-container"><img alt="img" src="img/2be66bb659acb02.png"></p>
 <aside class="special"><p>何か間違ってコンテナを止めたい場合には以下を実行ください</p>
-</aside>
-<p>docker stop $(docker ps -q)docker rm $(docker ps -q -a)  </p>
+<pre><code>docker stop $(docker ps -q)
+docker rm $(docker ps -q -a)
+</code></pre>
 <h3 is-upgraded>cmd</h3>
+</aside>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
 </code></pre>
@@ -1009,41 +1011,34 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;VpcEndpoint&#34;: {
+        &#34;PolicyDocument&#34;: &#34;{\&#34;Version\&#34;:\&#34;2008-10-17\&#34;,\&#34;Statement\&#34;:[{\&#34;Effect\&#34;:\&#34;Allow\&#34;,\&#34;Principal\&#34;:\&#34;*\&#34;,\&#34;Action\&#34;:\&#34;*\&#34;,\&#34;Resource\&#34;:\&#34;*\&#34;}]}&#34;, 
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;, 
+        &#34;Tags&#34;: [
+            {
+                &#34;Value&#34;: &#34;ContainerHands&#34;, 
+                &#34;Key&#34;: &#34;Name&#34;
+            }
+        ], 
+        &#34;NetworkInterfaceIds&#34;: [], 
+        &#34;SubnetIds&#34;: [], 
+        &#34;RequesterManaged&#34;: false, 
+        &#34;PrivateDnsEnabled&#34;: false, 
+        &#34;State&#34;: &#34;available&#34;, 
+        &#34;ServiceName&#34;: &#34;com.amazonaws.ap-northeast-1.s3&#34;, 
+        &#34;RouteTableIds&#34;: [
+            &#34;rtb-0afaac377925bca9a&#34;
+        ], 
+        &#34;Groups&#34;: [], 
+        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;VpcEndpointId&#34;: &#34;vpce-035934e1a19b46f78&#34;, 
+        &#34;VpcEndpointType&#34;: &#34;Gateway&#34;, 
+        &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:14:54.000Z&#34;, 
+        &#34;DnsEntries&#34;: []
+    }
+}
 </code></pre>
-<h2 is-upgraded>■インターフェース用のSecurityGroup作成</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-security-group \
-  --group-name InterfaceSecurityGroup \
-  --description &#34;Interface Security Group&#34; \
-  --vpc-id ${VpcId} \
-  --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-InterfaceSecurityGroup}]&#34;
-</code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">xxx
-</code></pre>
-<h3 is-upgraded>変数設定</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">InterfaceGroupId=`aws ec2 describe-security-groups \
-  --query &#39;SecurityGroups[*].GroupId&#39; \
-  --filters &#34;Name=tag-key,Values=Name&#34; \
-    &#34;Name=tag-value,Values=ContainerHandsOn-InterfaceSecurityGroup&#34; \
-    --output text`
-</code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-VpcId : ${VpcId}
-SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic : ${SubnetId1cPublic}
-SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate : ${SubnetId1cPrivate}
-InternetGatewayId : ${InternetGatewayId}
-RouteTableIdPublic : ${RouteTableIdPublic}
-RouteTableIdPrivate : ${RouteTableIdPrivate}
-AccoutID : ${AccoutID}
-InterfaceGroupId : ${InterfaceGroupId}
-EOF
-</code></pre>
-<h3 is-upgraded>変数設定確認</h3>
-<pre><code></code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.dkr</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
@@ -1051,11 +1046,67 @@ EOF
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
+    --security-group-id ${PrivateSecurityGroupsId} \
     --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;VpcEndpoint&#34;: {
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;, 
+        &#34;Tags&#34;: [
+            {
+                &#34;Value&#34;: &#34;ContainerHands&#34;, 
+                &#34;Key&#34;: &#34;Name&#34;
+            }
+        ], 
+        &#34;NetworkInterfaceIds&#34;: [
+            &#34;eni-09e0a49241653c549&#34;, 
+            &#34;eni-05e27340a7008c6c5&#34;
+        ], 
+        &#34;SubnetIds&#34;: [
+            &#34;subnet-0ea89b6bc85e0ec61&#34;, 
+            &#34;subnet-049f0119237ff00a0&#34;
+        ], 
+        &#34;RequesterManaged&#34;: false, 
+        &#34;PrivateDnsEnabled&#34;: true, 
+        &#34;State&#34;: &#34;pending&#34;, 
+        &#34;ServiceName&#34;: &#34;com.amazonaws.ap-northeast-1.ecr.dkr&#34;, 
+        &#34;RouteTableIds&#34;: [], 
+        &#34;Groups&#34;: [
+            {
+                &#34;GroupName&#34;: &#34;PrivateSecurityGroup&#34;, 
+                &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;
+            }
+        ], 
+        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;VpcEndpointId&#34;: &#34;vpce-0dceb08e8bffc9a0c&#34;, 
+        &#34;VpcEndpointType&#34;: &#34;Interface&#34;, 
+        &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:15:53.158Z&#34;, 
+        &#34;DnsEntries&#34;: [
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-0dceb08e8bffc9a0c-nuehayud.dkr.ecr.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-0dceb08e8bffc9a0c-nuehayud-ap-northeast-1a.dkr.ecr.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-0dceb08e8bffc9a0c-nuehayud-ap-northeast-1c.dkr.ecr.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;ZONEIDPENDING&#34;, 
+                &#34;DnsName&#34;: &#34;dkr.ecr.ap-northeast-1.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;ZONEIDPENDING&#34;, 
+                &#34;DnsName&#34;: &#34;*.dkr.ecr.ap-northeast-1.amazonaws.com&#34;
+            }
+        ]
+    }
+}
+</code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.api</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
@@ -1063,11 +1114,62 @@ EOF
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.ecr.api \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
+    --security-group-id ${PrivateSecurityGroupsId} \
     --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;VpcEndpoint&#34;: {
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;, 
+        &#34;Tags&#34;: [
+            {
+                &#34;Value&#34;: &#34;ContainerHands&#34;, 
+                &#34;Key&#34;: &#34;Name&#34;
+            }
+        ], 
+        &#34;NetworkInterfaceIds&#34;: [
+            &#34;eni-084e01fac365b44eb&#34;, 
+            &#34;eni-0f8846781b4fb82ee&#34;
+        ], 
+        &#34;SubnetIds&#34;: [
+            &#34;subnet-0ea89b6bc85e0ec61&#34;, 
+            &#34;subnet-049f0119237ff00a0&#34;
+        ], 
+        &#34;RequesterManaged&#34;: false, 
+        &#34;PrivateDnsEnabled&#34;: true, 
+        &#34;State&#34;: &#34;pending&#34;, 
+        &#34;ServiceName&#34;: &#34;com.amazonaws.ap-northeast-1.ecr.api&#34;, 
+        &#34;RouteTableIds&#34;: [], 
+        &#34;Groups&#34;: [
+            {
+                &#34;GroupName&#34;: &#34;PrivateSecurityGroup&#34;, 
+                &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;
+            }
+        ], 
+        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;VpcEndpointId&#34;: &#34;vpce-0e45e7f04848a0600&#34;, 
+        &#34;VpcEndpointType&#34;: &#34;Interface&#34;, 
+        &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:16:25.698Z&#34;, 
+        &#34;DnsEntries&#34;: [
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-0e45e7f04848a0600-kef4k347.api.ecr.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-0e45e7f04848a0600-kef4k347-ap-northeast-1c.api.ecr.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-0e45e7f04848a0600-kef4k347-ap-northeast-1a.api.ecr.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;ZONEIDPENDING&#34;, 
+                &#34;DnsName&#34;: &#34;api.ecr.ap-northeast-1.amazonaws.com&#34;
+            }
+        ]
+    }
+}
 </code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.logs</h2>
 <h3 is-upgraded>cmd</h3>
@@ -1076,11 +1178,63 @@ EOF
     --vpc-endpoint-type Interface \
     --service-name com.amazonaws.ap-northeast-1.logs \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
-    --security-group-id ${InterfaceGroupId} \
+    --security-group-id ${PrivateSecurityGroupsId} \
     --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;VpcEndpoint&#34;: {
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;, 
+        &#34;Tags&#34;: [
+            {
+                &#34;Value&#34;: &#34;ContainerHands&#34;, 
+                &#34;Key&#34;: &#34;Name&#34;
+            }
+        ], 
+        &#34;NetworkInterfaceIds&#34;: [
+            &#34;eni-04b15926212e8ea31&#34;, 
+            &#34;eni-0514bbba136ec6108&#34;
+        ], 
+        &#34;SubnetIds&#34;: [
+            &#34;subnet-0ea89b6bc85e0ec61&#34;, 
+            &#34;subnet-049f0119237ff00a0&#34;
+        ], 
+        &#34;RequesterManaged&#34;: false, 
+        &#34;PrivateDnsEnabled&#34;: true, 
+        &#34;State&#34;: &#34;pending&#34;, 
+        &#34;ServiceName&#34;: &#34;com.amazonaws.ap-northeast-1.logs&#34;, 
+        &#34;RouteTableIds&#34;: [], 
+        &#34;Groups&#34;: [
+            {
+                &#34;GroupName&#34;: &#34;PrivateSecurityGroup&#34;, 
+                &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;
+            }
+        ], 
+        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;VpcEndpointId&#34;: &#34;vpce-05ae88af55de2bf71&#34;, 
+        &#34;VpcEndpointType&#34;: &#34;Interface&#34;, 
+        &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:16:50.374Z&#34;, 
+        &#34;DnsEntries&#34;: [
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-05ae88af55de2bf71-5ltns582.logs.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-05ae88af55de2bf71-5ltns582-ap-northeast-1c.logs.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;Z2E726K9Y6RL4W&#34;, 
+                &#34;DnsName&#34;: &#34;vpce-05ae88af55de2bf71-5ltns582-ap-northeast-1a.logs.ap-northeast-1.vpce.amazonaws.com&#34;
+            }, 
+            {
+                &#34;HostedZoneId&#34;: &#34;ZONEIDPENDING&#34;, 
+                &#34;DnsName&#34;: &#34;logs.ap-northeast-1.amazonaws.com&#34;
+            }
+        ]
+    }
+}
+</code></pre>
 
 
       </google-codelab-step>
