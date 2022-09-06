@@ -4,7 +4,7 @@ id:docs
 categories: codelab,markdown
 environments: HandsOn
 status: Draft
-feedback link: <https://github.com/shigeru-oda/jawsdays2022-container-handson>
+feedback link: https://github.com/shigeru-oda/jawsdays2022-container-handson
 analytics account: XXXXXXXX
 
 # [JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～
