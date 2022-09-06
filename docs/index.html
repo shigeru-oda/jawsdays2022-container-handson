@@ -660,6 +660,82 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 </code></pre>
+<h2 is-upgraded>■PublicSubnetのInboundを追加</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
+    --group-id ${PublicSecurityGroupsId} \
+    --protocol tcp \
+    --port 80 \
+    --cidr 0.0.0.0/0
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Return&#34;: true,
+    &#34;SecurityGroupRules&#34;: [
+        {
+            &#34;SecurityGroupRuleId&#34;: &#34;sgr-011c9bf434c9439a0&#34;,
+            &#34;GroupId&#34;: &#34;sg-01cc901415c240504&#34;,
+            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;IsEgress&#34;: false,
+            &#34;IpProtocol&#34;: &#34;tcp&#34;,
+            &#34;FromPort&#34;: 80,
+            &#34;ToPort&#34;: 80,
+            &#34;CidrIpv4&#34;: &#34;0.0.0.0/0&#34;
+        }
+    ]
+}
+</code></pre>
+<h2 is-upgraded>■PrivateSubnetのInboundを追加</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
+    --group-id ${PrivateSecurityGroupsId} \
+    --protocol tcp \
+    --port 80 \
+    --source-group ${PublicSecurityGroupsId}
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Return&#34;: true,
+    &#34;SecurityGroupRules&#34;: [
+        {
+            &#34;SecurityGroupRuleId&#34;: &#34;sgr-0eca9b6518889b4ca&#34;,
+            &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;,
+            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;IsEgress&#34;: false,
+            &#34;IpProtocol&#34;: &#34;tcp&#34;,
+            &#34;FromPort&#34;: 80,
+            &#34;ToPort&#34;: 80,
+            &#34;ReferencedGroupInfo&#34;: {
+                &#34;GroupId&#34;: &#34;sg-01cc901415c240504&#34;
+            }
+        }
+    ]
+}
+</code></pre>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
+    --group-id ${PrivateSecurityGroupsId} \
+    --protocol tcp \
+    --port 443 \
+    --cidr 0.0.0.0/0
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Return&#34;: true,
+    &#34;SecurityGroupRules&#34;: [
+        {
+            &#34;SecurityGroupRuleId&#34;: &#34;sgr-0d637ce636f2f14d9&#34;,
+            &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;,
+            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;IsEgress&#34;: false,
+            &#34;IpProtocol&#34;: &#34;tcp&#34;,
+            &#34;FromPort&#34;: 443,
+            &#34;ToPort&#34;: 443,
+            &#34;CidrIpv4&#34;: &#34;0.0.0.0/0&#34;
+        }
+    ]
+}
+</code></pre>
 <h2 is-upgraded>■環境変数をメモ</h2>
 <p>Cloud9で使うため、取得した変数をエディターに残して下さい。</p>
 <h3 is-upgraded>cmd</h3>

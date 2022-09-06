@@ -842,6 +842,7 @@ EOF
 ```
 
 #### 変数設定確認
+
 ```CloudShell
 AccoutID : 152767562250
 VpcId : vpc-0d3c1c88db46cfba7
@@ -854,6 +855,102 @@ RouteTableIdPublic : rtb-00cf30796b25b9bc9
 RouteTableIdPrivate : rtb-0afaac377925bca9a
 PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
+```
+
+### ■PublicSubnetのInboundを追加
+
+#### cmd
+
+```CloudShell
+aws ec2 authorize-security-group-ingress \
+    --group-id ${PublicSecurityGroupsId} \
+    --protocol tcp \
+    --port 80 \
+    --cidr 0.0.0.0/0
+```
+
+#### result
+
+```CloudShell
+{
+    "Return": true,
+    "SecurityGroupRules": [
+        {
+            "SecurityGroupRuleId": "sgr-011c9bf434c9439a0",
+            "GroupId": "sg-01cc901415c240504",
+            "GroupOwnerId": "152767562250",
+            "IsEgress": false,
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIpv4": "0.0.0.0/0"
+        }
+    ]
+}
+```
+
+### ■PrivateSubnetのInboundを追加
+
+#### cmd
+
+```CloudShell
+aws ec2 authorize-security-group-ingress \
+    --group-id ${PrivateSecurityGroupsId} \
+    --protocol tcp \
+    --port 80 \
+    --source-group ${PublicSecurityGroupsId}
+```
+
+#### result
+
+```CloudShell
+{
+    "Return": true,
+    "SecurityGroupRules": [
+        {
+            "SecurityGroupRuleId": "sgr-0eca9b6518889b4ca",
+            "GroupId": "sg-040aff209e1fe59cc",
+            "GroupOwnerId": "152767562250",
+            "IsEgress": false,
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "ReferencedGroupInfo": {
+                "GroupId": "sg-01cc901415c240504"
+            }
+        }
+    ]
+}
+```
+
+#### cmd
+
+```CloudShell
+aws ec2 authorize-security-group-ingress \
+    --group-id ${PrivateSecurityGroupsId} \
+    --protocol tcp \
+    --port 443 \
+    --cidr 0.0.0.0/0
+```
+
+#### result
+
+```CloudShell
+{
+    "Return": true,
+    "SecurityGroupRules": [
+        {
+            "SecurityGroupRuleId": "sgr-0d637ce636f2f14d9",
+            "GroupId": "sg-040aff209e1fe59cc",
+            "GroupOwnerId": "152767562250",
+            "IsEgress": false,
+            "IpProtocol": "tcp",
+            "FromPort": 443,
+            "ToPort": 443,
+            "CidrIpv4": "0.0.0.0/0"
+        }
+    ]
+}
 ```
 
 ### ■環境変数をメモ
