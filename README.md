@@ -25,7 +25,7 @@ git commit -m "claat"
 git push  
 
 # 公開URL
-<https://shigeru-oda.github.io/jawsdays2022-container-handson/docs/#0>
+https://shigeru-oda.github.io/jawsdays2022-container-handson/docs/#0
 
 # 参考元
 <https://zenn.dev/taketakekaho/articles/6e9483bc984243>  

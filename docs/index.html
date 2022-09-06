@@ -39,6 +39,14 @@
 <p>画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
 <h3 is-upgraded>CloudShellを起動</h3>
 <p>今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。 <img alt="img" src="img/9b0f4ff0313865b9.png"></p>
+<h2 is-upgraded>■AWS Account IDの取得</h2>
+<h3 is-upgraded>cmd</h3>
+<p>AccoutID=<code>aws sts get-caller-identity --query Account --output text</code></p>
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
 <h2 is-upgraded>■VPCの作成</h2>
 <p>VPCを新規に作成します。</p>
 <h3 is-upgraded>cmd</h3>
@@ -60,6 +68,7 @@
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 EOF
 </code></pre>
@@ -190,6 +199,7 @@ EOF
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic: ${SubnetId1cPublic}
@@ -296,6 +306,7 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
   --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic: ${SubnetId1cPublic}
@@ -357,10 +368,64 @@ RouteTableIdPrivate : rtb-089389ec79a044951
     &#34;Return&#34;: true
 }
 </code></pre>
+<h2 is-upgraded>■PublicSubnet用のSecurityGroup作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
+  --group-name PublicSecurityGroup \
+  --description &#34;Public Security Group&#34; \
+  --vpc-id ${VpcId} \
+  --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-PublicSecurityGroup}]&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+</code></pre>
+<h3 is-upgraded>変数設定</h3>
+<pre><code>PublicSecurityGroupsId=`aws ec2 describe-security-groups \
+  --query &#39;SecurityGroups[*].GroupId&#39; \
+  --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn-PublicSecurityGroup&#34; \
+    --output text`
+</code></pre>
+<h2 is-upgraded>■PrivateSubnet用のSecurityGroup作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
+  --group-name PrivateSecurityGroup \
+  --description &#34;Private Security Group&#34; \
+  --vpc-id ${VpcId} \
+  --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-PrivateSecurityGroup}]&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+</code></pre>
+<h3 is-upgraded>変数設定</h3>
+<pre><code>PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
+  --query &#39;SecurityGroups[*].GroupId&#39; \
+  --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn-PrivateSecurityGroup&#34; \
+    --output text`
+</code></pre>
+<h2 is-upgraded>■VpcEndPoint用のSecurityGroup作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
+  --group-name VpcEndpointSecurityGroup \
+  --description &#34;VpcEndpoint Security Group&#34; \
+  --vpc-id ${VpcId} \
+  --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-VpcEndpointSecurityGroup}]&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<h3 is-upgraded>変数設定</h3>
+<pre><code>VpcEndPointSecurityGroupsId=`aws ec2 describe-security-groups \
+  --query &#39;SecurityGroups[*].GroupId&#39; \
+  --filters &#34;Name=tag-key,Values=Name&#34; \
+    &#34;Name=tag-value,Values=ContainerHandsOn-VpcEndpointSecurityGroup&#34; \
+    --output text`
+</code></pre>
 <h2 is-upgraded>■環境変数をメモ</h2>
 <p>Cloud9で使うため、取得した変数をエディターに残して下さい。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+export AccoutID=&#34;${AccoutID}&#34;
 export VpcId=&#34;${VpcId}&#34;
 export SubnetId1aPublic=&#34;${SubnetId1aPublic}&#34;
 export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
@@ -372,7 +437,8 @@ export RouteTableIdPrivate=&#34;${RouteTableIdPrivate}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">export VpcId=&#34;vpc-08a77289b9b351429&#34;
+<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;378647896848&#34;
+export VpcId=&#34;vpc-08a77289b9b351429&#34;
 export SubnetId1aPublic=&#34;subnet-0ae475cbd47289960&#34;
 export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
 export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
@@ -777,7 +843,11 @@ EOF
         &#34;FARGATE&#34;
     ], 
     &#34;cpu&#34;: &#34;256&#34;, 
-    &#34;memory&#34;: &#34;512&#34;
+    &#34;memory&#34;: &#34;512&#34;,
+    &#34;runtimePlatform&#34;: {
+        &#34;cpuArchitecture&#34;: &#34;X86_64&#34;,
+        &#34;operatingSystemFamily&#34;: &#34;LINUX&#34;
+    }
 }
 EOF
 </code></pre>

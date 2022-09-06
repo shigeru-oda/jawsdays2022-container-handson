@@ -31,6 +31,20 @@ Duration: 0:05:00
 今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。
 ![img](./image/img2-2.png)
 
+### ■AWS Account IDの取得
+
+#### cmd
+
+AccoutID=`aws sts get-caller-identity --query Account --output text`
+
+```CloudShell
+clear; cat << EOF
+AccoutID : ${AccoutID}
+EOF
+```
+
+#### result
+
 ### ■VPCの作成
 
 VPCを新規に作成します。
@@ -67,6 +81,7 @@ VpcId=`aws ec2 describe-vpcs \
 
 ```CloudShell
 clear; cat << EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 EOF
 ```
@@ -276,6 +291,7 @@ SubnetId1cPrivate=`aws ec2 describe-subnets \
 
 ```CloudShell
 clear; cat << EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic: ${SubnetId1cPublic}
@@ -442,6 +458,7 @@ RouteTableIdPrivate=`aws ec2 describe-route-tables \
 
 ```CloudShell
 clear; cat << EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic: ${SubnetId1cPublic}
@@ -539,7 +556,70 @@ aws ec2 create-route \
     "Return": true
 }
 ```
+### ■PublicSubnet用のSecurityGroup作成
+#### cmd
+```CloudShell
+aws ec2 create-security-group \
+  --group-name PublicSecurityGroup \
+  --description "Public Security Group" \
+  --vpc-id ${VpcId} \
+  --tag-specifications "ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-PublicSecurityGroup}]"
+```
+#### result
+```CloudShell
+xxx
+```
+#### 変数設定
+```
+PublicSecurityGroupsId=`aws ec2 describe-security-groups \
+  --query 'SecurityGroups[*].GroupId' \
+  --filters "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOn-PublicSecurityGroup" \
+    --output text`
+```
 
+### ■PrivateSubnet用のSecurityGroup作成
+#### cmd
+```CloudShell
+aws ec2 create-security-group \
+  --group-name PrivateSecurityGroup \
+  --description "Private Security Group" \
+  --vpc-id ${VpcId} \
+  --tag-specifications "ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-PrivateSecurityGroup}]"
+```
+#### result
+```CloudShell
+xxx
+```
+#### 変数設定
+```
+PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
+  --query 'SecurityGroups[*].GroupId' \
+  --filters "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOn-PrivateSecurityGroup" \
+    --output text`
+```
+
+### ■VpcEndPoint用のSecurityGroup作成
+#### cmd
+```CloudShell
+aws ec2 create-security-group \
+  --group-name VpcEndpointSecurityGroup \
+  --description "VpcEndpoint Security Group" \
+  --vpc-id ${VpcId} \
+  --tag-specifications "ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-VpcEndpointSecurityGroup}]"
+```
+#### result
+```CloudShell
+```
+#### 変数設定
+```
+VpcEndPointSecurityGroupsId=`aws ec2 describe-security-groups \
+  --query 'SecurityGroups[*].GroupId' \
+  --filters "Name=tag-key,Values=Name" \
+    "Name=tag-value,Values=ContainerHandsOn-VpcEndpointSecurityGroup" \
+    --output text`
+```
 ### ■環境変数をメモ
 
 Cloud9で使うため、取得した変数をエディターに残して下さい。
@@ -548,6 +628,7 @@ Cloud9で使うため、取得した変数をエディターに残して下さ�
 
 ```CloudShell
 clear; cat << EOF
+export AccoutID="${AccoutID}"
 export VpcId="${VpcId}"
 export SubnetId1aPublic="${SubnetId1aPublic}"
 export SubnetId1cPublic="${SubnetId1cPublic}"
@@ -562,6 +643,7 @@ EOF
 #### result
 
 ```CloudShell
+export AccoutID="378647896848"
 export VpcId="vpc-08a77289b9b351429"
 export SubnetId1aPublic="subnet-0ae475cbd47289960"
 export SubnetId1cPublic="subnet-051a32873cc5c562b"
@@ -1131,7 +1213,11 @@ cat << EOF > register-task-definition.json
         "FARGATE"
     ], 
     "cpu": "256", 
-    "memory": "512"
+    "memory": "512",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
 }
 EOF
 ```
