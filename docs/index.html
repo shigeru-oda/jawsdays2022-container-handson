@@ -21,11 +21,11 @@
 </head>
 <body>
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
-  <google-codelab codelab-gaid="XXXXXXXX"
+  <google-codelab codelab-gaid=""
                   id="docs"
                   title="[JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～"
                   environment="web"
-                  feedback-link="https://github.com/shigeru-oda/jawsdays2022-container-handson">
+                  feedback-link="">
     
       <google-codelab-step label="はじめに" duration="5">
         
@@ -35,32 +35,59 @@
       <google-codelab-step label="VPC作成" duration="5">
         <h2 is-upgraded>■CloudShellの起動</h2>
 <h3 is-upgraded>AWS コンソールにログイン</h3>
+<p class="image-container"><img alt="img" src="img/8ec695a05f461637.png"></p>
 <h3 is-upgraded>CloudShellボタン押下</h3>
 <p>画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
 <h3 is-upgraded>CloudShellを起動</h3>
 <p>今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。 <img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
 <h3 is-upgraded>cmd</h3>
-<p>AccoutID=<code>aws sts get-caller-identity --query Account --output text</code></p>
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID=`aws sts get-caller-identity --query Account --output text`
+</code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 AccoutID : ${AccoutID}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+</code></pre>
 <h2 is-upgraded>■VPCの作成</h2>
 <p>VPCを新規に作成します。</p>
 <h3 is-upgraded>cmd</h3>
-<p>CloudShellに以下cmdをCopy &amp; Paste</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-vpc \
     --cidr-block 10.0.0.0/16 \
     --tag-specification &#34;ResourceType=vpc,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">xx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Vpc&#34;: {
+        &#34;CidrBlock&#34;: &#34;10.0.0.0/16&#34;,
+        &#34;DhcpOptionsId&#34;: &#34;dopt-c3de3ba5&#34;,
+        &#34;State&#34;: &#34;pending&#34;,
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;InstanceTenancy&#34;: &#34;default&#34;,
+        &#34;Ipv6CidrBlockAssociationSet&#34;: [],
+        &#34;CidrBlockAssociationSet&#34;: [
+            {
+                &#34;AssociationId&#34;: &#34;vpc-cidr-assoc-098ed848444db197b&#34;,
+                &#34;CidrBlock&#34;: &#34;10.0.0.0/16&#34;,
+                &#34;CidrBlockState&#34;: {
+                    &#34;State&#34;: &#34;associated&#34;
+                }
+            }
+        ],
+        &#34;IsDefault&#34;: false,
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOn&#34;
+            }
+        ]
+    }
+}
 </code></pre>
 <h3 is-upgraded>変数設定</h3>
-<p>VPC IDを取得します、CloudShellに以下cmdをCopy &amp; Paste。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId=`aws ec2 describe-vpcs \
     --query &#39;Vpcs[*].VpcId&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
@@ -73,8 +100,8 @@ VpcId : ${VpcId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+VpcId : vpc-0d3c1c88db46cfba7
 </code></pre>
 <h3 is-upgraded>■DNS名前解決をONにする</h3>
 <h2 is-upgraded>cmd</h2>
@@ -101,7 +128,7 @@ EOF
 <h2 is-upgraded>cmd</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell"> aws ec2 modify-vpc-attribute \
   --vpc-id ${VpcId}  \
-  --enable-dns-support  &#39;{&#34;Value&#34;:true}&#39; 
+  --enable-dns-hostnames  &#39;{&#34;Value&#34;:true}&#39; 
 </code></pre>
 <h2 is-upgraded>result</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell">（なし）
@@ -121,7 +148,6 @@ EOF
 <h2 is-upgraded>■Subnetの作成</h2>
 <p>作成したVPCの中にSubnetを4つ作成します。 Private Subnetが2つ、Public Subnetが2つです。</p>
 <h3 is-upgraded>cmd1</h3>
-<p>Subnetの1つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $VpcId \
     --availability-zone ap-northeast-1a \
@@ -129,11 +155,38 @@ EOF
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]&#34;
 </code></pre>
 <h3 is-upgraded>result1</h3>
-<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Subnet&#34;: {
+        &#34;AvailabilityZone&#34;: &#34;ap-northeast-1a&#34;,
+        &#34;AvailabilityZoneId&#34;: &#34;apne1-az4&#34;,
+        &#34;AvailableIpAddressCount&#34;: 251,
+        &#34;CidrBlock&#34;: &#34;10.0.0.0/24&#34;,
+        &#34;DefaultForAz&#34;: false,
+        &#34;MapPublicIpOnLaunch&#34;: false,
+        &#34;State&#34;: &#34;available&#34;,
+        &#34;SubnetId&#34;: &#34;subnet-0f66f257f167a1d47&#34;,
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;AssignIpv6AddressOnCreation&#34;: false,
+        &#34;Ipv6CidrBlockAssociationSet&#34;: [],
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOnPublic&#34;
+            }
+        ],
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0f66f257f167a1d47&#34;,
+        &#34;EnableDns64&#34;: false,
+        &#34;Ipv6Native&#34;: false,
+        &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
+            &#34;HostnameType&#34;: &#34;ip-name&#34;,
+            &#34;EnableResourceNameDnsARecord&#34;: false,
+            &#34;EnableResourceNameDnsAAAARecord&#34;: false
+        }
+    }
+}
 </code></pre>
 <h3 is-upgraded>cmd2</h3>
-<p>Subnetの2つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $VpcId \
     --availability-zone ap-northeast-1c \
@@ -141,11 +194,38 @@ EOF
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]&#34;
 </code></pre>
 <h3 is-upgraded>result2</h3>
-<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Subnet&#34;: {
+        &#34;AvailabilityZone&#34;: &#34;ap-northeast-1c&#34;,
+        &#34;AvailabilityZoneId&#34;: &#34;apne1-az1&#34;,
+        &#34;AvailableIpAddressCount&#34;: 251,
+        &#34;CidrBlock&#34;: &#34;10.0.1.0/24&#34;,
+        &#34;DefaultForAz&#34;: false,
+        &#34;MapPublicIpOnLaunch&#34;: false,
+        &#34;State&#34;: &#34;available&#34;,
+        &#34;SubnetId&#34;: &#34;subnet-0a1e2afffc8c140d8&#34;,
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;AssignIpv6AddressOnCreation&#34;: false,
+        &#34;Ipv6CidrBlockAssociationSet&#34;: [],
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOnPublic&#34;
+            }
+        ],
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0a1e2afffc8c140d8&#34;,
+        &#34;EnableDns64&#34;: false,
+        &#34;Ipv6Native&#34;: false,
+        &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
+            &#34;HostnameType&#34;: &#34;ip-name&#34;,
+            &#34;EnableResourceNameDnsARecord&#34;: false,
+            &#34;EnableResourceNameDnsAAAARecord&#34;: false
+        }
+    }
+}
 </code></pre>
 <h3 is-upgraded>cmd3</h3>
-<p>Subnetの3つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $VpcId \
     --availability-zone ap-northeast-1a \
@@ -153,11 +233,38 @@ EOF
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]&#34;
 </code></pre>
 <h3 is-upgraded>result3</h3>
-<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Subnet&#34;: {
+        &#34;AvailabilityZone&#34;: &#34;ap-northeast-1a&#34;,
+        &#34;AvailabilityZoneId&#34;: &#34;apne1-az4&#34;,
+        &#34;AvailableIpAddressCount&#34;: 251,
+        &#34;CidrBlock&#34;: &#34;10.0.2.0/24&#34;,
+        &#34;DefaultForAz&#34;: false,
+        &#34;MapPublicIpOnLaunch&#34;: false,
+        &#34;State&#34;: &#34;available&#34;,
+        &#34;SubnetId&#34;: &#34;subnet-049f0119237ff00a0&#34;,
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;AssignIpv6AddressOnCreation&#34;: false,
+        &#34;Ipv6CidrBlockAssociationSet&#34;: [],
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOnPrivate&#34;
+            }
+        ],
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-049f0119237ff00a0&#34;,
+        &#34;EnableDns64&#34;: false,
+        &#34;Ipv6Native&#34;: false,
+        &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
+            &#34;HostnameType&#34;: &#34;ip-name&#34;,
+            &#34;EnableResourceNameDnsARecord&#34;: false,
+            &#34;EnableResourceNameDnsAAAARecord&#34;: false
+        }
+    }
+}
 </code></pre>
 <h3 is-upgraded>cmd4</h3>
-<p>Subnetの4つ目を作成します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $VpcId \
     --availability-zone ap-northeast-1c \
@@ -165,11 +272,38 @@ EOF
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]&#34;
 </code></pre>
 <h3 is-upgraded>result4</h3>
-<p>CloudShellに以下のような結果が返却されていることを確認下さい。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;Subnet&#34;: {
+        &#34;AvailabilityZone&#34;: &#34;ap-northeast-1c&#34;,
+        &#34;AvailabilityZoneId&#34;: &#34;apne1-az1&#34;,
+        &#34;AvailableIpAddressCount&#34;: 251,
+        &#34;CidrBlock&#34;: &#34;10.0.3.0/24&#34;,
+        &#34;DefaultForAz&#34;: false,
+        &#34;MapPublicIpOnLaunch&#34;: false,
+        &#34;State&#34;: &#34;available&#34;,
+        &#34;SubnetId&#34;: &#34;subnet-0ea89b6bc85e0ec61&#34;,
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;AssignIpv6AddressOnCreation&#34;: false,
+        &#34;Ipv6CidrBlockAssociationSet&#34;: [],
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOnPrivate&#34;
+            }
+        ],
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0ea89b6bc85e0ec61&#34;,
+        &#34;EnableDns64&#34;: false,
+        &#34;Ipv6Native&#34;: false,
+        &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
+            &#34;HostnameType&#34;: &#34;ip-name&#34;,
+            &#34;EnableResourceNameDnsARecord&#34;: false,
+            &#34;EnableResourceNameDnsAAAARecord&#34;: false
+        }
+    }
+}
 </code></pre>
 <h3 is-upgraded>変数取得</h3>
-<p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1aPublic=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOnPublic&#34; \
@@ -208,31 +342,42 @@ SubnetId1cPrivate: ${SubnetId1cPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<p>IDが取得されていることを確認。ID等は個人個人異なります。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
-SubnetId1aPublic : subnet-0ae475cbd47289960
-SubnetId1cPublic: subnet-051a32873cc5c562b
-SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
-SubnetId1cPrivate: subnet-0819c13fe959a0d1a
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+VpcId : vpc-0d3c1c88db46cfba7
+SubnetId1aPublic : subnet-0f66f257f167a1d47
+SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1aPrivate : subnet-049f0119237ff00a0
+SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
 </code></pre>
 <h2 is-upgraded>■InternetGatewayの作成</h2>
-<p>Internetに繋がるInternetGatewayを作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-internet-gateway \
     --tag-specifications &#34;ResourceType=internet-gateway,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result1</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;InternetGateway&#34;: {
+        &#34;Attachments&#34;: [],
+        &#34;InternetGatewayId&#34;: &#34;igw-0a511ba68ceb84ed8&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOn&#34;
+            }
+        ]
+    }
+}
 </code></pre>
 <h3 is-upgraded>変数設定</h3>
-<p>作成したInternet GatewayのIDを取得します。</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">InternetGatewayId=`aws ec2 describe-internet-gateways \
     --query &#39;InternetGateways[*].InternetGatewayId&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn&#34; \
     --output text`
 </code></pre>
-<pre><code language="language-CloudShell" class="language-CloudShell">cat &lt;&lt; EOF
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic: ${SubnetId1cPublic}
@@ -242,16 +387,15 @@ InternetGatewayId : ${InternetGatewayId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<p>変数が取得されていることを確認します。</p>
-<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
-SubnetId1aPublic : subnet-0ae475cbd47289960
-SubnetId1cPublic: subnet-051a32873cc5c562b
-SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
-SubnetId1cPrivate: subnet-0819c13fe959a0d1a
-InternetGatewayId : igw-0db61da9fcd82b6eb
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+VpcId : vpc-0d3c1c88db46cfba7
+SubnetId1aPublic : subnet-0f66f257f167a1d47
+SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1aPrivate : subnet-049f0119237ff00a0
+SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
+InternetGatewayId : igw-0a511ba68ceb84ed8
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCにAttach</h2>
-<p>作成したInternetGatewayをVPCに紐付けします。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 attach-internet-gateway \
     --internet-gateway-id ${InternetGatewayId} \
@@ -261,7 +405,6 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
 <pre><code language="language-CloudShell" class="language-CloudShell">（何もなし）
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCにAttachされていることを確認</h2>
-<p>紐付けが正しく行われたことを確認します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-internet-gateways \
     --internet-gateway-ids ${InternetGatewayId} \
@@ -271,7 +414,6 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
     --output text
 </code></pre>
 <h3 is-upgraded>result</h3>
-<p>結果がavailableであること</p>
 <pre><code language="language-CloudShell" class="language-CloudShell">available
 </code></pre>
 <h2 is-upgraded>■RouteTableの作成</h2>
@@ -281,14 +423,60 @@ InternetGatewayId : igw-0db61da9fcd82b6eb
   --tag-specifications &#34;ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]&#34;
 </code></pre>
 <h3 is-upgraded>result1</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;RouteTable&#34;: {
+        &#34;Associations&#34;: [],
+        &#34;PropagatingVgws&#34;: [],
+        &#34;RouteTableId&#34;: &#34;rtb-00cf30796b25b9bc9&#34;,
+        &#34;Routes&#34;: [
+            {
+                &#34;DestinationCidrBlock&#34;: &#34;10.0.0.0/16&#34;,
+                &#34;GatewayId&#34;: &#34;local&#34;,
+                &#34;Origin&#34;: &#34;CreateRouteTable&#34;,
+                &#34;State&#34;: &#34;active&#34;
+            }
+        ],
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOnPublic&#34;
+            }
+        ],
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;
+    }
+}
+</code></pre>
 <h3 is-upgraded>cmd2</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route-table \
   --vpc-id ${VpcId} \
   --tag-specifications &#34;ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]&#34;
 </code></pre>
 <h3 is-upgraded>result2</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;RouteTable&#34;: {
+        &#34;Associations&#34;: [],
+        &#34;PropagatingVgws&#34;: [],
+        &#34;RouteTableId&#34;: &#34;rtb-0afaac377925bca9a&#34;,
+        &#34;Routes&#34;: [
+            {
+                &#34;DestinationCidrBlock&#34;: &#34;10.0.0.0/16&#34;,
+                &#34;GatewayId&#34;: &#34;local&#34;,
+                &#34;Origin&#34;: &#34;CreateRouteTable&#34;,
+                &#34;State&#34;: &#34;active&#34;
+            }
+        ],
+        &#34;Tags&#34;: [
+            {
+                &#34;Key&#34;: &#34;Name&#34;,
+                &#34;Value&#34;: &#34;ContainerHandsOnPrivate&#34;
+            }
+        ],
+        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;OwnerId&#34;: &#34;152767562250&#34;
+    }
+}
+</code></pre>
 <h2 is-upgraded>■RouteTableの確認</h2>
 <h3 is-upgraded>変数設定</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">RouteTableIdPublic=`aws ec2 describe-route-tables \
@@ -318,14 +506,15 @@ RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">VpcId : vpc-08a77289b9b351429
-SubnetId1aPublic : subnet-0ae475cbd47289960
-SubnetId1cPublic: subnet-051a32873cc5c562b
-SubnetId1aPrivate : subnet-01eb19ab0aeb0f6f1
-SubnetId1cPrivate: subnet-0819c13fe959a0d1a
-InternetGatewayId : igw-0db61da9fcd82b6eb
-RouteTableIdPublic : rtb-0cfcfe4b74de83091
-RouteTableIdPrivate : rtb-089389ec79a044951
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+VpcId : vpc-0d3c1c88db46cfba7
+SubnetId1aPublic : subnet-0f66f257f167a1d47
+SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1aPrivate : subnet-049f0119237ff00a0
+SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
+InternetGatewayId : igw-0a511ba68ceb84ed8
+RouteTableIdPublic : rtb-00cf30796b25b9bc9
+RouteTableIdPrivate : rtb-0afaac377925bca9a
 </code></pre>
 <h2 is-upgraded>■RouteTableにSubnetを紐付け</h2>
 <h3 is-upgraded>cmd1</h3>
@@ -334,28 +523,52 @@ RouteTableIdPrivate : rtb-089389ec79a044951
   --subnet-id ${SubnetId1aPublic}
 </code></pre>
 <h3 is-upgraded>result1</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>cmd2</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
-  --route-table-id ${RouteTableIdPrivate} \
-  --subnet-id ${SubnetId1aPrivate}
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;AssociationId&#34;: &#34;rtbassoc-0e98cb5f6c54d5d83&#34;,
+    &#34;AssociationState&#34;: {
+        &#34;State&#34;: &#34;associated&#34;
+    }
+}
 </code></pre>
-<h3 is-upgraded>result2</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>cmd2</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
-  --route-table-id ${RouteTableIdPrivate} \
-  --subnet-id ${SubnetId1cPrivate}
-</code></pre>
-<h3 is-upgraded>result2</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
 <h3 is-upgraded>cmd2</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
   --route-table-id ${RouteTableIdPublic} \
   --subnet-id ${SubnetId1cPublic}
 </code></pre>
 <h3 is-upgraded>result2</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;AssociationId&#34;: &#34;rtbassoc-0f3ca785ae8675b6f&#34;,
+    &#34;AssociationState&#34;: {
+        &#34;State&#34;: &#34;associated&#34;
+    }
+}
+</code></pre>
+<h3 is-upgraded>cmd3</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
+  --route-table-id ${RouteTableIdPrivate} \
+  --subnet-id ${SubnetId1aPrivate}
+</code></pre>
+<h3 is-upgraded>result3</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;AssociationId&#34;: &#34;rtbassoc-07f8b8f8aa65d0df8&#34;,
+    &#34;AssociationState&#34;: {
+        &#34;State&#34;: &#34;associated&#34;
+    }
+}
+</code></pre>
+<h3 is-upgraded>cmd4</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
+  --route-table-id ${RouteTableIdPrivate} \
+  --subnet-id ${SubnetId1cPrivate}
+</code></pre>
+<h3 is-upgraded>result4</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;AssociationId&#34;: &#34;rtbassoc-008c971373c02cf69&#34;,
+    &#34;AssociationState&#34;: {
+        &#34;State&#34;: &#34;associated&#34;
+    }
+}
+</code></pre>
 <h2 is-upgraded>■RouteTableにInternetGatewayを紐付け</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route \
@@ -377,7 +590,15 @@ RouteTableIdPrivate : rtb-089389ec79a044951
   --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-PublicSecurityGroup}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;GroupId&#34;: &#34;sg-01cc901415c240504&#34;,
+    &#34;Tags&#34;: [
+        {
+            &#34;Key&#34;: &#34;Name&#34;,
+            &#34;Value&#34;: &#34;ContainerHandsOn-PublicSecurityGroup&#34;
+        }
+    ]
+}
 </code></pre>
 <h3 is-upgraded>変数設定</h3>
 <pre><code>PublicSecurityGroupsId=`aws ec2 describe-security-groups \
@@ -395,31 +616,49 @@ RouteTableIdPrivate : rtb-089389ec79a044951
   --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-PrivateSecurityGroup}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">xxx
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;,
+    &#34;Tags&#34;: [
+        {
+            &#34;Key&#34;: &#34;Name&#34;,
+            &#34;Value&#34;: &#34;ContainerHandsOn-PrivateSecurityGroup&#34;
+        }
+    ]
+}
 </code></pre>
 <h3 is-upgraded>変数設定</h3>
-<pre><code>PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
+<pre><code language="language-CloudShell" class="language-CloudShell">PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
   --query &#39;SecurityGroups[*].GroupId&#39; \
   --filters &#34;Name=tag-key,Values=Name&#34; \
     &#34;Name=tag-value,Values=ContainerHandsOn-PrivateSecurityGroup&#34; \
     --output text`
 </code></pre>
-<h2 is-upgraded>■VpcEndPoint用のSecurityGroup作成</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
-  --group-name VpcEndpointSecurityGroup \
-  --description &#34;VpcEndpoint Security Group&#34; \
-  --vpc-id ${VpcId} \
-  --tag-specifications &#34;ResourceType=security-group,Tags=[{Key=Name,Value=ContainerHandsOn-VpcEndpointSecurityGroup}]&#34;
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate: ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+EOF
 </code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell"></code></pre>
-<h3 is-upgraded>変数設定</h3>
-<pre><code>VpcEndPointSecurityGroupsId=`aws ec2 describe-security-groups \
-  --query &#39;SecurityGroups[*].GroupId&#39; \
-  --filters &#34;Name=tag-key,Values=Name&#34; \
-    &#34;Name=tag-value,Values=ContainerHandsOn-VpcEndpointSecurityGroup&#34; \
-    --output text`
+<h3 is-upgraded>変数設定確認</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+VpcId : vpc-0d3c1c88db46cfba7
+SubnetId1aPublic : subnet-0f66f257f167a1d47
+SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1aPrivate : subnet-049f0119237ff00a0
+SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
+InternetGatewayId : igw-0a511ba68ceb84ed8
+RouteTableIdPublic : rtb-00cf30796b25b9bc9
+RouteTableIdPrivate : rtb-0afaac377925bca9a
+PublicSecurityGroupsId : sg-01cc901415c240504
+PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 </code></pre>
 <h2 is-upgraded>■環境変数をメモ</h2>
 <p>Cloud9で使うため、取得した変数をエディターに残して下さい。</p>
@@ -434,18 +673,22 @@ export SubnetId1cPrivate=&#34;${SubnetId1cPrivate}&#34;
 export InternetGatewayId=&#34;${InternetGatewayId}&#34;
 export RouteTableIdPublic=&#34;${RouteTableIdPublic}&#34;
 export RouteTableIdPrivate=&#34;${RouteTableIdPrivate}&#34;
+export PublicSecurityGroupsId=&#34;${PublicSecurityGroupsId}&#34;
+export PrivateSecurityGroupsId=&#34;${PrivateSecurityGroupsId}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;378647896848&#34;
-export VpcId=&#34;vpc-08a77289b9b351429&#34;
-export SubnetId1aPublic=&#34;subnet-0ae475cbd47289960&#34;
-export SubnetId1cPublic=&#34;subnet-051a32873cc5c562b&#34;
-export SubnetId1aPrivate=&#34;subnet-01eb19ab0aeb0f6f1&#34;
-export SubnetId1cPrivate=&#34;subnet-0819c13fe959a0d1a&#34;
-export InternetGatewayId=&#34;igw-0db61da9fcd82b6eb&#34;
-export RouteTableIdPublic=&#34;rtb-0cfcfe4b74de83091&#34;
-export RouteTableIdPrivate=&#34;rtb-089389ec79a044951&#34;
+<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;152767562250&#34;
+export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
+export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
+export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
+export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
+export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
+export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
+export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
+export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
+export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
+export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
 </code></pre>
 
 
