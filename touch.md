@@ -20,22 +20,24 @@ Duration: 0:05:00
 ### ■CloudShellの起動
 
 #### AWS コンソールにログイン
+![img](./image/img2-1.png)
 
 #### CloudShellボタン押下
 
 画面右上のCloudShellボタンを押下  
-![img](./image/img2-1.png)
+![img](./image/img2-2.png)
 
 #### CloudShellを起動
 
 今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。
-![img](./image/img2-2.png)
+![img](./image/img2-3.png)
 
 ### ■AWS Account IDの取得
 
 #### cmd
-
+```CloudShell
 AccoutID=`aws sts get-caller-identity --query Account --output text`
+```
 
 ```CloudShell
 clear; cat << EOF
@@ -44,6 +46,11 @@ EOF
 ```
 
 #### result
+```CloudShell
+clear; cat << EOF
+AccoutID : ${AccoutID}
+EOF
+```
 
 ### ■VPCの作成
 
