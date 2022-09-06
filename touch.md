@@ -1213,12 +1213,15 @@ dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 
 #### 画面
 
-- Cloud9のヘッダ部分の`Preview`-> `Preview Runnnig Application`のボタン押下
--`Hello! Jaws Days 2022!!`と記載された画面が表示されること
+- Cloud9のヘッダ部分の`Preview`-> `Preview Runnnig Application`のボタン押下  
+- `Hello! Jaws Days 2022!!`と記載された画面が表示されること  
 
 ![img](./image/img4-1.png)
 
-### ■（ご参考）Cloud9上でコンテナを停止・削除する方法
+Positive
+: 何か間違ってコンテナを止めたい場合には以下を実行ください
+: docker stop $(docker ps -q)
+: docker rm $(docker ps -q -a)
 
 #### cmd
 

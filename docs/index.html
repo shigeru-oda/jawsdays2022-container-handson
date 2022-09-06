@@ -927,10 +927,13 @@ jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   41
 </code></pre>
 <h3 is-upgraded>画面</h3>
 <ul>
-<li>Cloud9のヘッダ部分の<code>Preview</code>-&gt; <code>Preview Runnnig Application</code>のボタン押下 -<code>Hello! Jaws Days 2022!!</code>と記載された画面が表示されること</li>
+<li>Cloud9のヘッダ部分の<code>Preview</code>-&gt; <code>Preview Runnnig Application</code>のボタン押下<br></li>
+<li><code>Hello! Jaws Days 2022!!</code>と記載された画面が表示されること<br></li>
 </ul>
 <p class="image-container"><img alt="img" src="img/2be66bb659acb02.png"></p>
-<h2 is-upgraded>■（ご参考）Cloud9上でコンテナを停止・削除する方法</h2>
+<aside class="special"><p>何か間違ってコンテナを止めたい場合には以下を実行ください</p>
+</aside>
+<p>docker stop $(docker ps -q)docker rm $(docker ps -q -a)  </p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
