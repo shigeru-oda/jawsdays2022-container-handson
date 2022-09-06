@@ -743,8 +743,51 @@ EOF
       </google-codelab-step>
     
       <google-codelab-step label="Fargate作成" duration="5">
-        <h2 is-upgraded>■</h2>
-<h2 is-upgraded>■</h2>
+        <h2 is-upgraded>■クラスターの作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-cluster \
+    --cluster-name ContainerHandsOn \
+    --tags &#34;key=Name,value=ContainerHandsOn&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+</code></pre>
+<h2 is-upgraded>■タスク定義の作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; register-task-definition.json
+{
+    &#34;family&#34;: &#34;ContainerHandsOn&#34;, 
+    &#34;executionRoleArn&#34;: &#34;arn:aws:iam::378647896848:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS&#34;, 
+    &#34;networkMode&#34;: &#34;awsvpc&#34;, 
+    &#34;containerDefinitions&#34;: [
+        {
+            &#34;name&#34;: &#34;ContainerHandsOn&#34;, 
+            &#34;image&#34;: &#34;${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;, 
+            &#34;portMappings&#34;: [
+                {
+                    &#34;containerPort&#34;: 80, 
+                    &#34;hostPort&#34;: 80, 
+                    &#34;protocol&#34;: &#34;tcp&#34;
+                }
+            ], 
+            &#34;essential&#34;: true
+        }
+    ], 
+    &#34;requiresCompatibilities&#34;: [
+        &#34;FARGATE&#34;
+    ], 
+    &#34;cpu&#34;: &#34;256&#34;, 
+    &#34;memory&#34;: &#34;512&#34;
+}
+EOF
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ecs register-task-definition \
+  --cli-input-json file://register-task-definition.json \
+  --tags &#34;key=Name,value=ContainerHandsOn&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">xxxx
+</code></pre>
 
 
       </google-codelab-step>

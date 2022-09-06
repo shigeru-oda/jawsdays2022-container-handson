@@ -1057,6 +1057,7 @@ Duration: 0:05:00
 ### ■アプリケーションロードバランサーの作成
 
 #### cmd
+
 ```Cloud9
 aws elbv2 create-load-balancer \
     --name ContainerHandsOn \
@@ -1065,11 +1066,14 @@ aws elbv2 create-load-balancer \
 ```
 
 #### result
+
 ```Cloud9
 ```
 
 ### ■ターゲットグループの作成
+
 #### cmd
+
 ```Cloud9
 aws elbv2 create-target-group \
     --name ContainerHandsOn \
@@ -1079,12 +1083,70 @@ aws elbv2 create-target-group \
     --vpc-id ${VpcId}
 ```
 
-
 ## Fargate作成
-### ■
-### ■
 
 Duration: 0:05:00
+
+### ■クラスターの作成
+
+#### cmd
+
+```Cloud9
+aws ecs create-cluster \
+    --cluster-name ContainerHandsOn \
+    --tags "key=Name,value=ContainerHandsOn"
+```
+
+#### result
+
+```Cloud9
+xxx
+```
+
+### ■タスク定義の作成
+
+#### cmd
+
+```Cloud9
+cat << EOF > register-task-definition.json
+{
+    "family": "ContainerHandsOn", 
+    "executionRoleArn": "arn:aws:iam::378647896848:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS", 
+    "networkMode": "awsvpc", 
+    "containerDefinitions": [
+        {
+            "name": "ContainerHandsOn", 
+            "image": "${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest", 
+            "portMappings": [
+                {
+                    "containerPort": 80, 
+                    "hostPort": 80, 
+                    "protocol": "tcp"
+                }
+            ], 
+            "essential": true
+        }
+    ], 
+    "requiresCompatibilities": [
+        "FARGATE"
+    ], 
+    "cpu": "256", 
+    "memory": "512"
+}
+EOF
+```
+
+```Cloud9
+aws ecs register-task-definition \
+  --cli-input-json file://register-task-definition.json \
+  --tags "key=Name,value=ContainerHandsOn"
+```
+
+#### result
+
+```Cloud9
+xxxx
+```
 
 ## 動作確認
 
