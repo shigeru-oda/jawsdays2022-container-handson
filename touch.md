@@ -2155,6 +2155,8 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ![img](./image/img9-1.png)
 
+![img](./image/img9-2.png)
+
 ## 変数整理
 
 ### ここまで取得された変数を整理
