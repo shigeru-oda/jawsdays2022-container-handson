@@ -131,7 +131,7 @@ aws iam create-role \
 #### cmd
 
 ```Cloud9
-aws  iam attach-role-policy \
+aws iam attach-role-policy \
   --role-name ecsTaskExecutionRole \
   --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 ```
@@ -502,9 +502,9 @@ clear; cat << EOF
 AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate: ${SubnetId1cPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 EOF
 ```
 
@@ -514,9 +514,9 @@ EOF
 AccoutID : 152767562250
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1cPublic : subnet-0a1e2afffc8c140d8
 SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
+SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 ```
 
 ### ■InternetGatewayの作成
@@ -561,9 +561,9 @@ clear; cat << EOF
 AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate: ${SubnetId1cPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 EOF
 ```
@@ -574,9 +574,9 @@ EOF
 AccoutID : 152767562250
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1cPublic : subnet-0a1e2afffc8c140d8
 SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
+SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 InternetGatewayId : igw-0a511ba68ceb84ed8
 ```
 
@@ -716,9 +716,9 @@ clear; cat << EOF
 AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate: ${SubnetId1cPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
@@ -731,9 +731,9 @@ EOF
 AccoutID : 152767562250
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1cPublic : subnet-0a1e2afffc8c140d8
 SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
+SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 InternetGatewayId : igw-0a511ba68ceb84ed8
 RouteTableIdPublic : rtb-00cf30796b25b9bc9
 RouteTableIdPrivate : rtb-0afaac377925bca9a
@@ -913,9 +913,9 @@ clear; cat << EOF
 AccoutID : ${AccoutID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
-SubnetId1cPublic: ${SubnetId1cPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
 SubnetId1aPrivate : ${SubnetId1aPrivate}
-SubnetId1cPrivate: ${SubnetId1cPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
 InternetGatewayId : ${InternetGatewayId}
 RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
@@ -930,9 +930,9 @@ EOF
 AccoutID : 152767562250
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic: subnet-0a1e2afffc8c140d8
+SubnetId1cPublic : subnet-0a1e2afffc8c140d8
 SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate: subnet-0ea89b6bc85e0ec61
+SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 InternetGatewayId : igw-0a511ba68ceb84ed8
 RouteTableIdPublic : rtb-00cf30796b25b9bc9
 RouteTableIdPrivate : rtb-0afaac377925bca9a
@@ -1908,7 +1908,8 @@ aws ecs create-cluster \
         "activeServicesCount": 0, 
         "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn"
     }
-}```
+}
+```
 
 
 ### ■タスク定義の作成
