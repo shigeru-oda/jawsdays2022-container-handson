@@ -2129,7 +2129,7 @@ aws ecs create-service \
 }
 ```
 
-## 動作確認
+## 動作確認１
 
 Duration: 0:05:00
 
@@ -2150,9 +2150,9 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ### ■画面確認
 
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
-- 更新を行うとhostnameが変更されていること（ALBで負荷分散されている確認）
+- 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
 
-
+![img](./image/img9-1.png)
 
 ## 変数整理
 
@@ -2214,7 +2214,7 @@ Duration: 0:05:00
 
 Duration: 0:05:00
 
-## 動作確認
+## 動作確認２
 
 Duration: 0:05:00
 
