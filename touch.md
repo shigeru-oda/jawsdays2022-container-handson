@@ -13,7 +13,7 @@ analytics account: XXXXXXXX
 
 Duration: 0:05:00
 
-## VPC作成
+## 事前準備とVPC作成
 
 Duration: 0:05:00
 
@@ -51,6 +51,89 @@ EOF
 
 ```CloudShell
 AccoutID : 152767562250
+```
+
+### ■ECSの実行Roleの存在確認
+
+#### cmd
+
+```Cloud9
+aws iam list-roles | grep "RoleName" | grep "ecsTaskExecutionRole"
+```
+
+#### result（存在する場合）
+
+```Cloud9
+            "RoleName": "ecsTaskExecutionRole",
+```
+
+#### result（存在しない場合）
+
+```Cloud9
+（なし）
+```
+
+### ■ECSの実行Role作成（上記で存在しない場合実行）
+
+#### cmd
+
+```Cloud9
+cat << EOF > assume-role-policy-document.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+```
+
+```Cloud9
+aws iam create-role \
+  --role-name ecsTaskExecutionRole \
+  --assume-role-policy-document file://assume-role-policy-document.json
+```
+
+#### result
+
+```
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "ecsTaskExecutionRole",
+        "RoleId": "AROASHENIAIFOV2DAKSWN",
+        "Arn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
+        "CreateDate": "2022-09-06T14:50:16+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "ecs-tasks.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
+```
+
+#### cmd
+
+```Cloud9
+aws  iam attach-role-policy \
+  --role-name ecsTaskExecutionRole \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 ```
 
 ### ■VPCの作成
@@ -1827,67 +1910,6 @@ aws ecs create-cluster \
     }
 }```
 
-### ■ECSの実行Role作成
-#### cmd
-
-```Cloud9
-cat << EOF > assume-role-policy-document.json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "ecs-tasks.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
-```
-
-```Cloud9
-aws iam create-role \
-  --role-name ecsTaskExecutionRole \
-  --assume-role-policy-document file://assume-role-policy-document.json
-```
-
-#### result
-
-```
-{
-    "Role": {
-        "Path": "/",
-        "RoleName": "ecsTaskExecutionRole",
-        "RoleId": "AROASHENIAIFOV2DAKSWN",
-        "Arn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
-        "CreateDate": "2022-09-06T14:50:16+00:00",
-        "AssumeRolePolicyDocument": {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Sid": "",
-                    "Effect": "Allow",
-                    "Principal": {
-                        "Service": "ecs-tasks.amazonaws.com"
-                    },
-                    "Action": "sts:AssumeRole"
-                }
-            ]
-        }
-    }
-}
-```
-
-#### cmd
-
-```Cloud9
-aws  iam attach-role-policy \
-  --role-name ecsTaskExecutionRole \
-  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
-```
 
 ### ■タスク定義の作成
 
