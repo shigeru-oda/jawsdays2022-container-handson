@@ -1911,7 +1911,6 @@ aws ecs create-cluster \
 }
 ```
 
-
 ### ■タスク定義の作成
 
 #### cmd
@@ -2153,7 +2152,11 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
 
+#### パターン例１
+
 ![img](./image/img9-1.png)
+
+#### パターン例２
 
 ![img](./image/img9-2.png)
 
