@@ -1220,18 +1220,11 @@ dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 
 Positive
 : 何か間違ってコンテナを止めたい場合には以下を実行ください
+
 ```
 docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
 ```
-#### cmd
-
-```Cloud9
-
-docker stop $(docker ps -q)
-docker rm $(docker ps -q -a)
-```
-
 
 ### ■DockerImageにTag付けを行う
 
@@ -1365,7 +1358,6 @@ aws ec2 create-vpc-endpoint \
     }
 }
 ```
-
 
 ### ■com.amazonaws.ap-northeast-1.ecr.dkr
 
@@ -1596,12 +1588,46 @@ Duration: 0:05:00
 aws elbv2 create-load-balancer \
     --name ContainerHandsOn \
     --subnets ${SubnetId1aPublic} ${SubnetId1cPublic} \
+    --security-groups ${PublicSecurityGroupsId} \
     --tags "Key=Name,Value=ContainerHandsOn"
 ```
 
 #### result
 
 ```Cloud9
+{
+    "LoadBalancers": [
+        {
+            "IpAddressType": "ipv4", 
+            "VpcId": "vpc-0d3c1c88db46cfba7", 
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867", 
+            "State": {
+                "Code": "provisioning"
+            }, 
+            "DNSName": "ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com", 
+            "SecurityGroups": [
+                "sg-08822a4834ed05f46"
+            ], 
+            "LoadBalancerName": "ContainerHandsOn", 
+            "CreatedTime": "2022-09-06T14:21:35.730Z", 
+            "Scheme": "internet-facing", 
+            "Type": "application", 
+            "CanonicalHostedZoneId": "Z14GRHDCWA56QT", 
+            "AvailabilityZones": [
+                {
+                    "SubnetId": "subnet-0a1e2afffc8c140d8", 
+                    "LoadBalancerAddresses": [], 
+                    "ZoneName": "ap-northeast-1c"
+                }, 
+                {
+                    "SubnetId": "subnet-0f66f257f167a1d47", 
+                    "LoadBalancerAddresses": [], 
+                    "ZoneName": "ap-northeast-1a"
+                }
+            ]
+        }
+    ]
+}
 ```
 
 ### ■ターゲットグループの作成
@@ -1611,10 +1637,150 @@ aws elbv2 create-load-balancer \
 ```Cloud9
 aws elbv2 create-target-group \
     --name ContainerHandsOn \
-    --protocol TCP \
+    --protocol HTTP \
     --port 80 \
     --target-type ip \
+    --health-check-protocol HTTP \
+    --health-check-port traffic-port \
+    --health-check-path /index.php \
     --vpc-id ${VpcId}
+```
+
+#### result
+
+```Cloud9
+{
+    "TargetGroups": [
+        {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
+            "TargetGroupName": "ContainerHandsOn",
+            "Protocol": "HTTP",
+            "Port": 80,
+            "VpcId": "vpc-0d3c1c88db46cfba7",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "UnhealthyThresholdCount": 2,
+            "HealthCheckPath": "/index.php",
+            "Matcher": {
+                "HttpCode": "200"
+            },
+            "TargetType": "ip",
+            "ProtocolVersion": "HTTP1",
+            "IpAddressType": "ipv4"
+        }
+    ]
+}
+```
+
+### ■アプリケーションロードバランサーのDNS取得
+
+#### cmd
+
+```Cloud9
+LoadBalancersDnsName=`aws elbv2 describe-load-balancers \
+  --names ContainerHandsOn \
+  --query "LoadBalancers[*].DNSName" \
+  --output text`
+```
+
+```Cloud9
+echo ${LoadBalancersDnsName}
+```
+
+#### result
+
+```Cloud9
+ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+```
+
+### ■アプリケーションロードバランサーのARN取得
+
+#### cmd
+
+```Cloud9
+LoadBalancerArn=`aws elbv2 describe-load-balancers \
+  --names ContainerHandsOn \
+  --query "LoadBalancers[*].LoadBalancerArn" \
+  --output text`
+```
+
+```Cloud9
+echo ${LoadBalancerArn}
+```
+
+#### result
+
+```Cloud9
+arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867
+```
+
+### ■ターゲットグループのARN取得
+
+#### cmd
+
+```Cloud9
+TargetGroupArn=`aws elbv2 describe-target-groups \
+  --names ContainerHandsOn \
+  --query "TargetGroups[*].TargetGroupArn" \
+  --output text`
+```
+
+```Cloud9
+echo ${TargetGroupArn}
+```
+
+#### result
+
+```Cloud9
+arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9
+```
+
+### ■リスナーの追加
+
+#### cmd
+
+```Cloud9
+aws elbv2 create-listener \
+    --load-balancer-arn ${LoadBalancerArn} \
+    --protocol HTTP \
+    --port 80 \
+    --default-actions Type=forward,TargetGroupArn=${TargetGroupArn}
+```
+
+#### result
+
+```Cloud9
+{
+    "Listeners": [
+        {
+            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/75145ed42d9a3867/1245c4be3b3230b7",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867",
+            "Port": 80,
+            "Protocol": "HTTP",
+            "DefaultActions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
 ```
 
 ## Fargate作成
@@ -1634,7 +1800,93 @@ aws ecs create-cluster \
 #### result
 
 ```Cloud9
-xxx
+{
+    "cluster": {
+        "status": "ACTIVE", 
+        "defaultCapacityProviderStrategy": [], 
+        "statistics": [], 
+        "capacityProviders": [], 
+        "tags": [
+            {
+                "value": "ContainerHandsOn", 
+                "key": "Name"
+            }
+        ], 
+        "clusterName": "ContainerHandsOn", 
+        "settings": [
+            {
+                "name": "containerInsights", 
+                "value": "disabled"
+            }
+        ], 
+        "registeredContainerInstancesCount": 0, 
+        "pendingTasksCount": 0, 
+        "runningTasksCount": 0, 
+        "activeServicesCount": 0, 
+        "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn"
+    }
+}```
+
+### ■ECSの実行Role作成
+#### cmd
+
+```Cloud9
+cat << EOF > assume-role-policy-document.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+```
+
+```Cloud9
+aws iam create-role \
+  --role-name ecsTaskExecutionRole \
+  --assume-role-policy-document file://assume-role-policy-document.json
+```
+
+#### result
+
+```
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "ecsTaskExecutionRole",
+        "RoleId": "AROASHENIAIFOV2DAKSWN",
+        "Arn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
+        "CreateDate": "2022-09-06T14:50:16+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "ecs-tasks.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
+```
+
+#### cmd
+
+```Cloud9
+aws  iam attach-role-policy \
+  --role-name ecsTaskExecutionRole \
+  --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 ```
 
 ### ■タスク定義の作成
@@ -1645,7 +1897,7 @@ xxx
 cat << EOF > register-task-definition.json
 {
     "family": "ContainerHandsOn", 
-    "executionRoleArn": "arn:aws:iam::378647896848:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS", 
+    "executionRoleArn": "arn:aws:iam::${AccoutID}:role/ecsTaskExecutionRole", 
     "networkMode": "awsvpc", 
     "containerDefinitions": [
         {
@@ -1683,12 +1935,246 @@ aws ecs register-task-definition \
 #### result
 
 ```Cloud9
-xxxx
+{
+    "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1",
+        "containerDefinitions": [
+            {
+                "name": "ContainerHandsOn",
+                "image": "152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
+                "cpu": 0,
+                "portMappings": [
+                    {
+                        "containerPort": 80,
+                        "hostPort": 80,
+                        "protocol": "tcp"
+                    }
+                ],
+                "essential": true,
+                "environment": [],
+                "mountPoints": [],
+                "volumesFrom": []
+            }
+        ],
+        "family": "ContainerHandsOn",
+        "executionRoleArn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
+        "networkMode": "awsvpc",
+        "revision": 1,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+                "name": "ecs.capability.execution-role-ecr-pull"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "runtimePlatform": {
+            "cpuArchitecture": "X86_64",
+            "operatingSystemFamily": "LINUX"
+        },
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "cpu": "256",
+        "memory": "512",
+        "registeredAt": "2022-09-06T14:59:53.594000+00:00",
+        "registeredBy": "arn:aws:sts::152767562250:assumed-role/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022/ShigeruOda"
+    },
+    "tags": [
+        {
+            "key": "Name",
+            "value": "ContainerHandsOn"
+        }
+    ]
+}
+```
+
+### ■サービスの作成
+
+#### cmd
+
+```Cloud9
+aws ecs create-service \
+    --cluster ContainerHandsOn \
+    --service-name ContainerHandsOn \
+    --task-definition ContainerHandsOn:1 \
+    --desired-count 2 \
+    --launch-type FARGATE \
+    --platform-version LATEST \
+    --network-configuration "awsvpcConfiguration={subnets=[${SubnetId1aPrivate},${SubnetId1cPrivate}],securityGroups=[${PrivateSecurityGroupsId}],assignPublicIp=DISABLED}" \
+   --load-balancers targetGroupArn=${TargetGroupArn},containerName=ContainerHandsOn,containerPort=80 
+```
+
+#### result
+
+```Cloud9
+{
+    "service": {
+        "serviceArn": "arn:aws:ecs:ap-northeast-1:152767562250:service/ContainerHandsOn/ContainerHandsOn",
+        "serviceName": "ContainerHandsOn",
+        "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn",
+        "loadBalancers": [
+            {
+                "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
+                "containerName": "ContainerHandsOn",
+                "containerPort": 80
+            }
+        ],
+        "serviceRegistries": [],
+        "status": "ACTIVE",
+        "desiredCount": 2,
+        "runningCount": 0,
+        "pendingCount": 0,
+        "launchType": "FARGATE",
+        "platformVersion": "LATEST",
+        "platformFamily": "Linux",
+        "taskDefinition": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1",
+        "deploymentConfiguration": {
+            "deploymentCircuitBreaker": {
+                "enable": false,
+                "rollback": false
+            },
+            "maximumPercent": 200,
+            "minimumHealthyPercent": 100
+        },
+        "deployments": [
+            {
+                "id": "ecs-svc/9015413324295259653",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1",
+                "desiredCount": 2,
+                "pendingCount": 0,
+                "runningCount": 0,
+                "failedTasks": 0,
+                "createdAt": "2022-09-07T02:14:18.688000+00:00",
+                "updatedAt": "2022-09-07T02:14:18.688000+00:00",
+                "launchType": "FARGATE",
+                "platformVersion": "1.4.0",
+                "platformFamily": "Linux",
+                "networkConfiguration": {
+                    "awsvpcConfiguration": {
+                        "subnets": [
+                            "subnet-0ea89b6bc85e0ec61",
+                            "subnet-049f0119237ff00a0"
+                        ],
+                        "securityGroups": [
+                            "sg-040aff209e1fe59cc"
+                        ],
+                        "assignPublicIp": "DISABLED"
+                    }
+                },
+                "rolloutState": "IN_PROGRESS",
+                "rolloutStateReason": "ECS deployment ecs-svc/9015413324295259653 in progress."
+            }
+        ],
+        "roleArn": "arn:aws:iam::152767562250:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "events": [],
+        "createdAt": "2022-09-07T02:14:18.688000+00:00",
+        "placementConstraints": [],
+        "placementStrategy": [],
+        "networkConfiguration": {
+            "awsvpcConfiguration": {
+                "subnets": [
+                    "subnet-0ea89b6bc85e0ec61",
+                    "subnet-049f0119237ff00a0"
+                ],
+                "securityGroups": [
+                    "sg-040aff209e1fe59cc"
+                ],
+                "assignPublicIp": "DISABLED"
+            }
+        },
+        "healthCheckGracePeriodSeconds": 0,
+        "schedulingStrategy": "REPLICA",
+        "createdBy": "arn:aws:iam::152767562250:role/aws-reserved/sso.amazonaws.com/ap-northeast-1/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022",
+        "enableECSManagedTags": false,
+        "propagateTags": "NONE",
+        "enableExecuteCommand": false
+    }
+}
 ```
 
 ## 動作確認
 
 Duration: 0:05:00
+
+### ■アドレス確認
+
+#### cmd
+
+```Cloud9
+echo "http://"${LoadBalancersDnsName}
+```
+
+#### result
+
+```Cloud9
+http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+```
+
+### ■画面確認
+
+- 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
+- 更新を行うとhostnameが変更されていること（ALBで負荷分散されている確認）
+
+![img](xx)
+
+## 変数整理
+
+### ここまで取得された変数を整理
+
+#### cmd
+
+```Cloud9
+clear; cat << EOF
+export AccoutID="${AccoutID}"
+export VpcId="${VpcId}"
+export SubnetId1aPublic="${SubnetId1aPublic}"
+export SubnetId1cPublic="${SubnetId1cPublic}"
+export SubnetId1aPrivate="${SubnetId1aPrivate}"
+export SubnetId1cPrivate="${SubnetId1cPrivate}"
+export InternetGatewayId="${InternetGatewayId}"
+export RouteTableIdPublic="${RouteTableIdPublic}"
+export RouteTableIdPrivate="${RouteTableIdPrivate}"
+export PublicSecurityGroupsId="${PublicSecurityGroupsId}"
+export PrivateSecurityGroupsId="${PrivateSecurityGroupsId}"
+export LoadBalancerArn="${LoadBalancerArn}"
+export TargetGroupArn="${TargetGroupArn}"
+export LoadBalancersDnsName="${LoadBalancersDnsName}"
+EOF
+```
+
+#### result
+
+```Cloud9
+export AccoutID="152767562250"
+export VpcId="vpc-0d3c1c88db46cfba7"
+export SubnetId1aPublic="subnet-0f66f257f167a1d47"
+export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
+export SubnetId1aPrivate="subnet-049f0119237ff00a0"
+export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
+export InternetGatewayId="igw-0a511ba68ceb84ed8"
+export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
+export RouteTableIdPrivate="rtb-0afaac377925bca9a"
+export PublicSecurityGroupsId="sg-01cc901415c240504"
+export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
+export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867"
+export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9"
+export LoadBalancersDnsName="ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com"
+```
 
 ## CodeBuild作成
 
