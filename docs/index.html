@@ -29,44 +29,45 @@
     
       <google-codelab-step label="ご挨拶" duration="0">
         <h2 is-upgraded>■ご挨拶</h2>
-<p>当資料は<a href="https://jawsdays2022.jaws-ug.jp/" target="_blank">JAWS DAYS 2022 - Satellites</a>でのハンズオントラックの一つ、<a href="https://jaws-ug.doorkeeper.jp/events/141627" target="_blank">コンテナサービスをCI/CDパイプラインでデプロイしよう</a>のセッションで利用する資料となります。</p>
-<p><a href="https://jawsdays2022.jaws-ug.jp/" target="_blank">JAWS DAYS 2022 - Satellites</a>のハンズオンは以下3点ありますが、他セッションはGUI、CDKでの環境構築であったので、当セッションはCLIでの環境構築として準備しています。</p>
+<p>当資料は<a href="https://jawsdays2022.jaws-ug.jp/" target="_blank">JAWS DAYS 2022 - Satellites</a>でのハンズオントラックの一つ、<a href="https://jaws-ug.doorkeeper.jp/events/141627" target="_blank">コンテナサービスをCI/CDパイプラインでデプロイしよう</a>のセッションで利用する資料となります</p>
+<p><a href="https://jawsdays2022.jaws-ug.jp/" target="_blank">JAWS DAYS 2022 - Satellites</a>のハンズオンは以下3点ありますが、他セッションはGUI、CDKでの環境構築であったので、当セッションはCLIでの環境構築として準備しています</p>
 <ul>
 <li><a href="https://jaws-ug.doorkeeper.jp/events/141646" target="_blank">S3でWebサイトを公開して、リソースポリシーでアクセスを制御してみよう</a></li>
 <li><a href="https://jaws-ug.doorkeeper.jp/events/141627" target="_blank">コンテナサービスをCI/CDパイプラインでデプロイしよう</a></li>
 <li><a href="https://jaws-ug.doorkeeper.jp/events/141651" target="_blank">CDKでサーバーレスアプリをデプロイしよう</a></li>
 </ul>
-<p>初心者の方にはCLIコマンドが難しいかもしれませんが、まずはこういうステップが必要という勘所だけでも掴んで頂ければ幸いです、慣れた方はCLIコマンドの1つ１つの意味を理解するように進めて頂けるとありがたいです。</p>
+<p>初心者の方にはCLIコマンドが難しいかもしれませんが、まずはこういうステップが必要という勘所だけでも掴んで頂ければ幸いです、慣れた方はCLIコマンドの1つ１つの意味を理解するように進めて頂けるとありがたいです</p>
 <h2 is-upgraded>■対象者</h2>
 <ul>
 <li>コンテナが何かよく分からない人</li>
 <li>ＡＷＳでのコンテナサービスを知りたい人</li>
 <li>ＣＩ／ＣＤパイプラインでコンテナサービスをデプロイしたい人</li>
 </ul>
-<h2 is-upgraded>当日までにご準備が必要なもの</h2>
+<h2 is-upgraded>■当日までにご準備が必要なもの</h2>
 <ul>
 <li>マネジメントコンソールにログイン可能なAdministrator権限のIAMユーザー</li>
 <li>Chrome もしくは Firefox</li>
 </ul>
 <h2 is-upgraded>■免責事項について</h2>
-<p>ハンズオンで利用するサービスは一部課金対象となるサービスもございます。<br> また、ハンズオンで作成した環境を削除しない場合には、課金が続くことによって高額になる可能性があります。<br> 課金が発生したことによる責任は負えませんので、ご承知おきください。 上記事項をご理解頂きお申込みいただけますようお願いいたします。</p>
+<p>ハンズオンで利用するサービスは一部課金対象となるサービスもございます<br> また、ハンズオンで作成した環境を削除しない場合には、課金が続くことによって高額になる可能性があります<br> 課金が発生したことによる責任は負えませんので、ご承知おきください 上記事項をご理解頂きお申込みいただけますようお願いいたします</p>
 <h2 is-upgraded>■参考資料</h2>
 <ul>
 <li><a href="https://pages.awscloud.com/rs/112-TZM-766/images/AWS_CICD_ECS_Handson.pdf" target="_blank">AWS CI/CD for Amazon ECS ハンズオン~ Cloud9, Docker, Code Services を⽤いた開発効率向上 ~</a> -<a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></li>
 </ul>
 <h2 is-upgraded>■手順について</h2>
-<p>貼り付けるコマンドは準備しているので、基本的にはCopy &amp; Pasteで手順を進めることができます。</p>
+<p>貼り付けるコマンドは準備しているので、基本的にはCopy &amp; Pasteで手順を進めることができます</p>
 <h3 is-upgraded>cmd</h3>
-<p>cmdと記載された項目にある以下のような表示内容はコマンドをCopy &amp; Pasteするモノとなります。</p>
+<p>cmdと記載された項目にある以下のような表示内容はコマンドをCopy &amp; Pasteするモノとなります</p>
 <pre><code language="language-Sample" class="language-Sample">Copy &amp; Pasteの対象です
 </code></pre>
 <h3 is-upgraded>result</h3>
-<p>resultと記載された項目にある以下のような表示内容はコマンドの実行結果です。 IDなどは個々に違うので、CLIがよく分からない方は</p>
+<p>resultと記載された項目にある以下のような表示内容はコマンドの実行結果です<br> IDなどは個々に異なりますので</p>
 <ul>
-<li>表示が大きく変わらない。</li>
-<li>エラーメッセージが出力されていない。 を確認ください。</li>
+<li>表示が大きく変わらない</li>
+<li>エラーメッセージが出力されていない</li>
 </ul>
-<pre><code language="language-Sample" class="language-Sample">cmd実行後の結果です。
+<p>を確認ください</p>
+<pre><code language="language-Sample" class="language-Sample">cmd実行後の結果です
 </code></pre>
 
 
@@ -95,13 +96,14 @@
       <google-codelab-step label="事前準備とネットワーク周りの構築" duration="5">
         <h2 is-upgraded>■CloudShellの起動</h2>
 <h3 is-upgraded>AWS コンソールにログイン</h3>
-<p>Administrator権限のIAMユーザーでAWSコンソールにログイン</p>
+<p>・Administrator権限のIAMユーザーでAWSコンソールにログイン</p>
 <p class="image-container"><img alt="img" src="img/8ec695a05f461637.png"></p>
 <h3 is-upgraded>CloudShellボタン押下</h3>
-<p>画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
+<p>・画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
 <h3 is-upgraded>CloudShellを起動</h3>
-<p>今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。 <img alt="img" src="img/9b0f4ff0313865b9.png"></p>
+<p>・今後はCloudShellの画面にcmdの内容をCopy &amp; Pasteし、resultの内容を確認し進めて下さい <img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
+<p>・AWS Accoutの12桁のIDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID=`aws sts get-caller-identity --query Account --output text`
 </code></pre>
@@ -110,7 +112,7 @@ AccoutID : ${AccoutID}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 </code></pre>
 <h2 is-upgraded>■ECSの実行Roleの存在確認</h2>
 <h3 is-upgraded>cmd</h3>
@@ -150,7 +152,7 @@ EOF
         &#34;Path&#34;: &#34;/&#34;,
         &#34;RoleName&#34;: &#34;ecsTaskExecutionRole&#34;,
         &#34;RoleId&#34;: &#34;AROASHENIAIFOV2DAKSWN&#34;,
-        &#34;Arn&#34;: &#34;arn:aws:iam::152767562250:role/ecsTaskExecutionRole&#34;,
+        &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:role/ecsTaskExecutionRole&#34;,
         &#34;CreateDate&#34;: &#34;2022-09-06T14:50:16+00:00&#34;,
         &#34;AssumeRolePolicyDocument&#34;: {
             &#34;Version&#34;: &#34;2012-10-17&#34;,
@@ -174,7 +176,7 @@ EOF
   --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 </code></pre>
 <h2 is-upgraded>■VPCの作成</h2>
-<p>VPCを新規に作成します。</p>
+<p>VPCを新規に作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-vpc \
     --cidr-block 10.0.0.0/16 \
@@ -187,7 +189,7 @@ EOF
         &#34;DhcpOptionsId&#34;: &#34;dopt-c3de3ba5&#34;,
         &#34;State&#34;: &#34;pending&#34;,
         &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;OwnerId&#34;: &#34;123456789012&#34;,
         &#34;InstanceTenancy&#34;: &#34;default&#34;,
         &#34;Ipv6CidrBlockAssociationSet&#34;: [],
         &#34;CidrBlockAssociationSet&#34;: [
@@ -222,7 +224,7 @@ VpcId : ${VpcId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 </code></pre>
 <h3 is-upgraded>■DNS名前解決をONにする</h3>
@@ -268,7 +270,7 @@ VpcId : vpc-0d3c1c88db46cfba7
 }
 </code></pre>
 <h2 is-upgraded>■Subnetの作成</h2>
-<p>作成したVPCの中にSubnetを4つ作成します。 Private Subnetが2つ、Public Subnetが2つです。</p>
+<p>作成したVPCの中にSubnetを4つ作成します Private Subnetが2つ、Public Subnetが2つです</p>
 <h3 is-upgraded>cmd1</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $VpcId \
@@ -288,7 +290,7 @@ VpcId : vpc-0d3c1c88db46cfba7
         &#34;State&#34;: &#34;available&#34;,
         &#34;SubnetId&#34;: &#34;subnet-0f66f257f167a1d47&#34;,
         &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;OwnerId&#34;: &#34;123456789012&#34;,
         &#34;AssignIpv6AddressOnCreation&#34;: false,
         &#34;Ipv6CidrBlockAssociationSet&#34;: [],
         &#34;Tags&#34;: [
@@ -297,7 +299,7 @@ VpcId : vpc-0d3c1c88db46cfba7
                 &#34;Value&#34;: &#34;ContainerHandsOnPublic&#34;
             }
         ],
-        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0f66f257f167a1d47&#34;,
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0f66f257f167a1d47&#34;,
         &#34;EnableDns64&#34;: false,
         &#34;Ipv6Native&#34;: false,
         &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
@@ -327,7 +329,7 @@ VpcId : vpc-0d3c1c88db46cfba7
         &#34;State&#34;: &#34;available&#34;,
         &#34;SubnetId&#34;: &#34;subnet-0a1e2afffc8c140d8&#34;,
         &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;OwnerId&#34;: &#34;123456789012&#34;,
         &#34;AssignIpv6AddressOnCreation&#34;: false,
         &#34;Ipv6CidrBlockAssociationSet&#34;: [],
         &#34;Tags&#34;: [
@@ -336,7 +338,7 @@ VpcId : vpc-0d3c1c88db46cfba7
                 &#34;Value&#34;: &#34;ContainerHandsOnPublic&#34;
             }
         ],
-        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0a1e2afffc8c140d8&#34;,
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0a1e2afffc8c140d8&#34;,
         &#34;EnableDns64&#34;: false,
         &#34;Ipv6Native&#34;: false,
         &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
@@ -366,7 +368,7 @@ VpcId : vpc-0d3c1c88db46cfba7
         &#34;State&#34;: &#34;available&#34;,
         &#34;SubnetId&#34;: &#34;subnet-049f0119237ff00a0&#34;,
         &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;OwnerId&#34;: &#34;123456789012&#34;,
         &#34;AssignIpv6AddressOnCreation&#34;: false,
         &#34;Ipv6CidrBlockAssociationSet&#34;: [],
         &#34;Tags&#34;: [
@@ -375,7 +377,7 @@ VpcId : vpc-0d3c1c88db46cfba7
                 &#34;Value&#34;: &#34;ContainerHandsOnPrivate&#34;
             }
         ],
-        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-049f0119237ff00a0&#34;,
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-049f0119237ff00a0&#34;,
         &#34;EnableDns64&#34;: false,
         &#34;Ipv6Native&#34;: false,
         &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
@@ -405,7 +407,7 @@ VpcId : vpc-0d3c1c88db46cfba7
         &#34;State&#34;: &#34;available&#34;,
         &#34;SubnetId&#34;: &#34;subnet-0ea89b6bc85e0ec61&#34;,
         &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;OwnerId&#34;: &#34;123456789012&#34;,
         &#34;AssignIpv6AddressOnCreation&#34;: false,
         &#34;Ipv6CidrBlockAssociationSet&#34;: [],
         &#34;Tags&#34;: [
@@ -414,7 +416,7 @@ VpcId : vpc-0d3c1c88db46cfba7
                 &#34;Value&#34;: &#34;ContainerHandsOnPrivate&#34;
             }
         ],
-        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0ea89b6bc85e0ec61&#34;,
+        &#34;SubnetArn&#34;: &#34;arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0ea89b6bc85e0ec61&#34;,
         &#34;EnableDns64&#34;: false,
         &#34;Ipv6Native&#34;: false,
         &#34;PrivateDnsNameOptionsOnLaunch&#34;: {
@@ -464,7 +466,7 @@ SubnetId1cPrivate : ${SubnetId1cPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -481,7 +483,7 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
     &#34;InternetGateway&#34;: {
         &#34;Attachments&#34;: [],
         &#34;InternetGatewayId&#34;: &#34;igw-0a511ba68ceb84ed8&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;,
+        &#34;OwnerId&#34;: &#34;123456789012&#34;,
         &#34;Tags&#34;: [
             {
                 &#34;Key&#34;: &#34;Name&#34;,
@@ -509,7 +511,7 @@ InternetGatewayId : ${InternetGatewayId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -565,7 +567,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
             }
         ],
         &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;
+        &#34;OwnerId&#34;: &#34;123456789012&#34;
     }
 }
 </code></pre>
@@ -595,7 +597,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
             }
         ],
         &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
-        &#34;OwnerId&#34;: &#34;152767562250&#34;
+        &#34;OwnerId&#34;: &#34;123456789012&#34;
     }
 }
 </code></pre>
@@ -628,7 +630,7 @@ RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -770,7 +772,7 @@ PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
 EOF
 </code></pre>
 <h3 is-upgraded>変数設定確認</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -797,7 +799,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
         {
             &#34;SecurityGroupRuleId&#34;: &#34;sgr-011c9bf434c9439a0&#34;,
             &#34;GroupId&#34;: &#34;sg-01cc901415c240504&#34;,
-            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;GroupOwnerId&#34;: &#34;123456789012&#34;,
             &#34;IsEgress&#34;: false,
             &#34;IpProtocol&#34;: &#34;tcp&#34;,
             &#34;FromPort&#34;: 80,
@@ -822,7 +824,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
         {
             &#34;SecurityGroupRuleId&#34;: &#34;sgr-0eca9b6518889b4ca&#34;,
             &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;,
-            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;GroupOwnerId&#34;: &#34;123456789012&#34;,
             &#34;IsEgress&#34;: false,
             &#34;IpProtocol&#34;: &#34;tcp&#34;,
             &#34;FromPort&#34;: 80,
@@ -848,7 +850,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
         {
             &#34;SecurityGroupRuleId&#34;: &#34;sgr-0d637ce636f2f14d9&#34;,
             &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;,
-            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;GroupOwnerId&#34;: &#34;123456789012&#34;,
             &#34;IsEgress&#34;: false,
             &#34;IpProtocol&#34;: &#34;tcp&#34;,
             &#34;FromPort&#34;: 443,
@@ -859,7 +861,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■環境変数をメモ</h2>
-<p>Cloud9で使うため、取得した変数をエディターに残して下さい。</p>
+<p>Cloud9で使うため、取得した変数をエディターに残して下さい</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 export AccoutID=&#34;${AccoutID}&#34;
@@ -876,7 +878,7 @@ export PrivateSecurityGroupsId=&#34;${PrivateSecurityGroupsId}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;152767562250&#34;
+<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;123456789012&#34;
 export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
 export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
 export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
@@ -911,7 +913,7 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
 <ul>
 <li>上部の検索バーで<code>Cloud9</code>と検索</li>
 <li><code>AWS Cloud9 &gt; Your environments</code>に<code>ContainerHandsOn</code>が作成されているので<code>Open IDE</code>ボタン押下</li>
-<li>Cloud9の画面が表示される。</li>
+<li>Cloud9の画面が表示される</li>
 </ul>
 
 
@@ -920,7 +922,7 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
       <google-codelab-step label="ECR作成" duration="5">
         <h2 is-upgraded>■環境変数を貼り付け</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;152767562250&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
 export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
 export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
 export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
@@ -947,7 +949,7 @@ PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 152767562250
+<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -968,10 +970,10 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;repository&#34;: {
-        &#34;repositoryArn&#34;: &#34;arn:aws:ecr:ap-northeast-1:152767562250:repository/jaws-days-2022/container-hands-on&#34;,
-        &#34;registryId&#34;: &#34;152767562250&#34;,
+        &#34;repositoryArn&#34;: &#34;arn:aws:ecr:ap-northeast-1:123456789012:repository/jaws-days-2022/container-hands-on&#34;,
+        &#34;registryId&#34;: &#34;123456789012&#34;,
         &#34;repositoryName&#34;: &#34;jaws-days-2022/container-hands-on&#34;,
-        &#34;repositoryUri&#34;: &#34;152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on&#34;,
+        &#34;repositoryUri&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on&#34;,
         &#34;createdAt&#34;: &#34;2022-09-06T13:21:42+00:00&#34;,
         &#34;imageTagMutability&#34;: &#34;MUTABLE&#34;,
         &#34;imageScanningConfiguration&#34;: {
@@ -1072,7 +1074,7 @@ docker rm $(docker ps -q -a)
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">REPOSITORY                                                                            TAG       IMAGE ID       CREATED          SIZE
-152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 minutes ago   414MB
+123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 minutes ago   414MB
 </code></pre>
 <h2 is-upgraded>■認証トークンを取得し、レジストリに対して Docker クライアントを認証します</h2>
 <h3 is-upgraded>cmd</h3>
@@ -1090,7 +1092,7 @@ Login Succeeded
 <pre><code language="language-Cloud9" class="language-Cloud9">docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">The push refers to repository [152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
+<pre><code language="language-Cloud9" class="language-Cloud9">The push refers to repository [123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
 9f8ad0ecf420: Pushed 
 536365481ed8: Pushed 
 4b3693c51878: Pushed 
@@ -1112,7 +1114,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
       </google-codelab-step>
     
       <google-codelab-step label="VPCエンドポイント作成" duration="5">
-        <p>FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します。</p>
+        <p>FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します</p>
 <ul>
 <li>com.amazonaws.ap-northeast-1.s3</li>
 <li>com.amazonaws.ap-northeast-1.ecr.dkr</li>
@@ -1149,7 +1151,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
             &#34;rtb-0afaac377925bca9a&#34;
         ], 
         &#34;Groups&#34;: [], 
-        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;OwnerId&#34;: &#34;123456789012&#34;, 
         &#34;VpcEndpointId&#34;: &#34;vpce-035934e1a19b46f78&#34;, 
         &#34;VpcEndpointType&#34;: &#34;Gateway&#34;, 
         &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:14:54.000Z&#34;, 
@@ -1196,7 +1198,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
                 &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;
             }
         ], 
-        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;OwnerId&#34;: &#34;123456789012&#34;, 
         &#34;VpcEndpointId&#34;: &#34;vpce-0dceb08e8bffc9a0c&#34;, 
         &#34;VpcEndpointType&#34;: &#34;Interface&#34;, 
         &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:15:53.158Z&#34;, 
@@ -1264,7 +1266,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
                 &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;
             }
         ], 
-        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;OwnerId&#34;: &#34;123456789012&#34;, 
         &#34;VpcEndpointId&#34;: &#34;vpce-0e45e7f04848a0600&#34;, 
         &#34;VpcEndpointType&#34;: &#34;Interface&#34;, 
         &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:16:25.698Z&#34;, 
@@ -1328,7 +1330,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
                 &#34;GroupId&#34;: &#34;sg-040aff209e1fe59cc&#34;
             }
         ], 
-        &#34;OwnerId&#34;: &#34;152767562250&#34;, 
+        &#34;OwnerId&#34;: &#34;123456789012&#34;, 
         &#34;VpcEndpointId&#34;: &#34;vpce-05ae88af55de2bf71&#34;, 
         &#34;VpcEndpointType&#34;: &#34;Interface&#34;, 
         &#34;CreationTimestamp&#34;: &#34;2022-09-06T14:16:50.374Z&#34;, 
@@ -1372,7 +1374,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
         {
             &#34;IpAddressType&#34;: &#34;ipv4&#34;, 
             &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;, 
-            &#34;LoadBalancerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;, 
+            &#34;LoadBalancerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;, 
             &#34;State&#34;: {
                 &#34;Code&#34;: &#34;provisioning&#34;
             }, 
@@ -1417,7 +1419,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;TargetGroups&#34;: [
         {
-            &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7624dfd8f556a2d9&#34;,
+            &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7624dfd8f556a2d9&#34;,
             &#34;TargetGroupName&#34;: &#34;ContainerHandsOn&#34;,
             &#34;Protocol&#34;: &#34;HTTP&#34;,
             &#34;Port&#34;: 80,
@@ -1462,7 +1464,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <pre><code language="language-Cloud9" class="language-Cloud9">echo ${LoadBalancerArn}
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867
+<pre><code language="language-Cloud9" class="language-Cloud9">arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867
 </code></pre>
 <h2 is-upgraded>■ターゲットグループのARN取得</h2>
 <h3 is-upgraded>cmd</h3>
@@ -1474,7 +1476,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <pre><code language="language-Cloud9" class="language-Cloud9">echo ${TargetGroupArn}
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9
+<pre><code language="language-Cloud9" class="language-Cloud9">arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9
 </code></pre>
 <h2 is-upgraded>■リスナーの追加</h2>
 <h3 is-upgraded>cmd</h3>
@@ -1488,18 +1490,18 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;Listeners&#34;: [
         {
-            &#34;ListenerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/75145ed42d9a3867/1245c4be3b3230b7&#34;,
-            &#34;LoadBalancerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;,
+            &#34;ListenerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/75145ed42d9a3867/1245c4be3b3230b7&#34;,
+            &#34;LoadBalancerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;,
             &#34;Port&#34;: 80,
             &#34;Protocol&#34;: &#34;HTTP&#34;,
             &#34;DefaultActions&#34;: [
                 {
                     &#34;Type&#34;: &#34;forward&#34;,
-                    &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;,
+                    &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;,
                     &#34;ForwardConfig&#34;: {
                         &#34;TargetGroups&#34;: [
                             {
-                                &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;,
+                                &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;,
                                 &#34;Weight&#34;: 1
                             }
                         ],
@@ -1548,7 +1550,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
         &#34;pendingTasksCount&#34;: 0, 
         &#34;runningTasksCount&#34;: 0, 
         &#34;activeServicesCount&#34;: 0, 
-        &#34;clusterArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn&#34;
+        &#34;clusterArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:cluster/ContainerHandsOn&#34;
     }
 }
 </code></pre>
@@ -1601,11 +1603,11 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;taskDefinition&#34;: {
-        &#34;taskDefinitionArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1&#34;,
+        &#34;taskDefinitionArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1&#34;,
         &#34;containerDefinitions&#34;: [
             {
                 &#34;name&#34;: &#34;ContainerHandsOn&#34;,
-                &#34;image&#34;: &#34;152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
+                &#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
                 &#34;cpu&#34;: 0,
                 &#34;portMappings&#34;: [
                     {
@@ -1621,7 +1623,7 @@ EOF
             }
         ],
         &#34;family&#34;: &#34;ContainerHandsOn&#34;,
-        &#34;executionRoleArn&#34;: &#34;arn:aws:iam::152767562250:role/ecsTaskExecutionRole&#34;,
+        &#34;executionRoleArn&#34;: &#34;arn:aws:iam::123456789012:role/ecsTaskExecutionRole&#34;,
         &#34;networkMode&#34;: &#34;awsvpc&#34;,
         &#34;revision&#34;: 1,
         &#34;volumes&#34;: [],
@@ -1655,7 +1657,7 @@ EOF
         &#34;cpu&#34;: &#34;256&#34;,
         &#34;memory&#34;: &#34;512&#34;,
         &#34;registeredAt&#34;: &#34;2022-09-06T14:59:53.594000+00:00&#34;,
-        &#34;registeredBy&#34;: &#34;arn:aws:sts::152767562250:assumed-role/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022/ShigeruOda&#34;
+        &#34;registeredBy&#34;: &#34;arn:aws:sts::123456789012:assumed-role/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022/ShigeruOda&#34;
     },
     &#34;tags&#34;: [
         {
@@ -1680,12 +1682,12 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;service&#34;: {
-        &#34;serviceArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:152767562250:service/ContainerHandsOn/ContainerHandsOn&#34;,
+        &#34;serviceArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:service/ContainerHandsOn/ContainerHandsOn&#34;,
         &#34;serviceName&#34;: &#34;ContainerHandsOn&#34;,
-        &#34;clusterArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn&#34;,
+        &#34;clusterArn&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:cluster/ContainerHandsOn&#34;,
         &#34;loadBalancers&#34;: [
             {
-                &#34;targetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7624dfd8f556a2d9&#34;,
+                &#34;targetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7624dfd8f556a2d9&#34;,
                 &#34;containerName&#34;: &#34;ContainerHandsOn&#34;,
                 &#34;containerPort&#34;: 80
             }
@@ -1698,7 +1700,7 @@ EOF
         &#34;launchType&#34;: &#34;FARGATE&#34;,
         &#34;platformVersion&#34;: &#34;LATEST&#34;,
         &#34;platformFamily&#34;: &#34;Linux&#34;,
-        &#34;taskDefinition&#34;: &#34;arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1&#34;,
+        &#34;taskDefinition&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1&#34;,
         &#34;deploymentConfiguration&#34;: {
             &#34;deploymentCircuitBreaker&#34;: {
                 &#34;enable&#34;: false,
@@ -1711,7 +1713,7 @@ EOF
             {
                 &#34;id&#34;: &#34;ecs-svc/9015413324295259653&#34;,
                 &#34;status&#34;: &#34;PRIMARY&#34;,
-                &#34;taskDefinition&#34;: &#34;arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1&#34;,
+                &#34;taskDefinition&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1&#34;,
                 &#34;desiredCount&#34;: 2,
                 &#34;pendingCount&#34;: 0,
                 &#34;runningCount&#34;: 0,
@@ -1737,7 +1739,7 @@ EOF
                 &#34;rolloutStateReason&#34;: &#34;ECS deployment ecs-svc/9015413324295259653 in progress.&#34;
             }
         ],
-        &#34;roleArn&#34;: &#34;arn:aws:iam::152767562250:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS&#34;,
+        &#34;roleArn&#34;: &#34;arn:aws:iam::123456789012:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS&#34;,
         &#34;events&#34;: [],
         &#34;createdAt&#34;: &#34;2022-09-07T02:14:18.688000+00:00&#34;,
         &#34;placementConstraints&#34;: [],
@@ -1756,7 +1758,7 @@ EOF
         },
         &#34;healthCheckGracePeriodSeconds&#34;: 0,
         &#34;schedulingStrategy&#34;: &#34;REPLICA&#34;,
-        &#34;createdBy&#34;: &#34;arn:aws:iam::152767562250:role/aws-reserved/sso.amazonaws.com/ap-northeast-1/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022&#34;,
+        &#34;createdBy&#34;: &#34;arn:aws:iam::123456789012:role/aws-reserved/sso.amazonaws.com/ap-northeast-1/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022&#34;,
         &#34;enableECSManagedTags&#34;: false,
         &#34;propagateTags&#34;: &#34;NONE&#34;,
         &#34;enableExecuteCommand&#34;: false
@@ -1809,7 +1811,7 @@ export LoadBalancersDnsName=&#34;${LoadBalancersDnsName}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;152767562250&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
 export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
 export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
 export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
@@ -1820,8 +1822,8 @@ export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
 export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
 export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
 export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
-export LoadBalancerArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;
-export TargetGroupArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;
+export LoadBalancerArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;
+export TargetGroupArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;
 export LoadBalancersDnsName=&#34;ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com&#34;
 </code></pre>
 

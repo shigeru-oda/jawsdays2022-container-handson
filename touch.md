@@ -17,15 +17,15 @@ Duration: 0:05:00
 
 ### ■ご挨拶
 
-当資料は[JAWS DAYS 2022 - Satellites](https://jawsdays2022.jaws-ug.jp/)でのハンズオントラックの一つ、[コンテナサービスをCI/CDパイプラインでデプロイしよう](https://jaws-ug.doorkeeper.jp/events/141627)のセッションで利用する資料となります。
+当資料は[JAWS DAYS 2022 - Satellites](https://jawsdays2022.jaws-ug.jp/)でのハンズオントラックの一つ、[コンテナサービスをCI/CDパイプラインでデプロイしよう](https://jaws-ug.doorkeeper.jp/events/141627)のセッションで利用する資料となります
 
-[JAWS DAYS 2022 - Satellites](https://jawsdays2022.jaws-ug.jp/)のハンズオンは以下3点ありますが、他セッションはGUI、CDKでの環境構築であったので、当セッションはCLIでの環境構築として準備しています。
+[JAWS DAYS 2022 - Satellites](https://jawsdays2022.jaws-ug.jp/)のハンズオンは以下3点ありますが、他セッションはGUI、CDKでの環境構築であったので、当セッションはCLIでの環境構築として準備しています
 
 - [S3でWebサイトを公開して、リソースポリシーでアクセスを制御してみよう](https://jaws-ug.doorkeeper.jp/events/141646)
 - [コンテナサービスをCI/CDパイプラインでデプロイしよう](https://jaws-ug.doorkeeper.jp/events/141627)
 - [CDKでサーバーレスアプリをデプロイしよう](https://jaws-ug.doorkeeper.jp/events/141651)
 
-初心者の方にはCLIコマンドが難しいかもしれませんが、まずはこういうステップが必要という勘所だけでも掴んで頂ければ幸いです、慣れた方はCLIコマンドの1つ１つの意味を理解するように進めて頂けるとありがたいです。
+初心者の方にはCLIコマンドが難しいかもしれませんが、まずはこういうステップが必要という勘所だけでも掴んで頂ければ幸いです、慣れた方はCLIコマンドの1つ１つの意味を理解するように進めて頂けるとありがたいです
 
 ### ■対象者
 
@@ -33,17 +33,17 @@ Duration: 0:05:00
 - ＡＷＳでのコンテナサービスを知りたい人
 - ＣＩ／ＣＤパイプラインでコンテナサービスをデプロイしたい人
 
-### 当日までにご準備が必要なもの
+### ■当日までにご準備が必要なもの
 
 - マネジメントコンソールにログイン可能なAdministrator権限のIAMユーザー
 - Chrome もしくは Firefox
 
 ### ■免責事項について
 
-ハンズオンで利用するサービスは一部課金対象となるサービスもございます。  
-また、ハンズオンで作成した環境を削除しない場合には、課金が続くことによって高額になる可能性があります。  
-課金が発生したことによる責任は負えませんので、ご承知おきください。
-上記事項をご理解頂きお申込みいただけますようお願いいたします。
+ハンズオンで利用するサービスは一部課金対象となるサービスもございます  
+また、ハンズオンで作成した環境を削除しない場合には、課金が続くことによって高額になる可能性があります  
+課金が発生したことによる責任は負えませんので、ご承知おきください
+上記事項をご理解頂きお申込みいただけますようお願いいたします
 
 ### ■参考資料
 
@@ -52,11 +52,11 @@ Duration: 0:05:00
 
 ### ■手順について
 
-貼り付けるコマンドは準備しているので、基本的にはCopy & Pasteで手順を進めることができます。
+貼り付けるコマンドは準備しているので、基本的にはCopy & Pasteで手順を進めることができます
 
 #### cmd
 
-cmdと記載された項目にある以下のような表示内容はコマンドをCopy & Pasteするモノとなります。
+cmdと記載された項目にある以下のような表示内容はコマンドをCopy & Pasteするモノとなります
 
 ```Sample
 Copy & Pasteの対象です
@@ -64,15 +64,16 @@ Copy & Pasteの対象です
 
 #### result
 
-resultと記載された項目にある以下のような表示内容はコマンドの実行結果です。
-IDなどは個々に違うので、CLIがよく分からない方は
+resultと記載された項目にある以下のような表示内容はコマンドの実行結果です  
+IDなどは個々に異なりますので
 
-- 表示が大きく変わらない。
-- エラーメッセージが出力されていない。
-を確認ください。
+- 表示が大きく変わらない
+- エラーメッセージが出力されていない
+
+を確認ください
 
 ```Sample
-cmd実行後の結果です。
+cmd実行後の結果です
 ```
 
 ## ハンズオンを通して学ぶこと
@@ -104,21 +105,23 @@ Duration: 0:05:00
 
 #### AWS コンソールにログイン
 
-Administrator権限のIAMユーザーでAWSコンソールにログイン
+・Administrator権限のIAMユーザーでAWSコンソールにログイン
 
 ![img](./image/img2-1.png)
 
 #### CloudShellボタン押下
 
-画面右上のCloudShellボタンを押下  
+・画面右上のCloudShellボタンを押下  
 ![img](./image/img2-2.png)
 
 #### CloudShellを起動
 
-今後は以下の画面にコマンド（以下 cmd）と結果（以下 result）を確認し、進める。
+・今後はCloudShellの画面にcmdの内容をCopy & Pasteし、resultの内容を確認し進めて下さい
 ![img](./image/img2-3.png)
 
 ### ■AWS Account IDの取得
+
+・AWS Accoutの12桁のIDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -135,7 +138,7 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 152767562250
+AccoutID : 123456789012
 ```
 
 ### ■ECSの実行Roleの存在確認
@@ -194,7 +197,7 @@ aws iam create-role \
         "Path": "/",
         "RoleName": "ecsTaskExecutionRole",
         "RoleId": "AROASHENIAIFOV2DAKSWN",
-        "Arn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
+        "Arn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
         "CreateDate": "2022-09-06T14:50:16+00:00",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
@@ -223,7 +226,7 @@ aws iam attach-role-policy \
 
 ### ■VPCの作成
 
-VPCを新規に作成します。
+VPCを新規に作成します
 
 #### cmd
 
@@ -242,7 +245,7 @@ aws ec2 create-vpc \
         "DhcpOptionsId": "dopt-c3de3ba5",
         "State": "pending",
         "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "152767562250",
+        "OwnerId": "123456789012",
         "InstanceTenancy": "default",
         "Ipv6CidrBlockAssociationSet": [],
         "CidrBlockAssociationSet": [
@@ -285,7 +288,7 @@ EOF
 #### 変数設定確認
 
 ```CloudShell
-AccoutID : 152767562250
+AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 ```
 
@@ -361,8 +364,8 @@ aws ec2 describe-vpc-attribute \
 
 ### ■Subnetの作成
 
-作成したVPCの中にSubnetを4つ作成します。
-Private Subnetが2つ、Public Subnetが2つです。
+作成したVPCの中にSubnetを4つ作成します
+Private Subnetが2つ、Public Subnetが2つです
 
 #### cmd1
 
@@ -388,7 +391,7 @@ aws ec2 create-subnet \
         "State": "available",
         "SubnetId": "subnet-0f66f257f167a1d47",
         "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "152767562250",
+        "OwnerId": "123456789012",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -397,7 +400,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPublic"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0f66f257f167a1d47",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0f66f257f167a1d47",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -433,7 +436,7 @@ aws ec2 create-subnet \
         "State": "available",
         "SubnetId": "subnet-0a1e2afffc8c140d8",
         "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "152767562250",
+        "OwnerId": "123456789012",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -442,7 +445,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPublic"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0a1e2afffc8c140d8",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0a1e2afffc8c140d8",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -478,7 +481,7 @@ aws ec2 create-subnet \
         "State": "available",
         "SubnetId": "subnet-049f0119237ff00a0",
         "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "152767562250",
+        "OwnerId": "123456789012",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -487,7 +490,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPrivate"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-049f0119237ff00a0",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-049f0119237ff00a0",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -523,7 +526,7 @@ aws ec2 create-subnet \
         "State": "available",
         "SubnetId": "subnet-0ea89b6bc85e0ec61",
         "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "152767562250",
+        "OwnerId": "123456789012",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -532,7 +535,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPrivate"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0ea89b6bc85e0ec61",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0ea89b6bc85e0ec61",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -596,7 +599,7 @@ EOF
 #### 変数設定確認
 
 ```CloudShell
-AccoutID : 152767562250
+AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -620,7 +623,7 @@ aws ec2 create-internet-gateway \
     "InternetGateway": {
         "Attachments": [],
         "InternetGatewayId": "igw-0a511ba68ceb84ed8",
-        "OwnerId": "152767562250",
+        "OwnerId": "123456789012",
         "Tags": [
             {
                 "Key": "Name",
@@ -656,7 +659,7 @@ EOF
 #### 変数設定確認
 
 ``` CloudShell
-AccoutID : 152767562250
+AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -733,7 +736,7 @@ aws ec2 create-route-table \
             }
         ],
         "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "152767562250"
+        "OwnerId": "123456789012"
     }
 }
 ```
@@ -769,7 +772,7 @@ aws ec2 create-route-table \
             }
         ],
         "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "152767562250"
+        "OwnerId": "123456789012"
     }
 }
 ```
@@ -813,7 +816,7 @@ EOF
 #### 変数設定確認
 
 ```CloudShell
-AccoutID : 152767562250
+AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -1012,7 +1015,7 @@ EOF
 #### 変数設定確認
 
 ```CloudShell
-AccoutID : 152767562250
+AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -1046,7 +1049,7 @@ aws ec2 authorize-security-group-ingress \
         {
             "SecurityGroupRuleId": "sgr-011c9bf434c9439a0",
             "GroupId": "sg-01cc901415c240504",
-            "GroupOwnerId": "152767562250",
+            "GroupOwnerId": "123456789012",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 80,
@@ -1078,7 +1081,7 @@ aws ec2 authorize-security-group-ingress \
         {
             "SecurityGroupRuleId": "sgr-0eca9b6518889b4ca",
             "GroupId": "sg-040aff209e1fe59cc",
-            "GroupOwnerId": "152767562250",
+            "GroupOwnerId": "123456789012",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 80,
@@ -1110,7 +1113,7 @@ aws ec2 authorize-security-group-ingress \
         {
             "SecurityGroupRuleId": "sgr-0d637ce636f2f14d9",
             "GroupId": "sg-040aff209e1fe59cc",
-            "GroupOwnerId": "152767562250",
+            "GroupOwnerId": "123456789012",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 443,
@@ -1123,7 +1126,7 @@ aws ec2 authorize-security-group-ingress \
 
 ### ■環境変数をメモ
 
-Cloud9で使うため、取得した変数をエディターに残して下さい。
+Cloud9で使うため、取得した変数をエディターに残して下さい
 
 #### cmd
 
@@ -1146,7 +1149,7 @@ EOF
 #### result
 
 ```CloudShell
-export AccoutID="152767562250"
+export AccoutID="123456789012"
 export VpcId="vpc-0d3c1c88db46cfba7"
 export SubnetId1aPublic="subnet-0f66f257f167a1d47"
 export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
@@ -1188,7 +1191,7 @@ aws cloud9 create-environment-ec2 \
 
 - 上部の検索バーで`Cloud9`と検索
 - `AWS Cloud9 > Your environments`に`ContainerHandsOn`が作成されているので`Open IDE`ボタン押下
-- Cloud9の画面が表示される。
+- Cloud9の画面が表示される
 
 ## ECR作成
 
@@ -1199,7 +1202,7 @@ Duration: 0:05:00
 #### cmd
 
 ```Cloud9
-export AccoutID="152767562250"
+export AccoutID="123456789012"
 export VpcId="vpc-0d3c1c88db46cfba7"
 export SubnetId1aPublic="subnet-0f66f257f167a1d47"
 export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
@@ -1231,7 +1234,7 @@ EOF
 #### result
 
 ``` Cloud9
-AccoutID : 152767562250
+AccoutID : 123456789012
 VpcId : vpc-0d3c1c88db46cfba7
 SubnetId1aPublic : subnet-0f66f257f167a1d47
 SubnetId1cPublic : subnet-0a1e2afffc8c140d8
@@ -1259,10 +1262,10 @@ aws ecr create-repository \
 ```Cloud9
 {
     "repository": {
-        "repositoryArn": "arn:aws:ecr:ap-northeast-1:152767562250:repository/jaws-days-2022/container-hands-on",
-        "registryId": "152767562250",
+        "repositoryArn": "arn:aws:ecr:ap-northeast-1:123456789012:repository/jaws-days-2022/container-hands-on",
+        "registryId": "123456789012",
         "repositoryName": "jaws-days-2022/container-hands-on",
-        "repositoryUri": "152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on",
+        "repositoryUri": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on",
         "createdAt": "2022-09-06T13:21:42+00:00",
         "imageTagMutability": "MUTABLE",
         "imageScanningConfiguration": {
@@ -1421,7 +1424,7 @@ docker images --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazo
 
 ```Cloud9
 REPOSITORY                                                                            TAG       IMAGE ID       CREATED          SIZE
-152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 minutes ago   414MB
+123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 minutes ago   414MB
 ```
 
 ### ■認証トークンを取得し、レジストリに対して Docker クライアントを認証します
@@ -1453,7 +1456,7 @@ docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-20
 #### result
 
 ```Cloud9
-The push refers to repository [152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
+The push refers to repository [123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
 9f8ad0ecf420: Pushed 
 536365481ed8: Pushed 
 4b3693c51878: Pushed 
@@ -1475,7 +1478,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 
 Duration: 0:05:00
 
-FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します。
+FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します
 
 - com.amazonaws.ap-northeast-1.s3
 - com.amazonaws.ap-northeast-1.ecr.dkr
@@ -1518,7 +1521,7 @@ aws ec2 create-vpc-endpoint \
             "rtb-0afaac377925bca9a"
         ], 
         "Groups": [], 
-        "OwnerId": "152767562250", 
+        "OwnerId": "123456789012", 
         "VpcEndpointId": "vpce-035934e1a19b46f78", 
         "VpcEndpointType": "Gateway", 
         "CreationTimestamp": "2022-09-06T14:14:54.000Z", 
@@ -1572,7 +1575,7 @@ aws ec2 create-vpc-endpoint \
                 "GroupId": "sg-040aff209e1fe59cc"
             }
         ], 
-        "OwnerId": "152767562250", 
+        "OwnerId": "123456789012", 
         "VpcEndpointId": "vpce-0dceb08e8bffc9a0c", 
         "VpcEndpointType": "Interface", 
         "CreationTimestamp": "2022-09-06T14:15:53.158Z", 
@@ -1647,7 +1650,7 @@ aws ec2 create-vpc-endpoint \
                 "GroupId": "sg-040aff209e1fe59cc"
             }
         ], 
-        "OwnerId": "152767562250", 
+        "OwnerId": "123456789012", 
         "VpcEndpointId": "vpce-0e45e7f04848a0600", 
         "VpcEndpointType": "Interface", 
         "CreationTimestamp": "2022-09-06T14:16:25.698Z", 
@@ -1718,7 +1721,7 @@ aws ec2 create-vpc-endpoint \
                 "GroupId": "sg-040aff209e1fe59cc"
             }
         ], 
-        "OwnerId": "152767562250", 
+        "OwnerId": "123456789012", 
         "VpcEndpointId": "vpce-05ae88af55de2bf71", 
         "VpcEndpointType": "Interface", 
         "CreationTimestamp": "2022-09-06T14:16:50.374Z", 
@@ -1768,7 +1771,7 @@ aws elbv2 create-load-balancer \
         {
             "IpAddressType": "ipv4", 
             "VpcId": "vpc-0d3c1c88db46cfba7", 
-            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867", 
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867", 
             "State": {
                 "Code": "provisioning"
             }, 
@@ -1820,7 +1823,7 @@ aws elbv2 create-target-group \
 {
     "TargetGroups": [
         {
-            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
             "TargetGroupName": "ContainerHandsOn",
             "Protocol": "HTTP",
             "Port": 80,
@@ -1883,7 +1886,7 @@ echo ${LoadBalancerArn}
 #### result
 
 ```Cloud9
-arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867
+arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867
 ```
 
 ### ■ターゲットグループのARN取得
@@ -1904,7 +1907,7 @@ echo ${TargetGroupArn}
 #### result
 
 ```Cloud9
-arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9
+arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9
 ```
 
 ### ■リスナーの追加
@@ -1925,18 +1928,18 @@ aws elbv2 create-listener \
 {
     "Listeners": [
         {
-            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/75145ed42d9a3867/1245c4be3b3230b7",
-            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867",
+            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/75145ed42d9a3867/1245c4be3b3230b7",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867",
             "Port": 80,
             "Protocol": "HTTP",
             "DefaultActions": [
                 {
                     "Type": "forward",
-                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
                     "ForwardConfig": {
                         "TargetGroups": [
                             {
-                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
                                 "Weight": 1
                             }
                         ],
@@ -1991,7 +1994,7 @@ aws ecs create-cluster \
         "pendingTasksCount": 0, 
         "runningTasksCount": 0, 
         "activeServicesCount": 0, 
-        "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn"
+        "clusterArn": "arn:aws:ecs:ap-northeast-1:123456789012:cluster/ContainerHandsOn"
     }
 }
 ```
@@ -2053,11 +2056,11 @@ aws ecs register-task-definition \
 ```Cloud9
 {
     "taskDefinition": {
-        "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1",
+        "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1",
         "containerDefinitions": [
             {
                 "name": "ContainerHandsOn",
-                "image": "152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
+                "image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
                 "cpu": 0,
                 "portMappings": [
                     {
@@ -2073,7 +2076,7 @@ aws ecs register-task-definition \
             }
         ],
         "family": "ContainerHandsOn",
-        "executionRoleArn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
+        "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
         "networkMode": "awsvpc",
         "revision": 1,
         "volumes": [],
@@ -2107,7 +2110,7 @@ aws ecs register-task-definition \
         "cpu": "256",
         "memory": "512",
         "registeredAt": "2022-09-06T14:59:53.594000+00:00",
-        "registeredBy": "arn:aws:sts::152767562250:assumed-role/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022/ShigeruOda"
+        "registeredBy": "arn:aws:sts::123456789012:assumed-role/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022/ShigeruOda"
     },
     "tags": [
         {
@@ -2139,12 +2142,12 @@ aws ecs create-service \
 ```Cloud9
 {
     "service": {
-        "serviceArn": "arn:aws:ecs:ap-northeast-1:152767562250:service/ContainerHandsOn/ContainerHandsOn",
+        "serviceArn": "arn:aws:ecs:ap-northeast-1:123456789012:service/ContainerHandsOn/ContainerHandsOn",
         "serviceName": "ContainerHandsOn",
-        "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn",
+        "clusterArn": "arn:aws:ecs:ap-northeast-1:123456789012:cluster/ContainerHandsOn",
         "loadBalancers": [
             {
-                "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
+                "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
                 "containerName": "ContainerHandsOn",
                 "containerPort": 80
             }
@@ -2157,7 +2160,7 @@ aws ecs create-service \
         "launchType": "FARGATE",
         "platformVersion": "LATEST",
         "platformFamily": "Linux",
-        "taskDefinition": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1",
+        "taskDefinition": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1",
         "deploymentConfiguration": {
             "deploymentCircuitBreaker": {
                 "enable": false,
@@ -2170,7 +2173,7 @@ aws ecs create-service \
             {
                 "id": "ecs-svc/9015413324295259653",
                 "status": "PRIMARY",
-                "taskDefinition": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:1",
+                "taskDefinition": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1",
                 "desiredCount": 2,
                 "pendingCount": 0,
                 "runningCount": 0,
@@ -2196,7 +2199,7 @@ aws ecs create-service \
                 "rolloutStateReason": "ECS deployment ecs-svc/9015413324295259653 in progress."
             }
         ],
-        "roleArn": "arn:aws:iam::152767562250:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "roleArn": "arn:aws:iam::123456789012:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
         "events": [],
         "createdAt": "2022-09-07T02:14:18.688000+00:00",
         "placementConstraints": [],
@@ -2215,7 +2218,7 @@ aws ecs create-service \
         },
         "healthCheckGracePeriodSeconds": 0,
         "schedulingStrategy": "REPLICA",
-        "createdBy": "arn:aws:iam::152767562250:role/aws-reserved/sso.amazonaws.com/ap-northeast-1/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022",
+        "createdBy": "arn:aws:iam::123456789012:role/aws-reserved/sso.amazonaws.com/ap-northeast-1/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022",
         "enableECSManagedTags": false,
         "propagateTags": "NONE",
         "enableExecuteCommand": false
@@ -2282,7 +2285,7 @@ EOF
 #### result
 
 ```Cloud9
-export AccoutID="152767562250"
+export AccoutID="123456789012"
 export VpcId="vpc-0d3c1c88db46cfba7"
 export SubnetId1aPublic="subnet-0f66f257f167a1d47"
 export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
@@ -2293,8 +2296,8 @@ export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
 export RouteTableIdPrivate="rtb-0afaac377925bca9a"
 export PublicSecurityGroupsId="sg-01cc901415c240504"
 export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867"
-export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9"
+export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867"
+export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9"
 export LoadBalancersDnsName="ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com"
 ```
 
