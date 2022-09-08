@@ -48,7 +48,7 @@ Duration: 0:05:00
 ### ■参考資料
 
 - [AWS CI/CD for Amazon ECS ハンズオン~ Cloud9, Docker, Code Services を⽤いた開発効率向上 ~](https://pages.awscloud.com/rs/112-TZM-766/images/AWS_CICD_ECS_Handson.pdf)
--[20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
+- [20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
 
 ### ■手順について
 
@@ -109,18 +109,23 @@ Duration: 0:05:00
 
 ![img](./image/img3-1.png)
 
+・リージョンを`東京`に変更
+
+![img](./image/img3-2.png)
+
 #### CloudShellボタン押下
 
 ・画面右上のCloudShellボタンを押下  
-![img](./image/img3-2.png)
+![img](./image/img3-3.png)
 
 #### CloudShellを起動
 
 ・今後はCloudShellの画面にcmdの内容をCopy & Pasteし、resultの内容を確認し進めて下さい
-![img](./image/img3-3.png)
+![img](./image/img3-4.png)
 
 ### ■AWS Account IDの取得
 
+![img](./image/drowio-3-1.png)
 ・IDを取得し、変数に格納・確認を行います
 
 #### cmd
@@ -1240,6 +1245,46 @@ aws ec2 authorize-security-group-ingress \
 }
 ```
 
+### ■CloudWatch LogGroupの作成
+
+・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。
+
+#### cmd
+
+```CloudShell
+aws logs create-log-group --log-group-name awslogs-container-hands-on
+```
+
+#### result
+
+```CloudShell
+（なし）
+```
+
+### ■CloudWatch LogGroupの作成確認
+
+#### cmd
+
+```CloudShell
+aws logs describe-log-groups --log-group-name-prefix awslogs-container-hands-on
+```
+
+#### result
+
+```CloudShell
+{
+    "logGroups": [
+        {
+            "logGroupName": "awslogs-container-hands-on",
+            "creationTime": 1662547861755,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:ap-northeast-1:378647896848:log-group:awslogs-container-hands-on:*",
+            "storedBytes": 0
+        }
+    ]
+}
+```
+
 ### ■環境変数をメモ
 
 ・Cloud9で使うため、取得した変数をエディターに残して下さい
@@ -2106,10 +2151,13 @@ aws elbv2 create-listener \
 Duration: 0:05:00
 
 ### ■ECS/Fargate周辺の説明
+
 #### 参考
+
 [20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
 
 #### ECS on EC2の構成図
+
 ![img](./image/img9-1.png)
 
 - EC2上で稼働するTaskでコンテナが処理されます
@@ -2117,12 +2165,14 @@ Duration: 0:05:00
 - クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です
 
 #### ECS on Fargateの構成図
+
 ![img](./image/img9-2.png)
 
 - しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです
 - EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate
 
-#### ECS
+#### ECSの主要要素
+
 ![img](./image/img9-3.png)
 
 - クラスター：実行環境の境界線

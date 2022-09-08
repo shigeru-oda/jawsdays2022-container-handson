@@ -52,7 +52,8 @@
 <p>ハンズオンで利用するサービスは一部課金対象となるサービスもございます<br> また、ハンズオンで作成した環境を削除しない場合には、課金が続くことによって高額になる可能性があります<br> 課金が発生したことによる責任は負えませんので、ご承知おきください 上記事項をご理解頂きお申込みいただけますようお願いいたします</p>
 <h2 is-upgraded>■参考資料</h2>
 <ul>
-<li><a href="https://pages.awscloud.com/rs/112-TZM-766/images/AWS_CICD_ECS_Handson.pdf" target="_blank">AWS CI/CD for Amazon ECS ハンズオン~ Cloud9, Docker, Code Services を⽤いた開発効率向上 ~</a> -<a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></li>
+<li><a href="https://pages.awscloud.com/rs/112-TZM-766/images/AWS_CICD_ECS_Handson.pdf" target="_blank">AWS CI/CD for Amazon ECS ハンズオン~ Cloud9, Docker, Code Services を⽤いた開発効率向上 ~</a></li>
+<li><a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></li>
 </ul>
 <h2 is-upgraded>■手順について</h2>
 <p>貼り付けるコマンドは準備しているので、基本的にはCopy &amp; Pasteで手順を進めることができます</p>
@@ -98,12 +99,14 @@
 <h3 is-upgraded>AWS コンソールにログイン</h3>
 <p>・Administrator権限のIAMユーザーでAWSコンソールにログイン</p>
 <p class="image-container"><img alt="img" src="img/8ec695a05f461637.png"></p>
+<p>・リージョンを<code>�</code>�京に変更</p>
+<p class="image-container"><img alt="img" src="img/a700f74d7e2e97dd.png"></p>
 <h3 is-upgraded>CloudShellボタン押下</h3>
 <p>・画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
 <h3 is-upgraded>CloudShellを起動</h3>
 <p>・今後はCloudShellの画面にcmdの内容をCopy &amp; Pasteし、resultの内容を確認し進めて下さい <img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<p><img alt="img" src="img/f44362afeb0e4cfe.png"> ・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID=`aws sts get-caller-identity --query Account --output text`
 </code></pre>
@@ -928,6 +931,31 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
     ]
 }
 </code></pre>
+<h2 is-upgraded>■CloudWatch LogGroupの作成</h2>
+<p>・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws logs create-log-group --log-group-name awslogs-container-hands-on
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">（なし）
+</code></pre>
+<h2 is-upgraded>■CloudWatch LogGroupの作成確認</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws logs describe-log-groups --log-group-name-prefix awslogs-container-hands-on
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;logGroups&#34;: [
+        {
+            &#34;logGroupName&#34;: &#34;awslogs-container-hands-on&#34;,
+            &#34;creationTime&#34;: 1662547861755,
+            &#34;metricFilterCount&#34;: 0,
+            &#34;arn&#34;: &#34;arn:aws:logs:ap-northeast-1:378647896848:log-group:awslogs-container-hands-on:*&#34;,
+            &#34;storedBytes&#34;: 0
+        }
+    ]
+}
+</code></pre>
 <h2 is-upgraded>■環境変数をメモ</h2>
 <p>・Cloud9で使うため、取得した変数をエディターに残して下さい</p>
 <h3 is-upgraded>cmd</h3>
@@ -1623,7 +1651,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <li>しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです</li>
 <li>EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate</li>
 </ul>
-<h3 is-upgraded>ECS</h3>
+<h3 is-upgraded>ECSの主要要素</h3>
 <p class="image-container"><img alt="img" src="img/907d8c5dea096b30.png"></p>
 <ul>
 <li>クラスター：実行環境の境界線</li>
