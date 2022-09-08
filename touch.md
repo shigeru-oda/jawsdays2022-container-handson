@@ -1312,10 +1312,10 @@ aws cloud9 create-environment-ec2 \
 - Cloud9の画面が表示される
 
 ・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます
-![img](./image/img4-1.png)
+<a href="./image/img4-1.png" target="_blank" rel="noopener noreferrer">![img](./image/img4-1.png)</a>
 
 ・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください
-![img](./image/img4-2.png)
+<a href="./image/img4-2.png" target="_blank" rel="noopener noreferrer">![img](./image/img4-2.png)</a>
 
 ## ECR作成
 
@@ -1323,7 +1323,9 @@ Duration: 0:05:00
 
 ### ■環境変数を貼り付け
 
-#### cmd
+・CloudShellで取得した環境変数をCloud9へ移設
+
+#### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
 export AccoutID="123456789012"
@@ -1372,6 +1374,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
 ### ■ECRの作成
+・コンテナイメージのレジストリであるECRを作成
 
 #### cmd
 

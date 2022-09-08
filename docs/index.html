@@ -984,15 +984,16 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
 <li><code>AWS Cloud9 &gt; Your environments</code>に<code>ContainerHandsOn</code>が作成されているので<code>Open IDE</code>ボタン押下</li>
 <li>Cloud9の画面が表示される</li>
 </ul>
-<p>・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます <img alt="img" src="img/ccb3ac339b93cb8e.png"></p>
-<p>・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください <img alt="img" src="img/944649a354b83dff.png"></p>
+<p>・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます <a href="./image/img4-1.png" target="_blank"><img alt="img" src="img/ccb3ac339b93cb8e.png"></a></p>
+<p>・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください <a href="./image/img4-2.png" target="_blank"><img alt="img" src="img/944649a354b83dff.png"></a></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="ECR作成" duration="5">
         <h2 is-upgraded>■環境変数を貼り付け</h2>
-<h3 is-upgraded>cmd</h3>
+<p>・CloudShellで取得した環境変数をCloud9へ移設</p>
+<h3 is-upgraded>cmd (以下はサンプルです、エディターに退避した結果を利用ください)</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
 export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
 export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
@@ -1033,6 +1034,7 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 </code></pre>
 <h2 is-upgraded>■ECRの作成</h2>
+<p>・コンテナイメージのレジストリであるECRを作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecr create-repository \
     --repository-name jaws-days-2022/container-hands-on \
