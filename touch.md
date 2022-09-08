@@ -45,6 +45,36 @@ Duration: 0:05:00
 課金が発生したことによる責任は負えませんので、ご承知おきください。
 上記事項をご理解頂きお申込みいただけますようお願いいたします。
 
+### ■参考資料
+
+- [AWS CI/CD for Amazon ECS ハンズオン~ Cloud9, Docker, Code Services を⽤いた開発効率向上 ~](https://pages.awscloud.com/rs/112-TZM-766/images/AWS_CICD_ECS_Handson.pdf)
+-[20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
+
+### ■手順について
+
+貼り付けるコマンドは準備しているので、基本的にはCopy & Pasteで手順を進めることができます。
+
+#### cmd
+
+cmdと記載された項目にある以下のような表示内容はコマンドをCopy & Pasteするモノとなります。
+
+```Sample
+Copy & Pasteの対象です
+```
+
+#### result
+
+resultと記載された項目にある以下のような表示内容はコマンドの実行結果です。
+IDなどは個々に違うので、CLIがよく分からない方は
+
+- 表示が大きく変わらない。
+- エラーメッセージが出力されていない。
+を確認ください。
+
+```Sample
+cmd実行後の結果です。
+```
+
 ## ハンズオンを通して学ぶこと
 
 Duration: 0:05:00
@@ -55,6 +85,8 @@ Duration: 0:05:00
 - VPCエンドポイントを使ったセキュア環境の構築
 - ECS /Fargateを使ったサーバーレスコンテナ運用の構築
 
+**あとで完成図を挿入**
+
 ### ■ハンズオン２
 
 - CoceCommitを使ったソースコード管理
@@ -62,9 +94,7 @@ Duration: 0:05:00
 - CodeDeployを使ったECS/Fargateへのデプロイ
 - CodePipelineを使ったCI/CDパイプラインの構築
 
-## 座学：ハンズオン１
-
-Duration: 0:05:00
+**あとで完成図を挿入**
 
 ## 事前準備とネットワーク周りの構築
 
@@ -73,6 +103,8 @@ Duration: 0:05:00
 ### ■CloudShellの起動
 
 #### AWS コンソールにログイン
+
+Administrator権限のIAMユーザーでAWSコンソールにログイン
 
 ![img](./image/img2-1.png)
 
