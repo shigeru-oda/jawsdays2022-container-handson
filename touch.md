@@ -1343,6 +1343,7 @@ export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
 Duration: 0:05:00
 
 ### ■Cloud9の作成
+![img](./image/drowio-5-1.png)
 
 ・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成
 
@@ -1644,6 +1645,7 @@ Login Succeeded
 ```
 
 ### ■DockerImageをECRにPush
+![img](./image/drowio-6-1.png)
 
 #### cmd
 
@@ -1687,6 +1689,7 @@ ECRに格納されたイメージを取得するためには通常Internet経由
 - com.amazonaws.ap-northeast-1.logs
 
 ### ■com.amazonaws.ap-northeast-1.s3
+![img](./image/drowio-7-1.png)
 
 #### cmd
 
@@ -1732,6 +1735,7 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.dkr
+![img](./image/drowio-7-2.png)
 
 #### cmd
 
@@ -1807,6 +1811,7 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.api
+![img](./image/drowio-7-3.png)
 
 #### cmd
 
@@ -1878,6 +1883,7 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.logs
+![img](./image/drowio-7-4.png)
 
 #### cmd
 
