@@ -1092,7 +1092,7 @@ EOF
 &lt;/html&gt;
 EOF
 </code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">ls -l ./Dockerfile  ./src/index.php
+<pre><code language="language-Cloud9" class="language-Cloud9">ls -l ./Dockerfile ./src/index.php
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user  47 Sep  6 13:26 ./Dockerfile
@@ -1100,7 +1100,8 @@ EOF
 </code></pre>
 <h2 is-upgraded>■Cloud9上でDocker イメージを構築</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">docker build -t jaws-days-2022/container-hands-on .
+<pre><code language="language-Cloud9" class="language-Cloud9">docker build \
+  -t jaws-days-2022/container-hands-on .
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（略）
@@ -1109,7 +1110,8 @@ Successfully tagged jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h2 is-upgraded>■Cloud9上でDocker イメージを構築されたことを確認</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-cloud9" class="language-cloud9">docker images --filter reference= jaws-days-2022/container-hands-on:latest
+<pre><code language="language-cloud9" class="language-cloud9">docker images \
+  --filter reference= jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-cloud9" class="language-cloud9">REPOSITORY                          TAG       IMAGE ID       CREATED          SIZE
@@ -1117,7 +1119,9 @@ jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   41
 </code></pre>
 <h2 is-upgraded>■Cloud9上でDocker イメージを起動</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">docker run --name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest
+<pre><code language="language-Cloud9" class="language-Cloud9">docker run \
+  --name container-hands-on \
+  -d -p 8080:80 jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
@@ -1135,14 +1139,16 @@ docker rm $(docker ps -q -a)
 </code></pre>
 <h2 is-upgraded>■DockerImageにTag付けを行う</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">docker tag jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+<pre><code language="language-Cloud9" class="language-Cloud9">docker tag \
+  jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■DockerImageにTag付けの確認</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">docker images --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+<pre><code language="language-Cloud9" class="language-Cloud9">docker images \
+  --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 
 </code></pre>
 <h3 is-upgraded>result</h3>
@@ -1151,7 +1157,11 @@ docker rm $(docker ps -q -a)
 </code></pre>
 <h2 is-upgraded>■認証トークンを取得し、レジストリに対して Docker クライアントを認証します</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ecr get-login-password \
+  --region ap-northeast-1 | \
+  docker login \
+  --username AWS \
+--password-stdin `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
@@ -1162,7 +1172,8 @@ Login Succeeded
 </code></pre>
 <h2 is-upgraded>■DockerImageをECRにPush</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+<pre><code language="language-Cloud9" class="language-Cloud9">docker push \
+  `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">The push refers to repository [123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]

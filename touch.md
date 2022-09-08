@@ -1454,7 +1454,7 @@ EOF
 ```
 
 ```Cloud9
-ls -l ./Dockerfile  ./src/index.php
+ls -l ./Dockerfile ./src/index.php
 ```
 
 #### result
@@ -1469,7 +1469,8 @@ ls -l ./Dockerfile  ./src/index.php
 #### cmd
 
 ```Cloud9
-docker build -t jaws-days-2022/container-hands-on .
+docker build \
+  -t jaws-days-2022/container-hands-on .
 ```
 
 #### result
@@ -1485,7 +1486,8 @@ Successfully tagged jaws-days-2022/container-hands-on:latest
 #### cmd
 
 ```cloud9
-docker images --filter reference= jaws-days-2022/container-hands-on:latest
+docker images \
+  --filter reference= jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
@@ -1500,7 +1502,9 @@ jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   41
 #### cmd
 
 ```Cloud9
-docker run --name container-hands-on -d -p 8080:80 jaws-days-2022/container-hands-on:latest
+docker run \
+  --name container-hands-on \
+  -d -p 8080:80 jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
@@ -1529,7 +1533,8 @@ docker rm $(docker ps -q -a)
 #### cmd
 
 ```Cloud9
-docker tag jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+docker tag \
+  jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
@@ -1543,7 +1548,8 @@ docker tag jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.a
 #### cmd
 
 ```Cloud9
-docker images --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+docker images \
+  --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 
 ```
 
@@ -1559,7 +1565,11 @@ REPOSITORY                                                                      
 #### cmd
 
 ```Cloud9
-aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com
+aws ecr get-login-password \
+  --region ap-northeast-1 | \
+  docker login \
+  --username AWS \
+--password-stdin `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com
 ```
 
 #### result
@@ -1577,7 +1587,8 @@ Login Succeeded
 #### cmd
 
 ```Cloud9
-docker push `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+docker push \
+  `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
