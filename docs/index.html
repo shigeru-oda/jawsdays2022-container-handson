@@ -1608,18 +1608,22 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     
       <google-codelab-step label="Fargate作成" duration="5">
         <h2 is-upgraded>■ECS/Fargate周辺の説明</h2>
-<p><a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">参考:20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></p>
-<p><img alt="img" src="img/f1a8c502f37f27d.png"> ECS on EC2の構成図</p>
+<h3 is-upgraded>参考</h3>
+<p><a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></p>
+<h3 is-upgraded>ECS on EC2の構成図</h3>
+<p class="image-container"><img alt="img" src="img/f1a8c502f37f27d.png"></p>
 <ul>
 <li>EC2上で稼働するTaskでコンテナが処理されます</li>
 <li>EC2を複数個まとめてクラスターとして扱います</li>
 <li>クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です</li>
 </ul>
-<p><img alt="img" src="img/7c6d141c13fa6ae9.png"> ECS on Fargateの構成図</p>
+<h3 is-upgraded>ECS on Fargateの構成図</h3>
+<p class="image-container"><img alt="img" src="img/7c6d141c13fa6ae9.png"></p>
 <ul>
 <li>しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです</li>
 <li>EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate</li>
 </ul>
+<h3 is-upgraded>ECS</h3>
 <p class="image-container"><img alt="img" src="img/907d8c5dea096b30.png"></p>
 <ul>
 <li>クラスター：実行環境の境界線</li>

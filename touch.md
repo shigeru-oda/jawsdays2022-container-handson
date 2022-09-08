@@ -2106,22 +2106,23 @@ aws elbv2 create-listener \
 Duration: 0:05:00
 
 ### ■ECS/Fargate周辺の説明
+#### 参考
+[20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
 
-[参考:20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
-
+#### ECS on EC2の構成図
 ![img](./image/img9-1.png)
-ECS on EC2の構成図
 
 - EC2上で稼働するTaskでコンテナが処理されます
 - EC2を複数個まとめてクラスターとして扱います
 - クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です
 
+#### ECS on Fargateの構成図
 ![img](./image/img9-2.png)
-ECS on Fargateの構成図
 
 - しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです
 - EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate
 
+#### ECS
 ![img](./image/img9-3.png)
 
 - クラスター：実行環境の境界線
