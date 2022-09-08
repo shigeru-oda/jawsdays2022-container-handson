@@ -27,8 +27,41 @@
                   environment="web"
                   feedback-link="">
     
-      <google-codelab-step label="はじめに" duration="5">
-        
+      <google-codelab-step label="ご挨拶" duration="0">
+        <p>当資料は<a href="https://jawsdays2022.jaws-ug.jp/" target="_blank">JAWS DAYS 2022 - Satellites</a>でのハンズオントラックの一つ、<a href="https://jaws-ug.doorkeeper.jp/events/141627" target="_blank">コンテナサービスをCI/CDパイプラインでデプロイしよう</a>のセッションで利用する資料となります。</p>
+<p>JAWS DAYS 2022 - Satellitesのハンズオンは以下3点ありますが、他セッションはGUI、CDKでの環境構築であったので、当セッションはCLIに寄せた内容で準備しています。</p>
+<ul>
+<li><a href="https://jaws-ug.doorkeeper.jp/events/141646" target="_blank">S3でWebサイトを公開して、リソースポリシーでアクセスを制御してみよう</a></li>
+<li><a href="https://jaws-ug.doorkeeper.jp/events/141627" target="_blank">コンテナサービスをCI/CDパイプラインでデプロイしよう</a></li>
+<li><a href="https://jaws-ug.doorkeeper.jp/events/141651" target="_blank">CDKでサーバーレスアプリをデプロイしよう</a></li>
+</ul>
+<p>初心者の方にはコマンドが難しいかもしれませんが、まずはこういうステップが必要という勘所だけでも掴んで頂ければ幸いです、慣れた方はCLIコマンドの1つ１つの意味を理解するように進めて頂けるとありがたいです。</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="対象者" duration="0">
+        <ul>
+<li>コンテナが何かよく分からない人</li>
+<li>ＡＷＳでのコンテナサービスを知りたい人</li>
+<li>ＣＩ／ＣＤパイプラインでコンテナサービスをデプロイしたい人</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="当日までにご準備が必要なもの" duration="0">
+        <ul>
+<li>マネジメントコンソールにログイン可能なAdministrator権限のIAMユーザー</li>
+<li>Chrome もしくは Firefox</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="免責事項について" duration="5">
+        <p>ハンズオンで利用するサービスは無料枠を中心として構成していますが、一部課金が発生する場合があります。 また、ハンズオンで作成した環境を削除しない場合には、課金が続くことによって高額になる可能性があります。 課金が発生したことによる責任は負えませんので、ご承知おきください。 上記事項をご理解頂きお申込みいただけますようお願いいたします。</p>
+
 
       </google-codelab-step>
     
@@ -84,7 +117,7 @@ EOF
   --assume-role-policy-document file://assume-role-policy-document.json
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code>{
+<pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;Role&#34;: {
         &#34;Path&#34;: &#34;/&#34;,
         &#34;RoleName&#34;: &#34;ecsTaskExecutionRole&#34;,
@@ -992,8 +1025,11 @@ jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   41
 <li><code>Hello! Jaws Days 2022!!</code>と記載された画面が表示されること<br></li>
 </ul>
 <p class="image-container"><img alt="img" src="img/2be66bb659acb02.png"></p>
-<aside class="special"><p>何か間違ってコンテナを止めたい場合には以下を実行ください <br><code>docker stop $(docker ps -q)<br>docker rm $(docker ps -q -a)<br></code></p>
+<aside class="special"><p>何か間違ってコンテナを止めたい場合には以下を実行ください</p>
 </aside>
+<pre><code language="language-Cloud9" class="language-Cloud9">docker stop $(docker ps -q)
+docker rm $(docker ps -q -a)
+</code></pre>
 <h2 is-upgraded>■DockerImageにTag付けを行う</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker tag jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
@@ -1506,7 +1542,16 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
                     &#34;protocol&#34;: &#34;tcp&#34;
                 }
             ], 
-            &#34;essential&#34;: true
+            &#34;essential&#34;: true,
+            &#34;logConfiguration&#34;: {
+                &#34;logDriver&#34;: &#34;awslogs&#34;,
+                &#34;options&#34;: {
+                    &#34;awslogs-create-group&#34;: &#34;true&#34;,
+                    &#34;awslogs-group&#34;: &#34;awslogs-container-hands-on&#34;,
+                    &#34;awslogs-region&#34;: &#34;ap-northeast-1&#34;,
+                    &#34;awslogs-stream-prefix&#34;: &#34;hands-on&#34;
+                }
+            }
         }
     ], 
     &#34;requiresCompatibilities&#34;: [

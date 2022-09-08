@@ -8,8 +8,33 @@ feedback link: <https://github.com/shigeru-oda/jawsdays2022-container-handson>
 analytics account: XXXXXXXX
 
 # [JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～
+![img](./image/img1-1.png)
 
-## はじめに
+## ご挨拶
+当資料は[JAWS DAYS 2022 - Satellites](https://jawsdays2022.jaws-ug.jp/)でのハンズオントラックの一つ、[コンテナサービスをCI/CDパイプラインでデプロイしよう](https://jaws-ug.doorkeeper.jp/events/141627)のセッションで利用する資料となります。
+
+JAWS DAYS 2022 - Satellitesのハンズオンは以下3点ありますが、他セッションはGUI、CDKでの環境構築であったので、当セッションはCLIに寄せた内容で準備しています。
+
+- [S3でWebサイトを公開して、リソースポリシーでアクセスを制御してみよう](https://jaws-ug.doorkeeper.jp/events/141646)
+- [コンテナサービスをCI/CDパイプラインでデプロイしよう](https://jaws-ug.doorkeeper.jp/events/141627)
+- [CDKでサーバーレスアプリをデプロイしよう](https://jaws-ug.doorkeeper.jp/events/141651)
+
+初心者の方にはコマンドが難しいかもしれませんが、まずはこういうステップが必要という勘所だけでも掴んで頂ければ幸いです、慣れた方はCLIコマンドの1つ１つの意味を理解するように進めて頂けるとありがたいです。
+
+## 対象者
+- コンテナが何かよく分からない人
+- ＡＷＳでのコンテナサービスを知りたい人
+- ＣＩ／ＣＤパイプラインでコンテナサービスをデプロイしたい人
+
+## 当日までにご準備が必要なもの
+- マネジメントコンソールにログイン可能なAdministrator権限のIAMユーザー
+- Chrome もしくは Firefox
+
+## 免責事項について
+ハンズオンで利用するサービスは無料枠を中心として構成していますが、一部課金が発生する場合があります。
+また、ハンズオンで作成した環境を削除しない場合には、課金が続くことによって高額になる可能性があります。
+課金が発生したことによる責任は負えませんので、ご承知おきください。
+上記事項をご理解頂きお申込みいただけますようお願いいたします。
 
 Duration: 0:05:00
 
@@ -103,7 +128,7 @@ aws iam create-role \
 
 #### result
 
-```
+```Cloud9
 {
     "Role": {
         "Path": "/",
@@ -1304,7 +1329,7 @@ dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 Positive
 : 何か間違ってコンテナを止めたい場合には以下を実行ください
 
-```
+```Cloud9
 docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
 ```
@@ -1932,7 +1957,16 @@ cat << EOF > register-task-definition.json
                     "protocol": "tcp"
                 }
             ], 
-            "essential": true
+            "essential": true,
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "awslogs-container-hands-on",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "hands-on"
+                }
+            }
         }
     ], 
     "requiresCompatibilities": [
