@@ -103,7 +103,7 @@
 <h3 is-upgraded>CloudShellを起動</h3>
 <p>・今後はCloudShellの画面にcmdの内容をCopy &amp; Pasteし、resultの内容を確認し進めて下さい <img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
-<p>・AWS Accoutの12桁のIDを取得し、変数に格納・確認を行います</p>
+<p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID=`aws sts get-caller-identity --query Account --output text`
 </code></pre>
@@ -125,7 +125,7 @@ EOF
 <h3 is-upgraded>result（存在しない場合）</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
-<h2 is-upgraded>■ECSの実行Role作成（Roleが存在しない場合実行）</h2>
+<h2 is-upgraded>■ECSの実行Role作成（Roleが存在しない場合のみ実行）</h2>
 <p>・ecsTaskExecutionRoleが存在しない場合のみ実行します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
@@ -172,7 +172,7 @@ EOF
     }
 }
 </code></pre>
-<h2 is-upgraded>■RoleにPolicyをアタッチ（Roleが存在しない場合実行）</h2>
+<h2 is-upgraded>■RoleにPolicyをアタッチ（Roleが存在しない場合のみ実行）</h2>
 <p>・作成したRoleにPolicyをアタッチします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam attach-role-policy \
@@ -228,8 +228,9 @@ EOF
     }
 }
 </code></pre>
-<h3 is-upgraded>VpcIdの取得</h3>
+<h2 is-upgraded>■VpcIdの取得</h2>
 <p>・作成したVPC IDを取得し、変数に格納・確認を行います</p>
+<h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId=`aws ec2 describe-vpcs \
     --query &#39;Vpcs[*].VpcId&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
@@ -246,7 +247,7 @@ EOF
 VpcId : vpc-0d3c1c88db46cfba7
 </code></pre>
 <h3 is-upgraded>■DNS名前解決をONにする</h3>
-<p>・作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします</p>
+<p>・作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします<br> ・後程作成するVPCエンドポイントに必要な為です</p>
 <h2 is-upgraded>cmd</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell"> aws ec2 modify-vpc-attribute \
   --vpc-id ${VpcId}  \
@@ -269,7 +270,7 @@ VpcId : vpc-0d3c1c88db46cfba7
 }
 </code></pre>
 <h3 is-upgraded>■DNSホスト名をONにする</h3>
-<p>・VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します</p>
+<p>・VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します<br> ・後程作成するVPCエンドポイントに必要な為です</p>
 <h2 is-upgraded>cmd</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell"> aws ec2 modify-vpc-attribute \
   --vpc-id ${VpcId}  \
@@ -300,7 +301,7 @@ VpcId : vpc-0d3c1c88db46cfba7
     --cidr-block 10.0.0.0/24 \
     --tag-specifications &#34;ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]&#34;
 </code></pre>
-<h3 is-upgraded>result1 (Public Subnet 1つ目)</h3>
+<h3 is-upgraded>result (Public Subnet 1つ目)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">{
     &#34;Subnet&#34;: {
         &#34;AvailabilityZone&#34;: &#34;ap-northeast-1a&#34;,
@@ -450,7 +451,7 @@ VpcId : vpc-0d3c1c88db46cfba7
 }
 </code></pre>
 <h2 is-upgraded>■Subnet IDの取得</h2>
-<p>・Subnet IDを取得し、変数に格納・確認を行います</p>
+<p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1aPublic=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
@@ -498,7 +499,7 @@ SubnetId1aPrivate : subnet-049f0119237ff00a0
 SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 </code></pre>
 <h2 is-upgraded>■InternetGatewayの作成</h2>
-<p>・InternetGatewayを作成する</p>
+<p>・Internetの出入り口であるInternetGatewayを作成する</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-internet-gateway \
     --tag-specifications &#34;ResourceType=internet-gateway,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
@@ -518,7 +519,8 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
     }
 }
 </code></pre>
-<p>■InternetGateway IDの取得 ・InternetGateway IDを取得し、変数に格納・確認を行います</p>
+<h2 is-upgraded>■InternetGateway IDの取得</h2>
+<p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">InternetGatewayId=`aws ec2 describe-internet-gateways \
     --query &#39;InternetGateways[*].InternetGatewayId&#39; \
@@ -546,7 +548,7 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 InternetGatewayId : igw-0a511ba68ceb84ed8
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCにAttach</h2>
-<p>・VPCにInternetGatewayをアタッチし、Internetとの接続点を作成します</p>
+<p>・VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 attach-internet-gateway \
     --internet-gateway-id ${InternetGatewayId} \
@@ -555,7 +557,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 <h3 is-upgraded>result</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">（何もなし）
 </code></pre>
-<h2 is-upgraded>■InternetGatewayをVPCにAttachされていることを確認</h2>
+<h2 is-upgraded>■InternetGatewayをVPCに紐付けされていることを確認</h2>
 <p>・アタッチされていることを確認</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-internet-gateways \
@@ -631,7 +633,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 }
 </code></pre>
 <h2 is-upgraded>■RouteTable IDの取得</h2>
-<p>・RouteTable IDを取得し、変数に格納・確認を行います</p>
+<p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">RouteTableIdPublic=`aws ec2 describe-route-tables \
   --query &#34;RouteTables[*].RouteTableId&#34; \
@@ -962,6 +964,7 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
     
       <google-codelab-step label="Cloud9作成" duration="5">
         <h2 is-upgraded>■Cloud9の作成</h2>
+<p>・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws cloud9 create-environment-ec2 \
   --name ContainerHandsOn \
@@ -981,6 +984,8 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
 <li><code>AWS Cloud9 &gt; Your environments</code>に<code>ContainerHandsOn</code>が作成されているので<code>Open IDE</code>ボタン押下</li>
 <li>Cloud9の画面が表示される</li>
 </ul>
+<p>・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます <img alt="img" src="img/ccb3ac339b93cb8e.png"></p>
+<p>・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください <img alt="img" src="img/944649a354b83dff.png"></p>
 
 
       </google-codelab-step>

@@ -107,21 +107,21 @@ Duration: 0:05:00
 
 ・Administrator権限のIAMユーザーでAWSコンソールにログイン
 
-![img](./image/img2-1.png)
+![img](./image/img3-1.png)
 
 #### CloudShellボタン押下
 
 ・画面右上のCloudShellボタンを押下  
-![img](./image/img2-2.png)
+![img](./image/img3-2.png)
 
 #### CloudShellを起動
 
 ・今後はCloudShellの画面にcmdの内容をCopy & Pasteし、resultの内容を確認し進めて下さい
-![img](./image/img2-3.png)
+![img](./image/img3-3.png)
 
 ### ■AWS Account IDの取得
 
-・AWS Accoutの12桁のIDを取得し、変数に格納・確認を行います
+・IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -163,7 +163,7 @@ aws iam list-roles | grep "RoleName" | grep "ecsTaskExecutionRole"
 （なし）
 ```
 
-### ■ECSの実行Role作成（Roleが存在しない場合実行）
+### ■ECSの実行Role作成（Roleが存在しない場合のみ実行）
 
 ・ecsTaskExecutionRoleが存在しない場合のみ実行します
 
@@ -220,7 +220,7 @@ aws iam create-role \
 }
 ```
 
-### ■RoleにPolicyをアタッチ（Roleが存在しない場合実行）
+### ■RoleにPolicyをアタッチ（Roleが存在しない場合のみ実行）
 
 ・作成したRoleにPolicyをアタッチします
 
@@ -299,9 +299,11 @@ aws ec2 create-vpc \
 }
 ```
 
-#### VpcIdの取得
+### ■VpcIdの取得
 
 ・作成したVPC IDを取得し、変数に格納・確認を行います
+
+#### cmd
 
 ```CloudShell
 VpcId=`aws ec2 describe-vpcs \
@@ -327,7 +329,8 @@ VpcId : vpc-0d3c1c88db46cfba7
 
 #### ■DNS名前解決をONにする
 
-・作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします
+・作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします  
+・後程作成するVPCエンドポイントに必要な為です  
 
 ### cmd
 
@@ -366,7 +369,8 @@ aws ec2 describe-vpc-attribute \
 
 #### ■DNSホスト名をONにする
 
-・VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します
+・VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します  
+・後程作成するVPCエンドポイントに必要な為です  
 
 ### cmd
 
@@ -418,7 +422,7 @@ aws ec2 create-subnet \
     --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]"
 ```
 
-#### result1 (Public Subnet 1つ目)
+#### result (Public Subnet 1つ目)
 
 ```CloudShell
 {
@@ -590,7 +594,7 @@ aws ec2 create-subnet \
 
 ### ■Subnet IDの取得
 
-・Subnet IDを取得し、変数に格納・確認を行います
+・IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -654,7 +658,7 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 
 ### ■InternetGatewayの作成
 
-・InternetGatewayを作成する
+・Internetの出入り口であるInternetGatewayを作成する
 
 #### cmd
 
@@ -681,8 +685,9 @@ aws ec2 create-internet-gateway \
 }
 ```
 
-■InternetGateway IDの取得
-・InternetGateway IDを取得し、変数に格納・確認を行います
+### ■InternetGateway IDの取得
+
+・IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -720,7 +725,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 
 ### ■InternetGatewayをVPCにAttach
 
-・VPCにInternetGatewayをアタッチし、Internetとの接続点を作成します
+・VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します
 
 #### cmd
 
@@ -736,7 +741,7 @@ aws ec2 attach-internet-gateway \
 （何もなし）
 ```
 
-### ■InternetGatewayをVPCにAttachされていることを確認
+### ■InternetGatewayをVPCに紐付けされていることを確認
 
 ・アタッチされていることを確認
 
@@ -836,7 +841,7 @@ aws ec2 create-route-table \
 
 ### ■RouteTable IDの取得
 
-・RouteTable IDを取得し、変数に格納・確認を行います
+・IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -1279,6 +1284,8 @@ Duration: 0:05:00
 
 ### ■Cloud9の作成
 
+・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成
+
 #### cmd
 
 ```CloudShell
@@ -1303,6 +1310,12 @@ aws cloud9 create-environment-ec2 \
 - 上部の検索バーで`Cloud9`と検索
 - `AWS Cloud9 > Your environments`に`ContainerHandsOn`が作成されているので`Open IDE`ボタン押下
 - Cloud9の画面が表示される
+
+・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます
+![img](./image/img4-1.png)
+
+・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください
+![img](./image/img4-2.png)
 
 ## ECR作成
 
@@ -1498,7 +1511,7 @@ dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 - Cloud9のヘッダ部分の`Preview`-> `Preview Runnnig Application`のボタン押下  
 - `Hello! Jaws Days 2022!!`と記載された画面が表示されること  
 
-![img](./image/img4-1.png)
+![img](./image/img5-1.png)
 
 Positive
 : 何か間違ってコンテナを止めたい場合には以下を実行ください
@@ -2362,11 +2375,11 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 #### パターン例１
 
-![img](./image/img9-1.png)
+![img](./image/img10-1.png)
 
 #### パターン例２
 
-![img](./image/img9-2.png)
+![img](./image/img10-2.png)
 
 ## 変数整理
 
