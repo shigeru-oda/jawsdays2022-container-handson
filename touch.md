@@ -109,7 +109,7 @@ Duration: 0:05:00
 
 ![img](./image/img3-1.png)
 
-・リージョンを`東京`に変更
+・リージョンを"アジアパシフィック（東京）"に変更
 
 ![img](./image/img3-2.png)
 
@@ -126,6 +126,7 @@ Duration: 0:05:00
 ### ■AWS Account IDの取得
 
 ![img](./image/drowio-3-1.png)
+
 ・IDを取得し、変数に格納・確認を行います
 
 #### cmd
@@ -148,6 +149,8 @@ AccoutID : 123456789012
 
 ### ■ECSタスクの実行Roleの存在確認
 
+![img](./image/drowio-3-2.png)
+
 ・ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います
 
 #### cmd
@@ -169,6 +172,7 @@ aws iam list-roles | grep "RoleName" | grep "ecsTaskExecutionRole"
 ```
 
 ### ■ECSの実行Role作成（Roleが存在しない場合のみ実行）
+![img](./image/drowio-3-2.png)
 
 ・ecsTaskExecutionRoleが存在しない場合のみ実行します
 
@@ -226,6 +230,7 @@ aws iam create-role \
 ```
 
 ### ■RoleにPolicyをアタッチ（Roleが存在しない場合のみ実行）
+![img](./image/drowio-3-3.png)
 
 ・作成したRoleにPolicyをアタッチします
 
@@ -261,6 +266,7 @@ aws iam list-attached-role-policies \
 ```
 
 ### ■VPCの作成
+![img](./image/drowio-3-4.png)
 
 ・VPCを新規に作成します
 
@@ -413,6 +419,7 @@ aws ec2 describe-vpc-attribute \
 ```
 
 ### ■Subnetの作成
+![img](./image/drowio-3-5.png)
 
 ・作成したVPCの中にSubnetを4つ作成します
 ・Private Subnetが2つ、Public Subnetが2つです
@@ -691,6 +698,7 @@ aws ec2 create-internet-gateway \
 ```
 
 ### ■InternetGateway IDの取得
+![img](./image/drowio-3-6.png)
 
 ・IDを取得し、変数に格納・確認を行います
 
@@ -729,6 +737,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 ```
 
 ### ■InternetGatewayをVPCにAttach
+![img](./image/drowio-3-7.png)
 
 ・VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します
 
@@ -768,6 +777,7 @@ available
 ```
 
 ### ■RouteTableの作成
+![img](./image/drowio-3-8.png)
 
 ・PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します  
 ・現時点ではRouteTableとSubnetの紐付けはないです  
@@ -897,6 +907,7 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 ```
 
 ### ■RouteTableにSubnetを紐付け
+![img](./image/drowio-3-9.png)
 
 ・RouteTableとSubnetを紐付けします
 
@@ -977,6 +988,7 @@ aws ec2 associate-route-table \
 ```
 
 ### ■RouteTableにInternetGatewayを紐付け
+![img](./image/drowio-3-10.png)
 
 ・PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします
 
@@ -998,6 +1010,7 @@ aws ec2 create-route \
 ```
 
 ### ■PublicSubnet用のSecurityGroup作成
+![img](./image/drowio-3-11.png)
 
 ・PublicSubnet用のSecurityGroup作成
 
@@ -1070,6 +1083,7 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 ```
 
 ### ■PrivateSubnet用のSecurityGroup作成
+![img](./image/drowio-3-12.png)
 
 ・PrivateSubnet用のSecurityGroup作成
 
@@ -1262,6 +1276,7 @@ aws logs create-log-group --log-group-name awslogs-container-hands-on
 ```
 
 ### ■CloudWatch LogGroupの作成確認
+![img](./image/drowio-3-13.png)
 
 #### cmd
 
