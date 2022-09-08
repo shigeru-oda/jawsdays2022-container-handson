@@ -2202,7 +2202,7 @@ Duration: 0:05:00
 - タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義
 
 ### ■クラスターの作成
-![img](./image/drawio-9-1.png)
+![img](./image/drowio-9-1.png)
 
 ・クラスターという実行環境の境界線を作成します
 
@@ -2246,7 +2246,7 @@ aws ecs create-cluster \
 ```
 
 ### ■タスク定義の作成
-![img](./image/drawio-9-2.png)
+![img](./image/drowio-9-2.png)
 
 ・どのようなタスクが稼働するかを定義します
 
@@ -2371,7 +2371,7 @@ aws ecs register-task-definition \
 ```
 
 ### ■サービスの作成
-![img](./image/drawio-9-3.png)
+![img](./image/drowio-9-3.png)
 
 ・実行数やネットワーク周りをまとめます
 

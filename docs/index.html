@@ -81,7 +81,7 @@
 <li>VPCエンドポイントを使ったセキュア環境の構築</li>
 <li>ECS /Fargateを使ったサーバーレスコンテナ運用の構築</li>
 </ul>
-<p><strong>あとで完成図を挿入</strong></p>
+<p class="image-container"><img alt="img" src="img/90d89f9364c9e539.png"></p>
 <h2 is-upgraded>■ハンズオン２</h2>
 <ul>
 <li>CoceCommitを使ったソースコード管理</li>
@@ -1493,7 +1493,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     
       <google-codelab-step label="ALB作成" duration="5">
         <h2 is-upgraded>■アプリケーションロードバランサーの作成</h2>
-<p>・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します</p>
+<p><img alt="img" src="img/6e9c557b86455601.png"> ・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-load-balancer \
     --name ContainerHandsOn \
@@ -1680,6 +1680,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <li>タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義</li>
 </ul>
 <h2 is-upgraded>■クラスターの作成</h2>
+<p class="image-container"><img alt="img" src="img/768424469d8b3069.png"></p>
 <p>・クラスターという実行環境の境界線を作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-cluster \
@@ -1715,6 +1716,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■タスク定義の作成</h2>
+<p class="image-container"><img alt="img" src="img/828f2c1b1932ca79.png"></p>
 <p>・どのようなタスクが稼働するかを定義します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; register-task-definition.json
@@ -1829,6 +1831,7 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■サービスの作成</h2>
+<p class="image-container"><img alt="img" src="img/363edc2a84dccf6c.png"></p>
 <p>・実行数やネットワーク周りをまとめます</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-service \
@@ -1940,6 +1943,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 </code></pre>
 <h2 is-upgraded>■画面確認</h2>
+<p class="image-container"><img alt="img" src="img/67e8b6b5866fd0ca.png"></p>
 <ul>
 <li>上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること</li>
 <li>更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）</li>
