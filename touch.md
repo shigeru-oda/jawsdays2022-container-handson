@@ -1374,6 +1374,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
 ### ■ECRの作成
+
 ・コンテナイメージのレジストリであるECRを作成
 
 #### cmd
@@ -1616,7 +1617,9 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 
 Duration: 0:05:00
 
-FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します
+FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します  
+ECRに格納されたイメージを取得するためには通常Internet経由となります、しかし今回はFargateはPrivateSubnetというInternetに接続されていないので、Internet経由ではECRにアクセスできません  
+これを解決するためにVPCエンドポイントというInternetに繋がらないAWSのネットワーク経由でECRにアクセスを行います。
 
 - com.amazonaws.ap-northeast-1.s3
 - com.amazonaws.ap-northeast-1.ecr.dkr
@@ -1891,6 +1894,8 @@ Duration: 0:05:00
 
 ### ■アプリケーションロードバランサーの作成
 
+・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します
+
 #### cmd
 
 ```Cloud9
@@ -1940,6 +1945,8 @@ aws elbv2 create-load-balancer \
 ```
 
 ### ■ターゲットグループの作成
+
+・タスクはどのようなプロトコルで稼働するターゲットであるか定義します
 
 #### cmd
 
@@ -2050,6 +2057,8 @@ arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHa
 
 ### ■リスナーの追加
 
+・アプリケーションロードバランサーとターゲットグループを紐付けします
+
 #### cmd
 
 ```Cloud9
@@ -2096,7 +2105,33 @@ aws elbv2 create-listener \
 
 Duration: 0:05:00
 
+### ■ECS/Fargate周辺の説明
+
+[参考:20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
+
+![img](./image/img9-1.png)
+ECS on EC2の構成図
+
+- EC2上で稼働するTaskでコンテナが処理されます
+- EC2を複数個まとめてクラスターとして扱います
+- クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です
+
+![img](./image/img9-2.png)
+ECS on Fargateの構成図
+
+- しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです
+- EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate
+
+![img](./image/img9-3.png)
+
+- クラスター：実行環境の境界線
+- サービス：タスクを維持する機能
+- タスク：タスク定義に記載された内容を実行するコンテナ群
+- タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義
+
 ### ■クラスターの作成
+
+・クラスターという実行環境の境界線を作成します
 
 #### cmd
 
@@ -2138,6 +2173,8 @@ aws ecs create-cluster \
 ```
 
 ### ■タスク定義の作成
+
+・どのようなタスクが稼働するかを定義します
 
 #### cmd
 
@@ -2260,6 +2297,8 @@ aws ecs register-task-definition \
 ```
 
 ### ■サービスの作成
+
+・実行数やネットワーク周りをまとめます
 
 #### cmd
 

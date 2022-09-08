@@ -1198,7 +1198,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
       </google-codelab-step>
     
       <google-codelab-step label="VPCエンドポイント作成" duration="5">
-        <p>FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します</p>
+        <p>FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します<br> ECRに格納されたイメージを取得するためには通常Internet経由となります、しかし今回はFargateはPrivateSubnetというInternetに接続されていないので、Internet経由ではECRにアクセスできません<br> これを解決するためにVPCエンドポイントというInternetに繋がらないAWSのネットワーク経由でECRにアクセスを行います。</p>
 <ul>
 <li>com.amazonaws.ap-northeast-1.s3</li>
 <li>com.amazonaws.ap-northeast-1.ecr.dkr</li>
@@ -1445,6 +1445,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     
       <google-codelab-step label="ALB作成" duration="5">
         <h2 is-upgraded>■アプリケーションロードバランサーの作成</h2>
+<p>・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-load-balancer \
     --name ContainerHandsOn \
@@ -1488,6 +1489,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■ターゲットグループの作成</h2>
+<p>・タスクはどのようなプロトコルで稼働するターゲットであるか定義します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-target-group \
     --name ContainerHandsOn \
@@ -1563,6 +1565,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <pre><code language="language-Cloud9" class="language-Cloud9">arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9
 </code></pre>
 <h2 is-upgraded>■リスナーの追加</h2>
+<p>・アプリケーションロードバランサーとターゲットグループを紐付けします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-listener \
     --load-balancer-arn ${LoadBalancerArn} \
@@ -1604,7 +1607,28 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
       </google-codelab-step>
     
       <google-codelab-step label="Fargate作成" duration="5">
-        <h2 is-upgraded>■クラスターの作成</h2>
+        <h2 is-upgraded>■ECS/Fargate周辺の説明</h2>
+<p><a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">参考:20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></p>
+<p><img alt="img" src="img/f1a8c502f37f27d.png"> ECS on EC2の構成図</p>
+<ul>
+<li>EC2上で稼働するTaskでコンテナが処理されます</li>
+<li>EC2を複数個まとめてクラスターとして扱います</li>
+<li>クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です</li>
+</ul>
+<p><img alt="img" src="img/7c6d141c13fa6ae9.png"> ECS on Fargateの構成図</p>
+<ul>
+<li>しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです</li>
+<li>EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/907d8c5dea096b30.png"></p>
+<ul>
+<li>クラスター：実行環境の境界線</li>
+<li>サービス：タスクを維持する機能</li>
+<li>タスク：タスク定義に記載された内容を実行するコンテナ群</li>
+<li>タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義</li>
+</ul>
+<h2 is-upgraded>■クラスターの作成</h2>
+<p>・クラスターという実行環境の境界線を作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-cluster \
     --cluster-name ContainerHandsOn \
@@ -1639,6 +1663,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■タスク定義の作成</h2>
+<p>・どのようなタスクが稼働するかを定義します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; register-task-definition.json
 {
@@ -1752,6 +1777,7 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■サービスの作成</h2>
+<p>・実行数やネットワーク周りをまとめます</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-service \
     --cluster ContainerHandsOn \
