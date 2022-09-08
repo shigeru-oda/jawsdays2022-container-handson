@@ -172,6 +172,7 @@ aws iam list-roles | grep "RoleName" | grep "ecsTaskExecutionRole"
 ```
 
 ### ■ECSの実行Role作成（Roleが存在しない場合のみ実行）
+
 ![img](./image/drowio-3-2.png)
 
 ・ecsTaskExecutionRoleが存在しない場合のみ実行します
@@ -230,6 +231,7 @@ aws iam create-role \
 ```
 
 ### ■RoleにPolicyをアタッチ（Roleが存在しない場合のみ実行）
+
 ![img](./image/drowio-3-3.png)
 
 ・作成したRoleにPolicyをアタッチします
@@ -266,6 +268,7 @@ aws iam list-attached-role-policies \
 ```
 
 ### ■VPCの作成
+
 ![img](./image/drowio-3-4.png)
 
 ・VPCを新規に作成します
@@ -419,6 +422,7 @@ aws ec2 describe-vpc-attribute \
 ```
 
 ### ■Subnetの作成
+
 ![img](./image/drowio-3-5.png)
 
 ・作成したVPCの中にSubnetを4つ作成します
@@ -698,6 +702,7 @@ aws ec2 create-internet-gateway \
 ```
 
 ### ■InternetGateway IDの取得
+
 ![img](./image/drowio-3-6.png)
 
 ・IDを取得し、変数に格納・確認を行います
@@ -737,6 +742,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 ```
 
 ### ■InternetGatewayをVPCにAttach
+
 ![img](./image/drowio-3-7.png)
 
 ・VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します
@@ -777,6 +783,7 @@ available
 ```
 
 ### ■RouteTableの作成
+
 ![img](./image/drowio-3-8.png)
 
 ・PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します  
@@ -907,6 +914,7 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 ```
 
 ### ■RouteTableにSubnetを紐付け
+
 ![img](./image/drowio-3-9.png)
 
 ・RouteTableとSubnetを紐付けします
@@ -988,6 +996,7 @@ aws ec2 associate-route-table \
 ```
 
 ### ■RouteTableにInternetGatewayを紐付け
+
 ![img](./image/drowio-3-10.png)
 
 ・PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします
@@ -1010,6 +1019,7 @@ aws ec2 create-route \
 ```
 
 ### ■PublicSubnet用のSecurityGroup作成
+
 ![img](./image/drowio-3-11.png)
 
 ・PublicSubnet用のSecurityGroup作成
@@ -1083,6 +1093,7 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 ```
 
 ### ■PrivateSubnet用のSecurityGroup作成
+
 ![img](./image/drowio-3-12.png)
 
 ・PrivateSubnet用のSecurityGroup作成
@@ -1276,6 +1287,7 @@ aws logs create-log-group --log-group-name awslogs-container-hands-on
 ```
 
 ### ■CloudWatch LogGroupの作成確認
+
 ![img](./image/drowio-3-13.png)
 
 #### cmd
@@ -1343,6 +1355,7 @@ export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
 Duration: 0:05:00
 
 ### ■Cloud9の作成
+
 ![img](./image/drowio-5-1.png)
 
 ・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成
@@ -1645,6 +1658,7 @@ Login Succeeded
 ```
 
 ### ■DockerImageをECRにPush
+
 ![img](./image/drowio-6-1.png)
 
 #### cmd
@@ -1689,6 +1703,7 @@ ECRに格納されたイメージを取得するためには通常Internet経由
 - com.amazonaws.ap-northeast-1.logs
 
 ### ■com.amazonaws.ap-northeast-1.s3
+
 ![img](./image/drowio-7-1.png)
 
 #### cmd
@@ -1735,6 +1750,7 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.dkr
+
 ![img](./image/drowio-7-2.png)
 
 #### cmd
@@ -1811,6 +1827,7 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.api
+
 ![img](./image/drowio-7-3.png)
 
 #### cmd
@@ -1883,6 +1900,7 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.logs
+
 ![img](./image/drowio-7-4.png)
 
 #### cmd
@@ -1959,6 +1977,7 @@ aws ec2 create-vpc-endpoint \
 Duration: 0:05:00
 
 ### ■アプリケーションロードバランサーの作成
+
 ![img](./image/drowio-8-1.png)
 ・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します
 
@@ -2202,6 +2221,7 @@ Duration: 0:05:00
 - タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義
 
 ### ■クラスターの作成
+
 ![img](./image/drowio-9-1.png)
 
 ・クラスターという実行環境の境界線を作成します
@@ -2246,6 +2266,7 @@ aws ecs create-cluster \
 ```
 
 ### ■タスク定義の作成
+
 ![img](./image/drowio-9-2.png)
 
 ・どのようなタスクが稼働するかを定義します
@@ -2371,6 +2392,7 @@ aws ecs register-task-definition \
 ```
 
 ### ■サービスの作成
+
 ![img](./image/drowio-9-3.png)
 
 ・実行数やネットワーク周りをまとめます
@@ -2497,9 +2519,13 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ```
 
 ### ■画面確認
+
 ![img](./image/drowio-10-1.png)
+
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
+
+### ■表示結果例
 
 #### パターン例１
 
