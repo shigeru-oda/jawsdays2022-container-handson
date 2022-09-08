@@ -221,7 +221,9 @@ aws iam create-role \
 ```
 
 ### ■RoleにPolicyをアタッチ（Roleが存在しない場合実行）
+
 ・作成したRoleにPolicyをアタッチします
+
 #### cmd
 
 ```Cloud9
@@ -231,11 +233,13 @@ aws iam attach-role-policy \
 ```
 
 #### result
+
 ```
 （なし）
 ```
 
 ・Policyがアタッチされたことを確認します
+
 #### cmd
 
 ```Cloud9
@@ -245,6 +249,7 @@ aws iam list-attached-role-policies \
 ```
 
 #### result
+
 ```Cloud9
             "PolicyName": "AmazonECSTaskExecutionRolePolicy",
             "PolicyArn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
@@ -296,6 +301,8 @@ aws ec2 create-vpc \
 
 #### VpcIdの取得
 
+・作成したVPC IDを取得し、変数に格納・確認を行います
+
 ```CloudShell
 VpcId=`aws ec2 describe-vpcs \
     --query 'Vpcs[*].VpcId' \
@@ -311,7 +318,7 @@ VpcId : ${VpcId}
 EOF
 ```
 
-#### 変数設定確認
+#### results
 
 ```CloudShell
 AccoutID : 123456789012
@@ -319,6 +326,8 @@ VpcId : vpc-0d3c1c88db46cfba7
 ```
 
 #### ■DNS名前解決をONにする
+
+・作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします
 
 ### cmd
 
@@ -335,6 +344,8 @@ VpcId : vpc-0d3c1c88db46cfba7
 ```
 
 #### ■DNS名前解決の状態確認
+
+・設定内容が正しく反映されているか確認を行います
 
 ### cmd
 
@@ -355,6 +366,8 @@ aws ec2 describe-vpc-attribute \
 
 #### ■DNSホスト名をONにする
 
+・VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します
+
 ### cmd
 
 ```CloudShell
@@ -370,6 +383,8 @@ aws ec2 describe-vpc-attribute \
 ```
 
 #### ■DNSホスト名の状態確認
+
+・設定内容が正しく反映されているか確認を行います
 
 ### cmd
 
@@ -390,10 +405,10 @@ aws ec2 describe-vpc-attribute \
 
 ### ■Subnetの作成
 
-作成したVPCの中にSubnetを4つ作成します
-Private Subnetが2つ、Public Subnetが2つです
+・作成したVPCの中にSubnetを4つ作成します
+・Private Subnetが2つ、Public Subnetが2つです
 
-#### cmd1
+#### cmd (Public Subnet 1つ目)
 
 ```CloudShell
 aws ec2 create-subnet \
@@ -403,7 +418,7 @@ aws ec2 create-subnet \
     --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]"
 ```
 
-#### result1
+#### result1 (Public Subnet 1つ目)
 
 ```CloudShell
 {
@@ -438,7 +453,7 @@ aws ec2 create-subnet \
 }
 ```
 
-#### cmd2
+#### cmd (Public Subnet 2つ目)
 
 ```CloudShell
 aws ec2 create-subnet \
@@ -448,7 +463,7 @@ aws ec2 create-subnet \
     --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]"
 ```
 
-#### result2
+#### result (Public Subnet 2つ目)
 
 ```CloudShell
 {
@@ -483,7 +498,7 @@ aws ec2 create-subnet \
 }
 ```
 
-#### cmd3
+#### cmd (Private Subnet 1つ目)
 
 ```CloudShell
 aws ec2 create-subnet \
@@ -493,7 +508,7 @@ aws ec2 create-subnet \
     --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]"
 ```
 
-#### result3
+#### result (Private Subnet 1つ目)
 
 ```CloudShell
 {
@@ -528,7 +543,7 @@ aws ec2 create-subnet \
 }
 ```
 
-#### cmd4
+#### cmd (Private Subnet 2つ目)
 
 ```CloudShell
 aws ec2 create-subnet \
@@ -538,7 +553,7 @@ aws ec2 create-subnet \
     --tag-specifications "ResourceType=subnet,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]"
 ```
 
-#### result4
+#### result (Private Subnet 2つ目)
 
 ```CloudShell
 {
@@ -573,7 +588,11 @@ aws ec2 create-subnet \
 }
 ```
 
-#### 変数取得
+### ■Subnet IDの取得
+
+・Subnet IDを取得し、変数に格納・確認を行います
+
+#### cmd
 
 ```CloudShell
 SubnetId1aPublic=`aws ec2 describe-subnets \
@@ -622,7 +641,7 @@ SubnetId1cPrivate : ${SubnetId1cPrivate}
 EOF
 ```
 
-#### 変数設定確認
+#### result
 
 ```CloudShell
 AccoutID : 123456789012
@@ -635,6 +654,8 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 
 ### ■InternetGatewayの作成
 
+・InternetGatewayを作成する
+
 #### cmd
 
 ```CloudShell
@@ -642,7 +663,7 @@ aws ec2 create-internet-gateway \
     --tag-specifications "ResourceType=internet-gateway,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
-#### result1
+#### result
 
 ```CloudShell
 {
@@ -660,7 +681,10 @@ aws ec2 create-internet-gateway \
 }
 ```
 
-#### 変数設定
+■InternetGateway IDの取得
+・InternetGateway IDを取得し、変数に格納・確認を行います
+
+#### cmd
 
 ``` CloudShell
 InternetGatewayId=`aws ec2 describe-internet-gateways \
@@ -682,7 +706,7 @@ InternetGatewayId : ${InternetGatewayId}
 EOF
 ```
 
-#### 変数設定確認
+#### result
 
 ``` CloudShell
 AccoutID : 123456789012
@@ -695,6 +719,8 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 ```
 
 ### ■InternetGatewayをVPCにAttach
+
+・VPCにInternetGatewayをアタッチし、Internetとの接続点を作成します
 
 #### cmd
 
@@ -711,6 +737,8 @@ aws ec2 attach-internet-gateway \
 ```
 
 ### ■InternetGatewayをVPCにAttachされていることを確認
+
+・アタッチされていることを確認
 
 #### cmd
 
@@ -731,7 +759,10 @@ available
 
 ### ■RouteTableの作成
 
-#### cmd1
+・PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します  
+・現時点ではRouteTableとSubnetの紐付けはないです  
+
+#### cmd (PublicSubnet)
 
 ```CloudShell
 aws ec2 create-route-table \
@@ -739,7 +770,7 @@ aws ec2 create-route-table \
   --tag-specifications "ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPublic}]"
 ```
 
-#### result1
+#### result (PublicSubnet)
 
 ```CloudShell
 {
@@ -767,7 +798,7 @@ aws ec2 create-route-table \
 }
 ```
 
-#### cmd2
+#### cmd (PrivateSubnet)
 
 ```CloudShell
 aws ec2 create-route-table \
@@ -775,7 +806,7 @@ aws ec2 create-route-table \
   --tag-specifications "ResourceType=route-table,Tags=[{Key=Name,Value=ContainerHandsOnPrivate}]"
 ```
 
-#### result2
+#### result (PrivateSubnet)
 
 ```CloudShell
 {
@@ -803,9 +834,11 @@ aws ec2 create-route-table \
 }
 ```
 
-### ■RouteTableの確認
+### ■RouteTable IDの取得
 
-#### 変数設定
+・RouteTable IDを取得し、変数に格納・確認を行います
+
+#### cmd
 
 ```CloudShell
 RouteTableIdPublic=`aws ec2 describe-route-tables \
@@ -839,7 +872,7 @@ RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 ```
 
-#### 変数設定確認
+#### result
 
 ```CloudShell
 AccoutID : 123456789012
@@ -855,7 +888,9 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 
 ### ■RouteTableにSubnetを紐付け
 
-#### cmd1
+・RouteTableとSubnetを紐付けします
+
+#### cmd (PublicSubnet 1つ目)
 
 ```CloudShell
 aws ec2 associate-route-table \
@@ -863,7 +898,7 @@ aws ec2 associate-route-table \
   --subnet-id ${SubnetId1aPublic}
 ```
 
-#### result1
+#### result (PublicSubnet 1つ目)
 
 ```CloudShell
 {
@@ -874,7 +909,7 @@ aws ec2 associate-route-table \
 }
 ```
 
-#### cmd2
+#### cmd (PublicSubnet 2つ目)
 
 ```CloudShell
 aws ec2 associate-route-table \
@@ -882,7 +917,7 @@ aws ec2 associate-route-table \
   --subnet-id ${SubnetId1cPublic}
 ```
 
-#### result2
+#### result (PublicSubnet 2つ目)
 
 ```CloudShell
 {
@@ -893,7 +928,7 @@ aws ec2 associate-route-table \
 }
 ```
 
-#### cmd3
+#### cmd (PrivateSubnet 1つ目)
 
 ```CloudShell
 aws ec2 associate-route-table \
@@ -901,7 +936,7 @@ aws ec2 associate-route-table \
   --subnet-id ${SubnetId1aPrivate}
 ```
 
-#### result3
+#### result (PrivateSubnet 1つ目)
 
 ```CloudShell
 {
@@ -912,7 +947,7 @@ aws ec2 associate-route-table \
 }
 ```
 
-#### cmd4
+#### cmd (PrivateSubnet 2つ目)
 
 ```CloudShell
 aws ec2 associate-route-table \
@@ -920,7 +955,7 @@ aws ec2 associate-route-table \
   --subnet-id ${SubnetId1cPrivate}
 ```
 
-#### result4
+#### result (PrivateSubnet 2つ目)
 
 ```CloudShell
 {
@@ -932,6 +967,8 @@ aws ec2 associate-route-table \
 ```
 
 ### ■RouteTableにInternetGatewayを紐付け
+
+・PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします
 
 #### cmd
 
@@ -951,6 +988,8 @@ aws ec2 create-route \
 ```
 
 ### ■PublicSubnet用のSecurityGroup作成
+
+・PublicSubnet用のSecurityGroup作成
 
 #### cmd
 
@@ -976,7 +1015,11 @@ aws ec2 create-security-group \
 }
 ```
 
-#### 変数設定
+### ■PublicSunetのSecurityGroupsIdの取得
+
+・IDを取得し、変数に格納・確認を行います
+
+#### cmd
 
 ```
 PublicSecurityGroupsId=`aws ec2 describe-security-groups \
@@ -986,7 +1029,39 @@ PublicSecurityGroupsId=`aws ec2 describe-security-groups \
     --output text`
 ```
 
+```CloudShell
+clear; cat << EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+EOF
+```
+
+#### result
+
+```CloudShell
+AccoutID : 123456789012
+VpcId : vpc-0d3c1c88db46cfba7
+SubnetId1aPublic : subnet-0f66f257f167a1d47
+SubnetId1cPublic : subnet-0a1e2afffc8c140d8
+SubnetId1aPrivate : subnet-049f0119237ff00a0
+SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
+InternetGatewayId : igw-0a511ba68ceb84ed8
+RouteTableIdPublic : rtb-00cf30796b25b9bc9
+RouteTableIdPrivate : rtb-0afaac377925bca9a
+PublicSecurityGroupsId : sg-01cc901415c240504
+```
+
 ### ■PrivateSubnet用のSecurityGroup作成
+
+・PrivateSubnet用のSecurityGroup作成
 
 #### cmd
 
@@ -1012,7 +1087,9 @@ aws ec2 create-security-group \
 }
 ```
 
-#### 変数設定
+### ■PublicSunetのSecurityGroupsIdの取得
+
+・IDを取得し、変数に格納・確認を行います
 
 ```CloudShell
 PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
@@ -1038,7 +1115,7 @@ PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
 EOF
 ```
 
-#### 変数設定確認
+#### result
 
 ```CloudShell
 AccoutID : 123456789012
@@ -1054,7 +1131,9 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
-### ■PublicSubnetのInboundを追加
+### ■PublicSubnetのインバウンドルールを追加
+
+・InternetからのHTTPでのアクセスを許可します
 
 #### cmd
 
@@ -1086,7 +1165,9 @@ aws ec2 authorize-security-group-ingress \
 }
 ```
 
-### ■PrivateSubnetのInboundを追加
+### ■PrivateSubnetのインバウンドルールを追加１
+
+・PublicSubnet経由でのHTTPでのアクセスを許可します
 
 #### cmd
 
@@ -1120,6 +1201,10 @@ aws ec2 authorize-security-group-ingress \
 }
 ```
 
+### ■PrivateSubnetのインバウンドルールを追加２
+
+・後で設定するVPCエンドポイントの為にHTTPSアクセスを許可します
+
 #### cmd
 
 ```CloudShell
@@ -1152,7 +1237,7 @@ aws ec2 authorize-security-group-ingress \
 
 ### ■環境変数をメモ
 
-Cloud9で使うため、取得した変数をエディターに残して下さい
+・Cloud9で使うため、取得した変数をエディターに残して下さい
 
 #### cmd
 
