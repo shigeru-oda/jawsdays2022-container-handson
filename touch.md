@@ -86,7 +86,7 @@ Duration: 0:05:00
 - VPCエンドポイントを使ったセキュア環境の構築
 - ECS /Fargateを使ったサーバーレスコンテナ運用の構築
 
-**あとで完成図を挿入**
+![img](./image/drowio-2-1.png)
 
 ### ■ハンズオン２
 
@@ -1959,7 +1959,7 @@ aws ec2 create-vpc-endpoint \
 Duration: 0:05:00
 
 ### ■アプリケーションロードバランサーの作成
-
+![img](./image/drowio-8-1.png)
 ・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します
 
 #### cmd
@@ -2202,6 +2202,7 @@ Duration: 0:05:00
 - タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義
 
 ### ■クラスターの作成
+![img](./image/drawio-9-1.png)
 
 ・クラスターという実行環境の境界線を作成します
 
@@ -2245,6 +2246,7 @@ aws ecs create-cluster \
 ```
 
 ### ■タスク定義の作成
+![img](./image/drawio-9-2.png)
 
 ・どのようなタスクが稼働するかを定義します
 
@@ -2369,6 +2371,7 @@ aws ecs register-task-definition \
 ```
 
 ### ■サービスの作成
+![img](./image/drawio-9-3.png)
 
 ・実行数やネットワーク周りをまとめます
 
@@ -2494,7 +2497,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ```
 
 ### ■画面確認
-
+![img](./image/drowio-10-1.png)
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
 
