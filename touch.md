@@ -141,7 +141,9 @@ EOF
 AccoutID : 123456789012
 ```
 
-### ■ECSの実行Roleの存在確認
+### ■ECSタスクの実行Roleの存在確認
+
+・ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います
 
 #### cmd
 
@@ -161,7 +163,9 @@ aws iam list-roles | grep "RoleName" | grep "ecsTaskExecutionRole"
 （なし）
 ```
 
-### ■ECSの実行Role作成（上記で存在しない場合実行）
+### ■ECSの実行Role作成（Roleが存在しない場合実行）
+
+・ecsTaskExecutionRoleが存在しない場合のみ実行します
 
 #### cmd
 
@@ -216,6 +220,8 @@ aws iam create-role \
 }
 ```
 
+### ■RoleにPolicyをアタッチ（Roleが存在しない場合実行）
+・作成したRoleにPolicyをアタッチします
 #### cmd
 
 ```Cloud9
@@ -224,9 +230,29 @@ aws iam attach-role-policy \
   --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 ```
 
+#### result
+```
+（なし）
+```
+
+・Policyがアタッチされたことを確認します
+#### cmd
+
+```Cloud9
+aws iam list-attached-role-policies \
+  --role-name ecsTaskExecutionRole \
+  | grep 'AmazonECSTaskExecutionRolePolicy'
+```
+
+#### result
+```Cloud9
+            "PolicyName": "AmazonECSTaskExecutionRolePolicy",
+            "PolicyArn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+```
+
 ### ■VPCの作成
 
-VPCを新規に作成します
+・VPCを新規に作成します
 
 #### cmd
 
@@ -268,7 +294,7 @@ aws ec2 create-vpc \
 }
 ```
 
-#### 変数設定
+#### VpcIdの取得
 
 ```CloudShell
 VpcId=`aws ec2 describe-vpcs \

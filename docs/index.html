@@ -114,7 +114,8 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 </code></pre>
-<h2 is-upgraded>■ECSの実行Roleの存在確認</h2>
+<h2 is-upgraded>■ECSタスクの実行Roleの存在確認</h2>
+<p>・ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam list-roles | grep &#34;RoleName&#34; | grep &#34;ecsTaskExecutionRole&#34;
 </code></pre>
@@ -124,7 +125,8 @@ EOF
 <h3 is-upgraded>result（存在しない場合）</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
-<h2 is-upgraded>■ECSの実行Role作成（上記で存在しない場合実行）</h2>
+<h2 is-upgraded>■ECSの実行Role作成（Roleが存在しない場合実行）</h2>
+<p>・ecsTaskExecutionRoleが存在しない場合のみ実行します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
@@ -170,13 +172,28 @@ EOF
     }
 }
 </code></pre>
+<h2 is-upgraded>■RoleにPolicyをアタッチ（Roleが存在しない場合実行）</h2>
+<p>・作成したRoleにPolicyをアタッチします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam attach-role-policy \
   --role-name ecsTaskExecutionRole \
   --policy-arn arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
 </code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code>（なし）
+</code></pre>
+<p>・Policyがアタッチされたことを確認します</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws iam list-attached-role-policies \
+  --role-name ecsTaskExecutionRole \
+  | grep &#39;AmazonECSTaskExecutionRolePolicy&#39;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">            &#34;PolicyName&#34;: &#34;AmazonECSTaskExecutionRolePolicy&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy&#34;
+</code></pre>
 <h2 is-upgraded>■VPCの作成</h2>
-<p>VPCを新規に作成します</p>
+<p>・VPCを新規に作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-vpc \
     --cidr-block 10.0.0.0/16 \
@@ -211,7 +228,7 @@ EOF
     }
 }
 </code></pre>
-<h3 is-upgraded>変数設定</h3>
+<h3 is-upgraded>VpcIdの取得</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId=`aws ec2 describe-vpcs \
     --query &#39;Vpcs[*].VpcId&#39; \
     --filters &#34;Name=tag-key,Values=Name&#34; \
