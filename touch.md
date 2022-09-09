@@ -2548,6 +2548,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
 
+
 ### ■表示結果例
 
 #### パターン例１
@@ -2557,6 +2558,16 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 #### パターン例２
 
 ![img](./image/img10-2.png)
+
+### ■CloudWatch Logsの確認
+- 上部の検索バーで`CloudWatch`と検索
+- `CloudWatch` > `ロググループ` > `awslogs-container-hands-on` > 2つのログストリームを確認
+- "ロードバランサーのアクセスログ" と "ブラウザアクセスログ"を確認
+#### ログストリームを確認
+![img](./image/img10-3.png)
+
+#### アクセスログを確認
+![img](./image/img10-4.png)
 
 ## 変数整理
 
