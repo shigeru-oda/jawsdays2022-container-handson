@@ -1831,6 +1831,20 @@ EOF
     ]
 }
 </code></pre>
+<h2 is-upgraded>■タスク定義のリビジョン取得</h2>
+<p>・タスク定義は作成する度にカウントアップされるので、最新のリビジョン番号を取得します</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">RevisionNo=`aws ecs list-task-definitions \
+  --family-prefix ContainerHandsOn \
+  --status ACTIVE \
+  --sort ASC | \
+  grep ContainerHandsOn | tail -1 | sed -e &#39;s/&#34;//g&#39; | cut -f 7 --delim=&#34;:&#34;`
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">echo ${RevisionNo}
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">8
+</code></pre>
 <h2 is-upgraded>■サービスの作成</h2>
 <p class="image-container"><img alt="img" src="img/363edc2a84dccf6c.png"></p>
 <p>・実行数やネットワーク周りをまとめます</p>
@@ -1838,12 +1852,12 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-service \
     --cluster ContainerHandsOn \
     --service-name ContainerHandsOn \
-    --task-definition ContainerHandsOn:1 \
+    --task-definition ContainerHandsOn:${RevisionNo} \
     --desired-count 2 \
     --launch-type FARGATE \
     --platform-version LATEST \
     --network-configuration &#34;awsvpcConfiguration={subnets=[${SubnetId1aPrivate},${SubnetId1cPrivate}],securityGroups=[${PrivateSecurityGroupsId}],assignPublicIp=DISABLED}&#34; \
-   --load-balancers targetGroupArn=${TargetGroupArn},containerName=ContainerHandsOn,containerPort=80 
+    --load-balancers targetGroupArn=${TargetGroupArn},containerName=ContainerHandsOn,containerPort=80 
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
@@ -1866,7 +1880,7 @@ EOF
         &#34;launchType&#34;: &#34;FARGATE&#34;,
         &#34;platformVersion&#34;: &#34;LATEST&#34;,
         &#34;platformFamily&#34;: &#34;Linux&#34;,
-        &#34;taskDefinition&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1&#34;,
+        &#34;taskDefinition&#34;: &#34;arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:8&#34;,
         &#34;deploymentConfiguration&#34;: {
             &#34;deploymentCircuitBreaker&#34;: {
                 &#34;enable&#34;: false,
@@ -1946,6 +1960,7 @@ EOF
 <h2 is-upgraded>■画面確認</h2>
 <p class="image-container"><img alt="img" src="img/67e8b6b5866fd0ca.png"></p>
 <ul>
+<li>503エラーの場合には1分程度待って、リトライをお願いします</li>
 <li>上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること</li>
 <li>更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）</li>
 </ul>
@@ -1960,6 +1975,7 @@ EOF
     
       <google-codelab-step label="変数整理" duration="0">
         <h2 is-upgraded>ここまで取得された変数を整理</h2>
+<p>・後続のため、取得した変数をエディターに残して下さい</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 export AccoutID=&#34;${AccoutID}&#34;
@@ -1976,6 +1992,7 @@ export PrivateSecurityGroupsId=&#34;${PrivateSecurityGroupsId}&#34;
 export LoadBalancerArn=&#34;${LoadBalancerArn}&#34;
 export TargetGroupArn=&#34;${TargetGroupArn}&#34;
 export LoadBalancersDnsName=&#34;${LoadBalancersDnsName}&#34;
+export RevisionNo=&#34;${RevisionNo}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
@@ -1993,6 +2010,7 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
 export LoadBalancerArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;
 export TargetGroupArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;
 export LoadBalancersDnsName=&#34;ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com&#34;
+export RevisionNo=&#34;8&#34;
 </code></pre>
 
 

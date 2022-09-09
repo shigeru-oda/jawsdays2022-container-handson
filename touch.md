@@ -2391,6 +2391,27 @@ aws ecs register-task-definition \
     ]
 }
 ```
+### ■タスク定義のリビジョン取得
+・タスク定義は作成する度にカウントアップされるので、最新のリビジョン番号を取得します
+
+#### cmd
+
+```Cloud9
+RevisionNo=`aws ecs list-task-definitions \
+  --family-prefix ContainerHandsOn \
+  --status ACTIVE \
+  --sort ASC | \
+  grep ContainerHandsOn | tail -1 | sed -e 's/"//g' | cut -f 7 --delim=":"`
+```
+
+```Cloud9
+echo ${RevisionNo}
+```
+
+#### result
+```Cloud9
+8
+```
 
 ### ■サービスの作成
 
@@ -2404,12 +2425,12 @@ aws ecs register-task-definition \
 aws ecs create-service \
     --cluster ContainerHandsOn \
     --service-name ContainerHandsOn \
-    --task-definition ContainerHandsOn:1 \
+    --task-definition ContainerHandsOn:${RevisionNo} \
     --desired-count 2 \
     --launch-type FARGATE \
     --platform-version LATEST \
     --network-configuration "awsvpcConfiguration={subnets=[${SubnetId1aPrivate},${SubnetId1cPrivate}],securityGroups=[${PrivateSecurityGroupsId}],assignPublicIp=DISABLED}" \
-   --load-balancers targetGroupArn=${TargetGroupArn},containerName=ContainerHandsOn,containerPort=80 
+    --load-balancers targetGroupArn=${TargetGroupArn},containerName=ContainerHandsOn,containerPort=80 
 ```
 
 #### result
@@ -2435,7 +2456,7 @@ aws ecs create-service \
         "launchType": "FARGATE",
         "platformVersion": "LATEST",
         "platformFamily": "Linux",
-        "taskDefinition": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1",
+        "taskDefinition": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:8",
         "deploymentConfiguration": {
             "deploymentCircuitBreaker": {
                 "enable": false,
@@ -2523,6 +2544,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ![img](./image/drowio-10-1.png)
 
+- 503エラーの場合には1分程度待って、リトライをお願いします
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
 
@@ -2539,6 +2561,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ## 変数整理
 
 ### ここまで取得された変数を整理
+・後続のため、取得した変数をエディターに残して下さい
 
 #### cmd
 
@@ -2558,6 +2581,7 @@ export PrivateSecurityGroupsId="${PrivateSecurityGroupsId}"
 export LoadBalancerArn="${LoadBalancerArn}"
 export TargetGroupArn="${TargetGroupArn}"
 export LoadBalancersDnsName="${LoadBalancersDnsName}"
+export RevisionNo="${RevisionNo}"
 EOF
 ```
 
@@ -2578,6 +2602,7 @@ export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
 export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867"
 export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9"
 export LoadBalancersDnsName="ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com"
+export RevisionNo="8"
 ```
 
 ## CodeBuild作成
