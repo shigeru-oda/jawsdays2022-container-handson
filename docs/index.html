@@ -302,7 +302,7 @@ VpcId : vpc-0d3c1c88db46cfba7
 </code></pre>
 <h2 is-upgraded>■Subnetの作成</h2>
 <p class="image-container"><img alt="img" src="img/435a16ded7ac40a4.png"></p>
-<p>・作成したVPCの中にSubnetを4つ作成します ・Private Subnetが2つ、Public Subnetが2つです</p>
+<p>・作成したVPCの中にSubnetを4つ作成します<br> ・Private Subnetが2つ、Public Subnetが2つです</p>
 <h3 is-upgraded>cmd (Public Subnet 1つ目)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $VpcId \
@@ -508,6 +508,7 @@ SubnetId1aPrivate : subnet-049f0119237ff00a0
 SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 </code></pre>
 <h2 is-upgraded>■InternetGatewayの作成</h2>
+<p class="image-container"><img alt="img" src="img/9892abf54820d3bc.png"></p>
 <p>・Internetの出入り口であるInternetGatewayを作成する</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-internet-gateway \
@@ -529,7 +530,6 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 }
 </code></pre>
 <h2 is-upgraded>■InternetGateway IDの取得</h2>
-<p class="image-container"><img alt="img" src="img/9892abf54820d3bc.png"></p>
 <p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">InternetGatewayId=`aws ec2 describe-internet-gateways \
@@ -945,6 +945,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■CloudWatch LogGroupの作成</h2>
+<p class="image-container"><img alt="img" src="img/eba6aa195fae755d.png"></p>
 <p>・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws logs create-log-group --log-group-name awslogs-container-hands-on
@@ -953,7 +954,6 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 <pre><code language="language-CloudShell" class="language-CloudShell">（なし）
 </code></pre>
 <h2 is-upgraded>■CloudWatch LogGroupの作成確認</h2>
-<p class="image-container"><img alt="img" src="img/eba6aa195fae755d.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws logs describe-log-groups --log-group-name-prefix awslogs-container-hands-on
 </code></pre>
@@ -1006,7 +1006,7 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
     
       <google-codelab-step label="Cloud9作成" duration="5">
         <h2 is-upgraded>■Cloud9の作成</h2>
-<p class="image-container"><img alt="img" src="img/a54cbd1e2479d680.png"></p>
+<p class="image-container"><img alt="img" src="img/6312f100725debe3.png"></p>
 <p>・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws cloud9 create-environment-ec2 \

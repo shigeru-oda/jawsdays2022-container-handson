@@ -425,8 +425,8 @@ aws ec2 describe-vpc-attribute \
 
 ![img](./image/drowio-3-5.png)
 
-・作成したVPCの中にSubnetを4つ作成します
-・Private Subnetが2つ、Public Subnetが2つです
+・作成したVPCの中にSubnetを4つ作成します  
+・Private Subnetが2つ、Public Subnetが2つです  
 
 #### cmd (Public Subnet 1つ目)
 
@@ -674,6 +674,8 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 
 ### ■InternetGatewayの作成
 
+![img](./image/drowio-3-6.png)
+
 ・Internetの出入り口であるInternetGatewayを作成する
 
 #### cmd
@@ -702,8 +704,6 @@ aws ec2 create-internet-gateway \
 ```
 
 ### ■InternetGateway IDの取得
-
-![img](./image/drowio-3-6.png)
 
 ・IDを取得し、変数に格納・確認を行います
 
@@ -1272,6 +1272,8 @@ aws ec2 authorize-security-group-ingress \
 
 ### ■CloudWatch LogGroupの作成
 
+![img](./image/drowio-3-13.png)
+
 ・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。
 
 #### cmd
@@ -1287,8 +1289,6 @@ aws logs create-log-group --log-group-name awslogs-container-hands-on
 ```
 
 ### ■CloudWatch LogGroupの作成確認
-
-![img](./image/drowio-3-13.png)
 
 #### cmd
 
@@ -1356,7 +1356,7 @@ Duration: 0:05:00
 
 ### ■Cloud9の作成
 
-![img](./image/drowio-5-1.png)
+![img](./image/drowio-4-1.png)
 
 ・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成
 
