@@ -1448,6 +1448,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
 ### ■ECRの作成
+![img](./image/drowio-5-1.png)
 
 ・コンテナイメージのレジストリであるECRを作成
 
