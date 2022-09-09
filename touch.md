@@ -1448,6 +1448,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
 ### ■ECRの作成
+
 ![img](./image/drowio-5-1.png)
 
 ・コンテナイメージのレジストリであるECRを作成
@@ -2391,7 +2392,9 @@ aws ecs register-task-definition \
     ]
 }
 ```
+
 ### ■タスク定義のリビジョン取得
+
 ・タスク定義は作成する度にカウントアップされるので、最新のリビジョン番号を取得します
 
 #### cmd
@@ -2409,6 +2412,7 @@ echo ${RevisionNo}
 ```
 
 #### result
+
 ```Cloud9
 8
 ```
@@ -2548,7 +2552,6 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
 
-
 ### ■表示結果例
 
 #### パターン例１
@@ -2560,18 +2563,33 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ![img](./image/img10-2.png)
 
 ### ■CloudWatch Logsの確認
+
 - 上部の検索バーで`CloudWatch`と検索
-- `CloudWatch` > `ロググループ` > `awslogs-container-hands-on` > 2つのログストリームを確認
+- `CloudWatch`  >  `ロググループ`  >  `awslogs-container-hands-on` > 2つのログストリームを確認
 - "ロードバランサーのアクセスログ" と "ブラウザアクセスログ"を確認
+
 #### ログストリームを確認
+
 ![img](./image/img10-3.png)
 
-#### アクセスログを確認
-![img](./image/img10-4.png)
+#### ロードバランサーアクセスログを確認
+
+```CloudWatch
+10.0.0.102 - - [09/Sep/2022:03:09:33 +0000] \
+"GET /index.php HTTP/1.1" 200 403 "-" "ELB-HealthChecker/2.0"
+```
+
+#### ブラウザアクセスログを確認
+
+```CloudWatch
+10.0.0.102 - - [09/Sep/2022:03:10:00 +0000] \
+"GET / HTTP/1.1" 200 384 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"
+```
 
 ## 変数整理
 
 ### ここまで取得された変数を整理
+
 ・後続のため、取得した変数をエディターに残して下さい
 
 #### cmd

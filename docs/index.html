@@ -1972,12 +1972,19 @@ EOF
 <h2 is-upgraded>■CloudWatch Logsの確認</h2>
 <ul>
 <li>上部の検索バーで<code>CloudWatch</code>と検索</li>
-<li><code>CloudWatch</code> &gt; <code>�</code>�ググループ &gt; <code>awslogs-container-hands-on</code> &gt; 2つのログストリームを確認</li>
-<li>&#34;ロードバランサーのアクセスログ&#34; と &#34;ブラウザアクセスログ&#34;を確認  <h3 is-upgraded>ログストリームを確認</h3>
-  <img alt="img" src="img/f9a0a20ac6b258.png"></li>
+<li><code>CloudWatch</code>  &gt;  <code>�</code>�ググループ  &gt;  <code>awslogs-container-hands-on</code> &gt; 2つのログストリームを確認</li>
+<li>&#34;ロードバランサーのアクセスログ&#34; と &#34;ブラウザアクセスログ&#34;を確認</li>
 </ul>
-<h3 is-upgraded>アクセスログを確認</h3>
-<p class="image-container"><img alt="img" src="img/ee4a70edfc0264e2.png"></p>
+<h3 is-upgraded>ログストリームを確認</h3>
+<p class="image-container"><img alt="img" src="img/575c856891b5b153.png"></p>
+<h3 is-upgraded>ロードバランサーアクセスログを確認</h3>
+<pre><code language="language-CloudWatch" class="language-CloudWatch">10.0.0.102 - - [09/Sep/2022:03:09:33 +0000] \
+&#34;GET /index.php HTTP/1.1&#34; 200 403 &#34;-&#34; &#34;ELB-HealthChecker/2.0&#34;
+</code></pre>
+<h3 is-upgraded>ブラウザアクセスログを確認</h3>
+<pre><code language="language-CloudWatch" class="language-CloudWatch">10.0.0.102 - - [09/Sep/2022:03:10:00 +0000] \
+&#34;GET / HTTP/1.1&#34; 200 384 &#34;-&#34; &#34;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36&#34;
+</code></pre>
 
 
       </google-codelab-step>
