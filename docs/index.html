@@ -2230,6 +2230,14 @@ EOF
 <pre><code>（なし）
 </code></pre>
 <h3 is-upgraded>cmd</h3>
+<pre><code>aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code>（なし）
+</code></pre>
+<h3 is-upgraded>cmd</h3>
 <pre><code>aws iam list-attached-role-policies \
   --role-name ContainerHandsOnForCodeBuild
 </code></pre>

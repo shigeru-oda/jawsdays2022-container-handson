@@ -2929,6 +2929,19 @@ aws iam attach-role-policy \
 （なし）
 ```
 #### cmd
+
+```
+aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+```
+
+#### result
+
+```
+（なし）
+```
+#### cmd
 ```
 aws iam list-attached-role-policies \
   --role-name ContainerHandsOnForCodeBuild
