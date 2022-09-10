@@ -1853,6 +1853,7 @@ EOF
     --cluster ContainerHandsOn \
     --service-name ContainerHandsOn \
     --task-definition ContainerHandsOn:${RevisionNo} \
+    --deployment-controller type=CODE_DEPLOY \
     --desired-count 2 \
     --launch-type FARGATE \
     --platform-version LATEST \
@@ -1972,8 +1973,8 @@ EOF
 <h2 is-upgraded>■CloudWatch Logsの確認</h2>
 <ul>
 <li>上部の検索バーで<code>CloudWatch</code>と検索</li>
-<li><code>CloudWatch</code>  &gt;  <code>�</code>�ググループ  &gt;  <code>awslogs-container-hands-on</code> &gt; 2つのログストリームを確認</li>
-<li>&#34;ロードバランサーのアクセスログ&#34; と &#34;ブラウザアクセスログ&#34;を確認</li>
+<li>CloudWatch &gt; ロググループ &gt; awslogs-container-hands-on &gt; 2つのログストリームを確認</li>
+<li>&#34;ロードバランサーのアクセスログ&#34; と &#34;ブラウザアクセスログ&#34;をそれぞれのログストリームで確認</li>
 </ul>
 <h3 is-upgraded>ログストリームを確認</h3>
 <p class="image-container"><img alt="img" src="img/575c856891b5b153.png"></p>
@@ -1990,7 +1991,7 @@ EOF
       </google-codelab-step>
     
       <google-codelab-step label="変数整理" duration="0">
-        <h2 is-upgraded>ここまで取得された変数を整理</h2>
+        <h2 is-upgraded>■ここまで取得された変数を整理</h2>
 <p>・後続のため、取得した変数をエディターに残して下さい</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
@@ -2032,13 +2033,324 @@ export RevisionNo=&#34;8&#34;
 
       </google-codelab-step>
     
-      <google-codelab-step label="CodeBuild作成" duration="5">
+      <google-codelab-step label="CodeCommit作成" duration="5">
+        <h2 is-upgraded>■CodeCommitの作成</h2>
+<p>・git互換のソースリポジトリであるCodeCommitを作成</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws codecommit create-repository \
+  --repository-name ContainerHandsOn \
+  --repository-description &#34;ContainerHandsOn&#34; \
+  --tags &#34;key=Name,value=ContainerHandsOn&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;repositoryMetadata&#34;: {
+        &#34;accountId&#34;: &#34;378647896848&#34;,
+        &#34;repositoryId&#34;: &#34;b4e47286-11a4-4280-9760-8c8103a5ace7&#34;,
+        &#34;repositoryName&#34;: &#34;ContainerHandsOn&#34;,
+        &#34;repositoryDescription&#34;: &#34;ContainerHandsOn&#34;,
+        &#34;lastModifiedDate&#34;: 1662705554.252,
+        &#34;creationDate&#34;: 1662705554.252,
+        &#34;cloneUrlHttp&#34;: &#34;https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn&#34;,
+        &#34;cloneUrlSsh&#34;: &#34;ssh://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn&#34;,
+        &#34;Arn&#34;: &#34;arn:aws:codecommit:ap-northeast-1:378647896848:ContainerHandsOn&#34;
+    }
+}
+</code></pre>
+<h2 is-upgraded>■CodeCommitリポジトリのクローン</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/
+git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">Cloning into &#39;ContainerHandsOn&#39;...
+warning: You appear to have cloned an empty repository.
+</code></pre>
+<h2 is-upgraded>■資材の準備</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ContainerHandsOn
+cp -p ../Dockerfile ./
+cp -pr ../src ./
+ls -lR
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">.:
+total 8
+-rw-rw-r-- 1 ec2-user ec2-user   47 Sep  9 01:31 Dockerfile
+drwxrwxr-x 2 ec2-user ec2-user 4096 Sep  9 01:32 src
+
+./src:
+total 4
+-rw-rw-r-- 1 ec2-user ec2-user 190 Sep  9 01:32 index.php
+</code></pre>
+<h2 is-upgraded>■buildspec.ymlの新規作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; buildspec.yml
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+        docker: 20
         
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - docker version
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com
+      - RepositoryUri=378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
+      - ImageTag=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t jaws-days-2022/container-hands-on .
+      - docker tag jaws-days-2022/container-hands-on:latest ${RepositoryUri}:latest
+      - docker tag jaws-days-2022/container-hands-on:latest ${RepositoryUri}:${ImageTag}
+      - printf &#39;{&#34;Version&#34;:&#34;1.0&#34;,&#34;ImageURI&#34;:&#34;%s&#34;}&#39; ${RepositoryUri}:${ImageTag} &gt; imageDetail.json
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push ${RepositoryUri}:latest
+      - docker push ${RepositoryUri}:${ImageTag}
+
+artifacts:
+  files: imageDetail.json
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">（なし）
+</code></pre>
+<h2 is-upgraded>■buildspec.ymlの確認</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">ls -l buildspec.yml
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 968 Sep  9 07:19 buildspec.yml
+</code></pre>
+<h2 is-upgraded>■appspec.ymlの新規作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; appspec.yml
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: &#34;&lt;TASK_DEFINITION&gt;&#34;
+        LoadBalancerInfo:
+            ContainerName: &#34;ContainerHandsOn&#34; 
+            ContainerPort: &#34;80&#34;
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">（なし）
+</code></pre>
+<h2 is-upgraded>■appspec.ymlの確認</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">ls -l appspec.yml
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 255 Sep  9 07:25 appspec.yml
+</code></pre>
+<h2 is-upgraded>■taskdef.jsonの新規作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws ecs describe-task-definition \
+  --task-definition ContainerHandsOn:${RevisionNo} \
+  --query taskDefinition &gt; taskdef.json
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">（なし）
+</code></pre>
+<h2 is-upgraded>■taskdef.jsonの変更</h2>
+<p>・Cloud9のエディター機能を使って、6行目を変更します<br> ・変更後、Ctrl+Sでの保存をお忘れなく</p>
+<h3 is-upgraded>変更前</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
+</code></pre>
+<h3 is-upgraded>変更前</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;&lt;IMAGE_NAME&gt;&#34;,
+</code></pre>
+<h2 is-upgraded>■CodeCommitへのPush</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">git config --global user.name &#34;Your Name&#34;
+git config --global user.email you@example.com
+
+git add -A
+git commit -m &#34;first commit&#34;
+git push origin master
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="CodeBuild作成" duration="5">
+        <h2 is-upgraded>■CodeBuild用Role作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+{
+  &#34;Version&#34;: &#34;2012-10-17&#34;,
+  &#34;Statement&#34;: [
+    {
+      &#34;Sid&#34;: &#34;&#34;,
+      &#34;Effect&#34;: &#34;Allow&#34;,
+      &#34;Principal&#34;: {
+        &#34;Service&#34;: &#34;codebuild.amazonaws.com&#34;
+      },
+      &#34;Action&#34;: &#34;sts:AssumeRole&#34;
+    }
+  ]
+}
+EOF
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws iam create-role \
+  --role-name ContainerHandsOnForCodeBuild \
+  --assume-role-policy-document file://assume-role-policy-document.json
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+</code></pre>
+<h2 is-upgraded>■CodeBuild用RoleにPolicyをアタッチ</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code>aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code>（なし）
+</code></pre>
+<h3 is-upgraded>cmd</h3>
+<pre><code>aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code>（なし）
+</code></pre>
+<h3 is-upgraded>cmd</h3>
+<pre><code>aws iam list-attached-role-policies \
+  --role-name ContainerHandsOnForCodeBuild
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;AttachedPolicies&#34;: [
+        {
+            &#34;PolicyName&#34;: &#34;AmazonEC2ContainerRegistryPowerUser&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser&#34;
+        },
+        {
+            &#34;PolicyName&#34;: &#34;AWSCodeBuildDeveloperAccess&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess&#34;
+        }
+    ]
+}
+</code></pre>
+<h2 is-upgraded>■CodeBuild設定</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; codebuild-create-project.json
+{
+    &#34;name&#34;: &#34;ContainerHandsOn&#34;,
+    &#34;source&#34;: {
+        &#34;type&#34;: &#34;CODECOMMIT&#34;,
+        &#34;location&#34;: &#34;https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn&#34;
+    },
+    &#34;sourceVersion&#34;: &#34;refs/heads/master&#34;,
+    &#34;artifacts&#34;: {
+        &#34;type&#34;: &#34;NO_ARTIFACTS&#34;
+    },
+    &#34;environment&#34;: {
+        &#34;type&#34;: &#34;LINUX_CONTAINER&#34;,
+        &#34;image&#34;: &#34;aws/codebuild/amazonlinux2-x86_64-standard:4.0&#34;,
+        &#34;computeType&#34;: &#34;BUILD_GENERAL1_SMALL&#34;
+    },
+    &#34;serviceRole&#34;: &#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeBuild&#34;
+}
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">（なし）
+</code></pre>
+<h2 is-upgraded>CodeBuild作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws codebuild create-project \
+  --cli-input-json file://codebuild-create-project.json \
+  --tags key=Name,value=ContainerHandsOn
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;project&#34;: {
+        &#34;name&#34;: &#34;ContainerHandsOn&#34;,
+        &#34;arn&#34;: &#34;arn:aws:codebuild:ap-northeast-1:378647896848:project/ContainerHandsOn&#34;,
+        &#34;source&#34;: {
+            &#34;type&#34;: &#34;CODECOMMIT&#34;,
+            &#34;location&#34;: &#34;https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn&#34;,
+            &#34;insecureSsl&#34;: false
+        },
+        &#34;sourceVersion&#34;: &#34;refs/heads/master&#34;,
+        &#34;artifacts&#34;: {
+            &#34;type&#34;: &#34;NO_ARTIFACTS&#34;
+        },
+        &#34;cache&#34;: {
+            &#34;type&#34;: &#34;NO_CACHE&#34;
+        },
+        &#34;environment&#34;: {
+            &#34;type&#34;: &#34;LINUX_CONTAINER&#34;,
+            &#34;image&#34;: &#34;aws/codebuild/amazonlinux2-x86_64-standard:4.0&#34;,
+            &#34;computeType&#34;: &#34;BUILD_GENERAL1_SMALL&#34;,
+            &#34;environmentVariables&#34;: [],
+            &#34;privilegedMode&#34;: false,
+            &#34;imagePullCredentialsType&#34;: &#34;CODEBUILD&#34;
+        },
+        &#34;serviceRole&#34;: &#34;arn:aws:iam::378647896848:role/ContainerHandsOnForCodeBuild&#34;,
+        &#34;timeoutInMinutes&#34;: 60,
+        &#34;queuedTimeoutInMinutes&#34;: 480,
+        &#34;encryptionKey&#34;: &#34;arn:aws:kms:ap-northeast-1:378647896848:alias/aws/s3&#34;,
+        &#34;tags&#34;: [
+            {
+                &#34;key&#34;: &#34;Name&#34;,
+                &#34;value&#34;: &#34;ContainerHandsOn&#34;
+            }
+        ],
+        &#34;created&#34;: &#34;2022-09-10T05:23:34.387000+00:00&#34;,
+        &#34;lastModified&#34;: &#34;2022-09-10T05:23:34.387000+00:00&#34;,
+        &#34;badge&#34;: {
+            &#34;badgeEnabled&#34;: false
+        },
+        &#34;projectVisibility&#34;: &#34;PRIVATE&#34;
+    }
+}
+</code></pre>
+
 
       </google-codelab-step>
     
       <google-codelab-step label="CodeDeploy作成" duration="5">
-        
+        <h2 is-upgraded>アプリケーションを作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-application \
+  --application-name ContainerHandsOn \
+  --compute-platform ECS \
+  --tags Key=Name,Value=ContainerHandsOn
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;applicationId&#34;: &#34;84eb81cb-1e84-46cb-9209-c17334e7bc15&#34;
+}
+</code></pre>
+<h2 is-upgraded>■ デプロイグループの作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-deployment-group \
+    --application-name ContainerHandsOn \
+    --auto-scaling-groups CodeDeployDemo-ASG \
+    --deployment-config-name CodeDeployDefault.OneAtATime \
+    --deployment-group-name ContainerHandsOn \
+    --ec2-tag-filters Key=Name,Value=CodeDeployDemo,Type=KEY_AND_VALUE \
+    --service-role-arn arn:aws:iam::123456789012:role/CodeDeployDemoRol
+</code></pre>
+<h3 is-upgraded>result</h3>
+
 
       </google-codelab-step>
     

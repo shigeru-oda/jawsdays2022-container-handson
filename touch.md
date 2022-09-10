@@ -2430,6 +2430,7 @@ aws ecs create-service \
     --cluster ContainerHandsOn \
     --service-name ContainerHandsOn \
     --task-definition ContainerHandsOn:${RevisionNo} \
+    --deployment-controller type=CODE_DEPLOY \
     --desired-count 2 \
     --launch-type FARGATE \
     --platform-version LATEST \
@@ -2565,8 +2566,8 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ### ■CloudWatch Logsの確認
 
 - 上部の検索バーで`CloudWatch`と検索
-- `CloudWatch`  >  `ロググループ`  >  `awslogs-container-hands-on` > 2つのログストリームを確認
-- "ロードバランサーのアクセスログ" と "ブラウザアクセスログ"を確認
+- CloudWatch > ロググループ > awslogs-container-hands-on > 2つのログストリームを確認
+- "ロードバランサーのアクセスログ" と "ブラウザアクセスログ"をそれぞれのログストリームで確認
 
 #### ログストリームを確認
 
@@ -2588,7 +2589,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ## 変数整理
 
-### ここまで取得された変数を整理
+### ■ここまで取得された変数を整理
 
 ・後続のため、取得した変数をエディターに残して下さい
 
@@ -2634,14 +2635,430 @@ export LoadBalancersDnsName="ContainerHandsOn-610375823.ap-northeast-1.elb.amazo
 export RevisionNo="8"
 ```
 
+## CodeCommit作成
+
+Duration: 0:05:00
+
+### ■CodeCommitの作成
+
+・git互換のソースリポジトリであるCodeCommitを作成
+
+#### cmd
+
+```Cloud9
+aws codecommit create-repository \
+  --repository-name ContainerHandsOn \
+  --repository-description "ContainerHandsOn" \
+  --tags "key=Name,value=ContainerHandsOn"
+```
+
+#### result
+
+```Cloud9
+{
+    "repositoryMetadata": {
+        "accountId": "378647896848",
+        "repositoryId": "b4e47286-11a4-4280-9760-8c8103a5ace7",
+        "repositoryName": "ContainerHandsOn",
+        "repositoryDescription": "ContainerHandsOn",
+        "lastModifiedDate": 1662705554.252,
+        "creationDate": 1662705554.252,
+        "cloneUrlHttp": "https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn",
+        "cloneUrlSsh": "ssh://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn",
+        "Arn": "arn:aws:codecommit:ap-northeast-1:378647896848:ContainerHandsOn"
+    }
+}
+```
+
+### ■CodeCommitリポジトリのクローン
+
+#### cmd
+
+```Cloud9
+cd ~/environment/
+git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
+```
+
+#### result
+
+```Cloud9
+Cloning into 'ContainerHandsOn'...
+warning: You appear to have cloned an empty repository.
+```
+
+### ■資材の準備
+
+#### cmd
+
+```Cloud9
+cd ContainerHandsOn
+cp -p ../Dockerfile ./
+cp -pr ../src ./
+ls -lR
+```
+
+#### result
+
+```Cloud9
+.:
+total 8
+-rw-rw-r-- 1 ec2-user ec2-user   47 Sep  9 01:31 Dockerfile
+drwxrwxr-x 2 ec2-user ec2-user 4096 Sep  9 01:32 src
+
+./src:
+total 4
+-rw-rw-r-- 1 ec2-user ec2-user 190 Sep  9 01:32 index.php
+```
+
+### ■buildspec.ymlの新規作成
+
+#### cmd
+
+```Cloud9
+cat << EOF > buildspec.yml
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+        docker: 20
+        
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - docker version
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com
+      - RepositoryUri=378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
+      - ImageTag=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t jaws-days-2022/container-hands-on .
+      - docker tag jaws-days-2022/container-hands-on:latest ${RepositoryUri}:latest
+      - docker tag jaws-days-2022/container-hands-on:latest ${RepositoryUri}:${ImageTag}
+      - printf '{"Version":"1.0","ImageURI":"%s"}' ${RepositoryUri}:${ImageTag} > imageDetail.json
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push ${RepositoryUri}:latest
+      - docker push ${RepositoryUri}:${ImageTag}
+
+artifacts:
+  files: imageDetail.json
+EOF
+```
+
+#### result
+
+```Cloud9
+（なし）
+```
+
+### ■buildspec.ymlの確認
+
+#### cmd
+
+```Cloud9
+ls -l buildspec.yml
+```
+
+#### result
+
+```Cloud9
+-rw-rw-r-- 1 ec2-user ec2-user 968 Sep  9 07:19 buildspec.yml
+```
+
+### ■appspec.ymlの新規作成
+
+#### cmd
+
+```Cloud9
+cat << EOF > appspec.yml
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "<TASK_DEFINITION>"
+        LoadBalancerInfo:
+            ContainerName: "ContainerHandsOn" 
+            ContainerPort: "80"
+EOF
+```
+
+#### result
+
+```Cloud9
+（なし）
+```
+
+### ■appspec.ymlの確認
+
+#### cmd
+
+```Cloud9
+ls -l appspec.yml
+```
+
+#### result
+
+```Cloud9
+-rw-rw-r-- 1 ec2-user ec2-user 255 Sep  9 07:25 appspec.yml
+```
+
+### ■taskdef.jsonの新規作成
+
+#### cmd
+
+```Cloud9
+aws ecs describe-task-definition \
+  --task-definition ContainerHandsOn:${RevisionNo} \
+  --query taskDefinition > taskdef.json
+```
+
+#### result
+
+```Cloud9
+（なし）
+```
+
+### ■taskdef.jsonの変更
+
+・Cloud9のエディター機能を使って、6行目を変更します  
+・変更後、Ctrl+Sでの保存をお忘れなく  
+
+#### 変更前
+
+```Cloud9
+"image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
+```
+
+#### 変更前
+
+```Cloud9
+"image": "<IMAGE_NAME>",
+```
+
+### ■CodeCommitへのPush
+
+#### cmd
+
+```Cloud9
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
+
+git add -A
+git commit -m "first commit"
+git push origin master
+```
+
+#### result
+
+```Cloud9
+
+```
+
 ## CodeBuild作成
 
 Duration: 0:05:00
 
+### ■CodeBuild用Role作成
+
+#### cmd
+
+```Cloud9
+cat << EOF > assume-role-policy-document.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codebuild.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+```
+
+```Cloud9
+aws iam create-role \
+  --role-name ContainerHandsOnForCodeBuild \
+  --assume-role-policy-document file://assume-role-policy-document.json
+```
+
+#### result
+
+```Cloud9
+xxx
+```
+
+### ■CodeBuild用RoleにPolicyをアタッチ
+
+#### cmd
+
+```
+aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
+```
+
+#### result
+
+```
+（なし）
+```
+
+#### cmd
+
+```
+aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+```
+
+#### result
+
+```
+（なし）
+```
+#### cmd
+```
+aws iam list-attached-role-policies \
+  --role-name ContainerHandsOnForCodeBuild
+```
+#### result
+```Cloud9
+{
+    "AttachedPolicies": [
+        {
+            "PolicyName": "AmazonEC2ContainerRegistryPowerUser",
+            "PolicyArn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
+        },
+        {
+            "PolicyName": "AWSCodeBuildDeveloperAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+        }
+    ]
+}
+```
+
+### ■CodeBuild設定
+#### cmd
+```Cloud9
+cat << EOF > codebuild-create-project.json
+{
+    "name": "ContainerHandsOn",
+    "source": {
+        "type": "CODECOMMIT",
+        "location": "https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn"
+    },
+    "sourceVersion": "refs/heads/master",
+    "artifacts": {
+        "type": "NO_ARTIFACTS"
+    },
+    "environment": {
+        "type": "LINUX_CONTAINER",
+        "image": "aws/codebuild/amazonlinux2-x86_64-standard:4.0",
+        "computeType": "BUILD_GENERAL1_SMALL"
+    },
+    "serviceRole": "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeBuild"
+}
+EOF
+```
+#### result
+```Cloud9
+（なし）
+```
+### CodeBuild作成
+#### cmd
+```Cloud9
+aws codebuild create-project \
+  --cli-input-json file://codebuild-create-project.json \
+  --tags key=Name,value=ContainerHandsOn
+```
+#### result
+```Cloud9
+{
+    "project": {
+        "name": "ContainerHandsOn",
+        "arn": "arn:aws:codebuild:ap-northeast-1:378647896848:project/ContainerHandsOn",
+        "source": {
+            "type": "CODECOMMIT",
+            "location": "https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn",
+            "insecureSsl": false
+        },
+        "sourceVersion": "refs/heads/master",
+        "artifacts": {
+            "type": "NO_ARTIFACTS"
+        },
+        "cache": {
+            "type": "NO_CACHE"
+        },
+        "environment": {
+            "type": "LINUX_CONTAINER",
+            "image": "aws/codebuild/amazonlinux2-x86_64-standard:4.0",
+            "computeType": "BUILD_GENERAL1_SMALL",
+            "environmentVariables": [],
+            "privilegedMode": false,
+            "imagePullCredentialsType": "CODEBUILD"
+        },
+        "serviceRole": "arn:aws:iam::378647896848:role/ContainerHandsOnForCodeBuild",
+        "timeoutInMinutes": 60,
+        "queuedTimeoutInMinutes": 480,
+        "encryptionKey": "arn:aws:kms:ap-northeast-1:378647896848:alias/aws/s3",
+        "tags": [
+            {
+                "key": "Name",
+                "value": "ContainerHandsOn"
+            }
+        ],
+        "created": "2022-09-10T05:23:34.387000+00:00",
+        "lastModified": "2022-09-10T05:23:34.387000+00:00",
+        "badge": {
+            "badgeEnabled": false
+        },
+        "projectVisibility": "PRIVATE"
+    }
+}
+```
+
 ## CodeDeploy作成
 
 Duration: 0:05:00
+### アプリケーションを作成
+#### cmd
+```Cloud9
+aws deploy create-application \
+  --application-name ContainerHandsOn \
+  --compute-platform ECS \
+  --tags Key=Name,Value=ContainerHandsOn
+```
+#### result
+```Cloud9
+{
+    "applicationId": "84eb81cb-1e84-46cb-9209-c17334e7bc15"
+}
+```
 
+### ■ デプロイグループの作成
+#### cmd
+```Cloud9
+aws deploy create-deployment-group \
+    --application-name ContainerHandsOn \
+    --auto-scaling-groups CodeDeployDemo-ASG \
+    --deployment-config-name CodeDeployDefault.OneAtATime \
+    --deployment-group-name ContainerHandsOn \
+    --ec2-tag-filters Key=Name,Value=CodeDeployDemo,Type=KEY_AND_VALUE \
+    --service-role-arn arn:aws:iam::123456789012:role/CodeDeployDemoRol
+```
+#### result
 ## CodePipeline作成
 
 Duration: 0:05:00
