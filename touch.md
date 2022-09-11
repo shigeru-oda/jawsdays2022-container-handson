@@ -3674,22 +3674,6 @@ aws deploy create-deployment-group \
 }
 ```
 
-#### cmd ///できてない
-
-```Cloud9
-aws deploy create-deployment-group \
-    --application-name ContainerHandsOn \
-    --deployment-group-name ContainerHandsOn \
-    --deployment-config-name CodeDeployDefault.OneAtATime \
-    --service-role-arn "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeDeploy" \
-    --ecs-services serviceName="ContainerHandsOn",clusterName="ContainerHandsOn" \
-    --deployment-style deploymentType="BLUE_GREEN",deploymentOption="WITH_TRAFFIC_CONTROL" \
-    --blue-green-deployment-configuration "terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5},deploymentReadyOption={actionOnTimeout=CONTINUE_DEPLOYMENT,waitTimeInMinutes=0}" \
-    --load-balancer-info '{"targetGroupPairInfoList":[{"targetGroups":[{"name":"ContainerHandsOn"},{"name":"ContainerHandsOn8080"}],"prodTrafficRoute":{"listenerArns":[${ListenerArn}]},"testTrafficRoute":{"listenerArns":[${ListenerArn8080}]}}]}'
-```
-
-#### result
-
 ## CodePipeline作成
 
 Duration: 0:05:00
@@ -3718,13 +3702,35 @@ EOF
 
 ```Cloud9
 aws iam create-role \
-  --role-name ContainerHandsOnForCodeDeploy \
+  --role-name ContainerHandsOnForPipeLine \
   --assume-role-policy-document file://assume-role-policy-document.json
 ```
 
 #### result
 
 ```Cloud9
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "ContainerHandsOnForPipeLine",
+        "RoleId": "AROASHENIAIFE3VFSOI5C",
+        "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine",
+        "CreateDate": "2022-09-11T07:29:04Z",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "codepipeline.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
 ```
 
 ### ■CodePipeline用RoleにPolicyをアタッチ
@@ -3733,15 +3739,70 @@ aws iam create-role \
 
 ```Cloud9
 aws iam attach-role-policy \
-  --role-name ContainerHandsOnForCodeDeploy \
+  --role-name ContainerHandsOnForPipeLine \
   --policy-arn arn:aws:iam::aws:policy/AWSCodePipelineFullAccess
 ```
 
 #### result
 
 ```Cloud9
+xxx
 ```
 
+### ■S3 artifactStoreを作成
+#### cmd
+```Cloud9
+YourName=shigeru-oda
+```
+```Cloud9
+S3Name=${YourName}-container-handson-`date +"%Y%m%d%H%M%S"`
+```
+
+```Cloud9
+clear; cat << EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+LoadBalancersDnsName : ${LoadBalancersDnsName}
+LoadBalancerArn : ${LoadBalancerArn}
+TargetGroupArn : ${TargetGroupArn}
+RevisionNo : ${RevisionNo}
+TargetGroupArn8080 : ${TargetGroupArn8080}
+ListenerArn : ${ListenerArn}
+ListenerArn8080 : ${ListenerArn8080}
+S3Name : ${S3Name}
+EOF
+```
+#### result
+```Cloud9
+AccoutID : 152767562250
+VpcId : vpc-0320e7bf74af8bd72
+SubnetId1aPublic : subnet-059ff12a72e014ca1
+SubnetId1cPublic : subnet-0076bf4756ca680d1
+SubnetId1aPrivate : subnet-000d7e1758777eb85
+SubnetId1cPrivate : subnet-04ec5cc1209d3c566
+InternetGatewayId : igw-015b39463b346214a
+RouteTableIdPublic : rtb-00a15f36fcbabe379
+RouteTableIdPrivate : rtb-086e760ddf493b0c3
+PublicSecurityGroupsId : sg-04a6d799d221392dc
+PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
+LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/d6ccd892547e534d
+RevisionNo : 2
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
+ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
+ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
+S3Name : shigeru-oda-container-handson-20220911072649
+```
 ### ■CodePipelineを作成
 
 #### cmd
@@ -3751,10 +3812,10 @@ cat << EOF > create-pipeline.json
 {
     "pipeline": {
         "name": "ContainerHandsOn",
-        "roleArn": "arn:aws:iam::378647896848:role/service-role/AWSCodePipelineServiceRole-ap-northeast-1-ContainerHandsOn",
+        "roleArn": "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForPipeLine",
         "artifactStore": {
             "type": "S3",
-            "location": "codepipeline-ap-northeast-1-260906425420"
+            "location": "${S3Name}"
         },
         "stages": [
             {
