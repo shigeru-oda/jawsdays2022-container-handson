@@ -1022,6 +1022,101 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
     &#34;environmentId&#34;: &#34;aa2999a731eb4178aed99069f1b683aa&#34;
 }
 </code></pre>
+<h2 is-upgraded>■Cloud9環境Roleを作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+{
+  &#34;Version&#34;: &#34;2012-10-17&#34;,
+  &#34;Statement&#34;: [
+    {
+      &#34;Sid&#34;: &#34;&#34;,
+      &#34;Effect&#34;: &#34;Allow&#34;,
+      &#34;Principal&#34;: {
+        &#34;Service&#34;: &#34;ec2.amazonaws.com&#34;
+      },
+      &#34;Action&#34;: &#34;sts:AssumeRole&#34;
+    }
+  ]
+}
+EOF
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws iam create-role \
+  --role-name ContainerHandsOnForCloud9 \
+  --assume-role-policy-document file://assume-role-policy-document.json
+</code></pre>
+<h2 is-upgraded>■Cloud9環境RoleにPolicy追加</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCloud9 \
+  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">（なし）
+</code></pre>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws iam list-attached-role-policies \
+  --role-name ContainerHandsOnForCloud9
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;AttachedPolicies&#34;: [
+        {
+            &#34;PolicyName&#34;: &#34;AdministratorAccess&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AdministratorAccess&#34;
+        }
+    ]
+}
+</code></pre>
+<h2 is-upgraded>■instance-profileを作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws iam create-instance-profile \
+    --instance-profile-name ContainerHandsOnForCloud9
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;InstanceProfile&#34;: {
+        &#34;Path&#34;: &#34;/&#34;,
+        &#34;InstanceProfileName&#34;: &#34;ContainerHandsOnForCloud9&#34;,
+        &#34;InstanceProfileId&#34;: &#34;AIPASHENIAIFABKPZHZ6B&#34;,
+        &#34;Arn&#34;: &#34;arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9&#34;,
+        &#34;CreateDate&#34;: &#34;2022-09-11T20:08:39+00:00&#34;,
+        &#34;Roles&#34;: []
+    }
+}
+</code></pre>
+<h2 is-upgraded>■instance-profileにRole付与</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws iam add-role-to-instance-profile \
+    --role-name ContainerHandsOnForCloud9 \
+    --instance-profile-name ContainerHandsOnForCloud9
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">（なし）
+</code></pre>
+<h2 is-upgraded>■Cloud9環境RoleをAttach</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">InstanceId=`aws ec2 describe-instances \
+    --query &#34;Reservations[*].Instances[*].InstanceId&#34; \
+    --filters &#34;Name=vpc-id,Values=${VpcId}&#34; \
+    --output text`
+</code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-iam-instance-profile \
+    --instance-id ${InstanceId} \
+    --iam-instance-profile Name=ContainerHandsOnForCloud9
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">{
+    &#34;IamInstanceProfileAssociation&#34;: {
+        &#34;AssociationId&#34;: &#34;iip-assoc-060b8208bb529670a&#34;,
+        &#34;InstanceId&#34;: &#34;i-033ba336e274d34f3&#34;,
+        &#34;IamInstanceProfile&#34;: {
+            &#34;Arn&#34;: &#34;arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9&#34;,
+            &#34;Id&#34;: &#34;AIPASHENIAIFABKPZHZ6B&#34;
+        },
+        &#34;State&#34;: &#34;associating&#34;
+    }
+}
+</code></pre>
 <h2 is-upgraded>■AWS コンソールでCloud9を起動</h2>
 <ul>
 <li>上部の検索バーで<code>Cloud9</code>と検索</li>
@@ -1030,6 +1125,13 @@ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
 </ul>
 <p>・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます <a href="./image/img4-1.png" target="_blank"><img alt="img" src="img/ccb3ac339b93cb8e.png"></a></p>
 <p>・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください <a href="./image/img4-2.png" target="_blank"><img alt="img" src="img/944649a354b83dff.png"></a></p>
+<h2 is-upgraded>■Cloud9でCredentialsを切り替え</h2>
+<ul>
+<li>画面右上の歯車マークをクリックし、Preferencesを開く</li>
+<li>Preferences &gt; AWS Settings &gt; Credentials と画面遷移をする</li>
+<li>Credentialsをオフにする</li>
+</ul>
+<p><a href="./image/img4-3.png" target="_blank"><img alt="img" src="img/d2d391502c16e5d6.png"></a></p>
 
 
       </google-codelab-step>
@@ -2809,8 +2911,8 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
             &#34;terminationWaitTimeInMinutes&#34;: 5
         },
         &#34;deploymentReadyOption&#34;: {
-            &#34;actionOnTimeout&#34;: &#34;CONTINUE_DEPLOYMENT&#34;,
-            &#34;waitTimeInMinutes&#34;: 0
+            &#34;actionOnTimeout&#34;: &#34;STOP_DEPLOYMENT&#34;,
+            &#34;waitTimeInMinutes&#34;: 5
         }
     },
     &#34;loadBalancerInfo&#34;: {

@@ -1381,6 +1381,138 @@ aws cloud9 create-environment-ec2 \
 }
 ```
 
+### ■Cloud9環境Roleを作成
+
+#### cmd
+
+```CloudShell
+cat << EOF > assume-role-policy-document.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+```
+
+```Cloud9
+aws iam create-role \
+  --role-name ContainerHandsOnForCloud9 \
+  --assume-role-policy-document file://assume-role-policy-document.json
+```
+
+### ■Cloud9環境RoleにPolicy追加
+
+#### cmd
+
+```CloudShell
+aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCloud9 \
+  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+```
+
+#### result
+
+```CloudShell
+（なし）
+```
+
+#### cmd
+
+```CloudShell
+aws iam list-attached-role-policies \
+  --role-name ContainerHandsOnForCloud9
+```
+
+#### result
+
+```CloudShell
+{
+    "AttachedPolicies": [
+        {
+            "PolicyName": "AdministratorAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        }
+    ]
+}
+```
+
+### ■instance-profileを作成
+
+#### cmd
+
+```CloudShell
+aws iam create-instance-profile \
+    --instance-profile-name ContainerHandsOnForCloud9
+```
+
+#### result
+
+```CloudShell
+{
+    "InstanceProfile": {
+        "Path": "/",
+        "InstanceProfileName": "ContainerHandsOnForCloud9",
+        "InstanceProfileId": "AIPASHENIAIFABKPZHZ6B",
+        "Arn": "arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9",
+        "CreateDate": "2022-09-11T20:08:39+00:00",
+        "Roles": []
+    }
+}
+```
+
+### ■instance-profileにRole付与
+#### cmd
+```CloudShell
+aws iam add-role-to-instance-profile \
+    --role-name ContainerHandsOnForCloud9 \
+    --instance-profile-name ContainerHandsOnForCloud9
+```
+
+#### result
+```CloudShell
+（なし）
+```
+
+### ■Cloud9環境RoleをAttach
+
+#### cmd
+```CloudShell
+InstanceId=`aws ec2 describe-instances \
+    --query "Reservations[*].Instances[*].InstanceId" \
+    --filters "Name=vpc-id,Values=${VpcId}" \
+    --output text`
+```
+
+```CloudShell
+aws ec2 associate-iam-instance-profile \
+    --instance-id ${InstanceId} \
+    --iam-instance-profile Name=ContainerHandsOnForCloud9
+```
+
+#### result
+```CloudShell
+{
+    "IamInstanceProfileAssociation": {
+        "AssociationId": "iip-assoc-060b8208bb529670a",
+        "InstanceId": "i-033ba336e274d34f3",
+        "IamInstanceProfile": {
+            "Arn": "arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9",
+            "Id": "AIPASHENIAIFABKPZHZ6B"
+        },
+        "State": "associating"
+    }
+}
+```
+
 ### ■AWS コンソールでCloud9を起動
 
 - 上部の検索バーで`Cloud9`と検索
@@ -1392,6 +1524,14 @@ aws cloud9 create-environment-ec2 \
 
 ・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください
 <a href="./image/img4-2.png" target="_blank" rel="noopener noreferrer">![img](./image/img4-2.png)</a>
+
+### ■Cloud9でCredentialsを切り替え
+
+- 画面右上の歯車マークをクリックし、Preferencesを開く
+- Preferences > AWS Settings > Credentials と画面遷移をする
+- Credentialsをオフにする
+
+<a href="./image/img4-3.png" target="_blank" rel="noopener noreferrer">![img](./image/img4-3.png)</a>
 
 ## ECR作成
 
@@ -3627,8 +3767,8 @@ cat << EOF > create-deployment-group.json
             "terminationWaitTimeInMinutes": 5
         },
         "deploymentReadyOption": {
-            "actionOnTimeout": "CONTINUE_DEPLOYMENT",
-            "waitTimeInMinutes": 0
+            "actionOnTimeout": "STOP_DEPLOYMENT",
+            "waitTimeInMinutes": 5
         }
     },
     "loadBalancerInfo": {
@@ -3918,6 +4058,7 @@ cat << EOF > InlinePolicy.json
 }
 EOF
 ```
+
 ```Cloud9
 aws iam put-role-policy \
   --role-name ContainerHandsOnForPipeLine \
@@ -3990,7 +4131,9 @@ ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/
 ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
 S3Name : shigeru-oda-container-handson-20220911072649
 ```
+
 #### cmd
+
 ```Cloud9
 aws s3 mb s3://${S3Name}
 ```
@@ -4228,14 +4371,19 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 ## Dockerコンテナ再ビルド(Codeシリーズを利用)
 
 Duration: 0:05:00
+
 ### ■課題
+
 ・パイプラインが動かないな。。。
 
 ## 動作確認２
 
 Duration: 0:05:00
+
 ### ■あああ
 
 ## 片付け
+
 Duration: 0:05:00
+
 ### ■あああ
