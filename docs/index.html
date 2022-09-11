@@ -2205,7 +2205,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - docker version
-      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS -password-stdin ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com
       - RepositoryUri=${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
       - ImageTag=\$(echo \$CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
@@ -2237,7 +2237,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">ls -l buildspec.yml
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 968 Sep  9 07:19 buildspec.yml
+<pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 1192 Sep 11 04:59 buildspec.yml
 </code></pre>
 <h2 is-upgraded>■appspec.ymlの新規作成</h2>
 <h3 is-upgraded>cmd</h3>
@@ -2261,7 +2261,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">ls -l appspec.yml
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 255 Sep  9 07:25 appspec.yml
+<pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 240 Sep 11 05:04 appspec.yml
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの新規作成</h2>
 <h3 is-upgraded>cmd</h3>
@@ -2273,7 +2273,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの変更</h2>
-<p>・Cloud9のエディター機能を使って、6行目を変更します<br> ・変更後、Ctrl+Sでの保存をお忘れなく</p>
+<p>・Cloud9のエディター機能を使って、6行目を変更します<br> ・変更後、Ctrl+Sでの保存をお忘れなく<br> ・sedでやりたい・・・ s</p>
 <h3 is-upgraded>変更前</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
 </code></pre>
@@ -2290,7 +2290,23 @@ git commit -m &#34;first commit&#34;
 git push origin master
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">[master (root-commit) 091ba9a] first commit
+ 5 files changed, 131 insertions(+)
+ create mode 100644 Dockerfile
+ create mode 100644 appspec.yml
+ create mode 100644 buildspec.yml
+ create mode 100644 src/index.php
+ create mode 100644 taskdef.json
+
+Enumerating objects: 8, done.
+Counting objects: 100% (8/8), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (8/8), 1.96 KiB | 1.96 MiB/s, done.
+Total 8 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
+ * [new branch]      master -&gt; master
+</code></pre>
 
 
       </google-codelab-step>
@@ -2298,6 +2314,8 @@ git push origin master
       <google-codelab-step label="CodeBuild作成" duration="5">
         <h2 is-upgraded>■CodeBuild用Role作成</h2>
 <h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+</code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
   &#34;Version&#34;: &#34;2012-10-17&#34;,
@@ -2319,17 +2337,30 @@ EOF
   --assume-role-policy-document file://assume-role-policy-document.json
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;Role&#34;: {
+        &#34;Path&#34;: &#34;/&#34;,
+        &#34;RoleName&#34;: &#34;ContainerHandsOnForCodeBuild&#34;,
+        &#34;RoleId&#34;: &#34;AROASHENIAIFMIBJGIWAY&#34;,
+        &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:role/ContainerHandsOnForCodeBuild&#34;,
+        &#34;CreateDate&#34;: &#34;2022-09-11T05:26:01Z&#34;,
+        &#34;AssumeRolePolicyDocument&#34;: {
+            &#34;Version&#34;: &#34;2012-10-17&#34;,
+            &#34;Statement&#34;: [
+                {
+                    &#34;Sid&#34;: &#34;&#34;,
+                    &#34;Effect&#34;: &#34;Allow&#34;,
+                    &#34;Principal&#34;: {
+                        &#34;Service&#34;: &#34;codebuild.amazonaws.com&#34;
+                    },
+                    &#34;Action&#34;: &#34;sts:AssumeRole&#34;
+                }
+            ]
+        }
+    }
+}
 </code></pre>
 <h2 is-upgraded>■CodeBuild用RoleにPolicyをアタッチ</h2>
-<h3 is-upgraded>cmd</h3>
-<pre><code>aws iam attach-role-policy \
-  --role-name ContainerHandsOnForCodeBuild \
-  --policy-arn arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
-</code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code>（なし）
-</code></pre>
 <h3 is-upgraded>cmd</h3>
 <pre><code>aws iam attach-role-policy \
   --role-name ContainerHandsOnForCodeBuild \
@@ -2366,8 +2397,12 @@ EOF
             &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser&#34;
         },
         {
-            &#34;PolicyName&#34;: &#34;AWSCodeBuildDeveloperAccess&#34;,
-            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess&#34;
+            &#34;PolicyName&#34;: &#34;CloudWatchLogsFullAccess&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/CloudWatchLogsFullAccess&#34;
+        },
+        {
+            &#34;PolicyName&#34;: &#34;AmazonS3FullAccess&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AmazonS3FullAccess&#34;
         }
     ]
 }
@@ -2388,7 +2423,8 @@ EOF
     &#34;environment&#34;: {
         &#34;type&#34;: &#34;LINUX_CONTAINER&#34;,
         &#34;image&#34;: &#34;aws/codebuild/amazonlinux2-x86_64-standard:4.0&#34;,
-        &#34;computeType&#34;: &#34;BUILD_GENERAL1_SMALL&#34;
+        &#34;computeType&#34;: &#34;BUILD_GENERAL1_SMALL&#34;,
+        &#34;privilegedMode&#34;: true
     },
     &#34;serviceRole&#34;: &#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeBuild&#34;
 }
@@ -2401,13 +2437,14 @@ EOF
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
+  --region ap-northeast-1 \
   --tags key=Name,value=ContainerHandsOn
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;project&#34;: {
         &#34;name&#34;: &#34;ContainerHandsOn&#34;,
-        &#34;arn&#34;: &#34;arn:aws:codebuild:ap-northeast-1:378647896848:project/ContainerHandsOn&#34;,
+        &#34;arn&#34;: &#34;arn:aws:codebuild:ap-northeast-1:123456789012:project/ContainerHandsOn&#34;,
         &#34;source&#34;: {
             &#34;type&#34;: &#34;CODECOMMIT&#34;,
             &#34;location&#34;: &#34;https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn&#34;,
@@ -2428,18 +2465,18 @@ EOF
             &#34;privilegedMode&#34;: false,
             &#34;imagePullCredentialsType&#34;: &#34;CODEBUILD&#34;
         },
-        &#34;serviceRole&#34;: &#34;arn:aws:iam::378647896848:role/ContainerHandsOnForCodeBuild&#34;,
+        &#34;serviceRole&#34;: &#34;arn:aws:iam::123456789012:role/ContainerHandsOnForCodeBuild&#34;,
         &#34;timeoutInMinutes&#34;: 60,
         &#34;queuedTimeoutInMinutes&#34;: 480,
-        &#34;encryptionKey&#34;: &#34;arn:aws:kms:ap-northeast-1:378647896848:alias/aws/s3&#34;,
+        &#34;encryptionKey&#34;: &#34;arn:aws:kms:ap-northeast-1:123456789012:alias/aws/s3&#34;,
         &#34;tags&#34;: [
             {
                 &#34;key&#34;: &#34;Name&#34;,
                 &#34;value&#34;: &#34;ContainerHandsOn&#34;
             }
         ],
-        &#34;created&#34;: &#34;2022-09-10T05:23:34.387000+00:00&#34;,
-        &#34;lastModified&#34;: &#34;2022-09-10T05:23:34.387000+00:00&#34;,
+        &#34;created&#34;: 1662874335.259,
+        &#34;lastModified&#34;: 1662874335.259,
         &#34;badge&#34;: {
             &#34;badgeEnabled&#34;: false
         },
@@ -2454,6 +2491,8 @@ EOF
       <google-codelab-step label="CodeDeploy作成" duration="5">
         <h2 is-upgraded>■CodeDeploy用Role作成</h2>
 <h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+</code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
   &#34;Version&#34;: &#34;2012-10-17&#34;,
@@ -2475,9 +2514,30 @@ EOF
   --assume-role-policy-document file://assume-role-policy-document.json
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;Role&#34;: {
+        &#34;Path&#34;: &#34;/&#34;,
+        &#34;RoleName&#34;: &#34;ContainerHandsOnForCodeDeploy&#34;,
+        &#34;RoleId&#34;: &#34;AROASHENIAIFMRHKSS3UR&#34;,
+        &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:role/ContainerHandsOnForCodeDeploy&#34;,
+        &#34;CreateDate&#34;: &#34;2022-09-11T06:39:05Z&#34;,
+        &#34;AssumeRolePolicyDocument&#34;: {
+            &#34;Version&#34;: &#34;2012-10-17&#34;,
+            &#34;Statement&#34;: [
+                {
+                    &#34;Sid&#34;: &#34;&#34;,
+                    &#34;Effect&#34;: &#34;Allow&#34;,
+                    &#34;Principal&#34;: {
+                        &#34;Service&#34;: &#34;codedeploy.amazonaws.com&#34;
+                    },
+                    &#34;Action&#34;: &#34;sts:AssumeRole&#34;
+                }
+            ]
+        }
+    }
+}
 </code></pre>
-<h2 is-upgraded>■CodeBuild用RoleにPolicyをアタッチ</h2>
+<h2 is-upgraded>■CodeDeploy用RoleにPolicyをアタッチ</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code>aws iam attach-role-policy \
   --role-name ContainerHandsOnForCodeDeploy \
@@ -2494,11 +2554,30 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code>（なし）
 </code></pre>
+<h3 is-upgraded>cmd</h3>
+<pre><code>aws iam list-attached-role-policies \
+  --role-name ContainerHandsOnForCodeDeploy
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;AttachedPolicies&#34;: [
+        {
+            &#34;PolicyName&#34;: &#34;AmazonEC2ContainerRegistryPowerUser&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser&#34;
+        },
+        {
+            &#34;PolicyName&#34;: &#34;AWSCodeDeployRoleForECS&#34;,
+            &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS&#34;
+        }
+    ]
+}
+</code></pre>
 <h2 is-upgraded>■アプリケーションを作成</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-application \
   --application-name ContainerHandsOn \
   --compute-platform ECS \
+  --region ap-northeast-1 \
   --tags Key=Name,Value=ContainerHandsOn
 </code></pre>
 <h3 is-upgraded>result</h3>
@@ -2522,11 +2601,11 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;TargetGroups&#34;: [
         {
-            &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7&#34;,
+            &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4&#34;,
             &#34;TargetGroupName&#34;: &#34;ContainerHandsOn8080&#34;,
             &#34;Protocol&#34;: &#34;HTTP&#34;,
             &#34;Port&#34;: 8080,
-            &#34;VpcId&#34;: &#34;vpc-072d1e609d3b9157c&#34;,
+            &#34;VpcId&#34;: &#34;vpc-0320e7bf74af8bd72&#34;,
             &#34;HealthCheckProtocol&#34;: &#34;HTTP&#34;,
             &#34;HealthCheckPort&#34;: &#34;traffic-port&#34;,
             &#34;HealthCheckEnabled&#34;: true,
@@ -2552,10 +2631,43 @@ EOF
   --query &#34;TargetGroups[*].TargetGroupArn&#34; \
   --output text`
 </code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">echo ${TargetGroupArn8080}
+<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+LoadBalancersDnsName : ${LoadBalancersDnsName}
+LoadBalancerArn : ${LoadBalancerArn}
+TargetGroupArn : ${TargetGroupArn}
+RevisionNo : ${RevisionNo}
+TargetGroupArn8080 : ${TargetGroupArn8080}
+EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+VpcId : vpc-0320e7bf74af8bd72
+SubnetId1aPublic : subnet-059ff12a72e014ca1
+SubnetId1cPublic : subnet-0076bf4756ca680d1
+SubnetId1aPrivate : subnet-000d7e1758777eb85
+SubnetId1cPrivate : subnet-04ec5cc1209d3c566
+InternetGatewayId : igw-015b39463b346214a
+RouteTableIdPublic : rtb-00a15f36fcbabe379
+RouteTableIdPrivate : rtb-086e760ddf493b0c3
+PublicSecurityGroupsId : sg-04a6d799d221392dc
+PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
+LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
+RevisionNo : 2
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
+</code></pre>
 <h2 is-upgraded>■リスナーの作成</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-listener \
@@ -2568,18 +2680,18 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;Listeners&#34;: [
         {
-            &#34;ListenerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/556327e23f51a539&#34;,
-            &#34;LoadBalancerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:loadbalancer/app/ContainerHandsOn/3486ec4e4bcbcfe7&#34;,
+            &#34;ListenerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854&#34;,
+            &#34;LoadBalancerArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff&#34;,
             &#34;Port&#34;: 8080,
             &#34;Protocol&#34;: &#34;HTTP&#34;,
             &#34;DefaultActions&#34;: [
                 {
                     &#34;Type&#34;: &#34;forward&#34;,
-                    &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7&#34;,
+                    &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4&#34;,
                     &#34;ForwardConfig&#34;: {
                         &#34;TargetGroups&#34;: [
                             {
-                                &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7&#34;,
+                                &#34;TargetGroupArn&#34;: &#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4&#34;,
                                 &#34;Weight&#34;: 1
                             }
                         ],
@@ -2612,6 +2724,48 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+LoadBalancersDnsName : ${LoadBalancersDnsName}
+LoadBalancerArn : ${LoadBalancerArn}
+TargetGroupArn : ${TargetGroupArn}
+RevisionNo : ${RevisionNo}
+TargetGroupArn8080 : ${TargetGroupArn8080}
+ListenerArn : ${ListenerArn}
+ListenerArn8080 : ${ListenerArn8080}
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+VpcId : vpc-0320e7bf74af8bd72
+SubnetId1aPublic : subnet-059ff12a72e014ca1
+SubnetId1cPublic : subnet-0076bf4756ca680d1
+SubnetId1aPrivate : subnet-000d7e1758777eb85
+SubnetId1cPrivate : subnet-04ec5cc1209d3c566
+InternetGatewayId : igw-015b39463b346214a
+RouteTableIdPublic : rtb-00a15f36fcbabe379
+RouteTableIdPrivate : rtb-086e760ddf493b0c3
+PublicSecurityGroupsId : sg-04a6d799d221392dc
+PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
+LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
+RevisionNo : 2
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
+ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
+ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
+</code></pre>
 <h2 is-upgraded>■PublicSubnetのインバウンドルールを追加</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 authorize-security-group-ingress \
@@ -2621,18 +2775,95 @@ EOF
     --cidr 0.0.0.0/0
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;Return&#34;: true,
+    &#34;SecurityGroupRules&#34;: [
+        {
+            &#34;SecurityGroupRuleId&#34;: &#34;sgr-0d94c6066ce720a52&#34;,
+            &#34;GroupId&#34;: &#34;sg-04a6d799d221392dc&#34;,
+            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;IsEgress&#34;: false,
+            &#34;IpProtocol&#34;: &#34;tcp&#34;,
+            &#34;FromPort&#34;: 8080,
+            &#34;ToPort&#34;: 8080,
+            &#34;CidrIpv4&#34;: &#34;0.0.0.0/0&#34;
+        }
+    ]
+}
+</code></pre>
 <h2 is-upgraded>■デプロイグループの作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; create-deployment-group.json
+{
+    &#34;applicationName&#34;: &#34;ContainerHandsOn&#34;,
+    &#34;deploymentGroupName&#34;: &#34;ContainerHandsOn&#34;,
+    &#34;deploymentConfigName&#34;: &#34;CodeDeployDefault.ECSAllAtOnce&#34;,
+    &#34;serviceRoleArn&#34;: &#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeDeploy&#34;,
+    &#34;deploymentStyle&#34;: {
+        &#34;deploymentType&#34;: &#34;BLUE_GREEN&#34;,
+        &#34;deploymentOption&#34;: &#34;WITH_TRAFFIC_CONTROL&#34;
+    },
+    &#34;blueGreenDeploymentConfiguration&#34;: {
+        &#34;terminateBlueInstancesOnDeploymentSuccess&#34;: {
+            &#34;action&#34;: &#34;TERMINATE&#34;,
+            &#34;terminationWaitTimeInMinutes&#34;: 5
+        },
+        &#34;deploymentReadyOption&#34;: {
+            &#34;actionOnTimeout&#34;: &#34;CONTINUE_DEPLOYMENT&#34;,
+            &#34;waitTimeInMinutes&#34;: 0
+        }
+    },
+    &#34;loadBalancerInfo&#34;: {
+        &#34;targetGroupPairInfoList&#34;: [
+            {
+                &#34;targetGroups&#34;: [
+                    {
+                        &#34;name&#34;: &#34;ContainerHandsOn&#34;
+                    },
+                    {
+                        &#34;name&#34;: &#34;ContainerHandsOn8080&#34;
+                    }
+                ],
+                &#34;prodTrafficRoute&#34;: {
+                    &#34;listenerArns&#34;: [
+                        &#34;${ListenerArn}&#34;
+                    ]
+                },
+                &#34;testTrafficRoute&#34;: {
+                    &#34;listenerArns&#34;: [
+                        &#34;${ListenerArn8080}&#34;
+                    ]
+                }
+            }
+        ]
+    },
+    &#34;ecsServices&#34;: [
+        {
+            &#34;serviceName&#34;: &#34;ContainerHandsOn&#34;,
+            &#34;clusterName&#34;: &#34;ContainerHandsOn&#34;
+        }
+    ]
+}
+EOF
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-deployment-group \
+  --cli-input-json file://create-deployment-group.json
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;deploymentGroupId&#34;: &#34;66c261d6-481c-411c-a450-408e4582d3a3&#34;
+}
+</code></pre>
 <h3 is-upgraded>cmd ///できてない</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-deployment-group \
-    --application-name ContainerHandsOn1 \
-    --deployment-group-name ContainerHandsOn1 \
+    --application-name ContainerHandsOn \
+    --deployment-group-name ContainerHandsOn \
     --deployment-config-name CodeDeployDefault.OneAtATime \
-    --service-role-arn &#34;arn:aws:iam::378647896848:role/ContainerHandsOnForCodeDeploy&#34; \
+    --service-role-arn &#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeDeploy&#34; \
     --ecs-services serviceName=&#34;ContainerHandsOn&#34;,clusterName=&#34;ContainerHandsOn&#34; \
     --deployment-style deploymentType=&#34;BLUE_GREEN&#34;,deploymentOption=&#34;WITH_TRAFFIC_CONTROL&#34; \
     --blue-green-deployment-configuration &#34;terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5},deploymentReadyOption={actionOnTimeout=CONTINUE_DEPLOYMENT,waitTimeInMinutes=0}&#34; \
-    --load-balancer-info &#39;{&#34;targetGroupPairInfoList&#34;:[{&#34;targetGroups&#34;:[{&#34;name&#34;:&#34;ContainerHandsOn&#34;},{&#34;name&#34;:&#34;ContainerHandsOn8080&#34;}],&#34;prodTrafficRoute&#34;:{&#34;listenerArns&#34;:[&#34;${ListenerArn}&#34;]},&#34;testTrafficRoute&#34;:{&#34;listenerArns&#34;:[&#34;${ListenerArn8080}&#34;]}}]}&#39;
+    --load-balancer-info &#39;{&#34;targetGroupPairInfoList&#34;:[{&#34;targetGroups&#34;:[{&#34;name&#34;:&#34;ContainerHandsOn&#34;},{&#34;name&#34;:&#34;ContainerHandsOn8080&#34;}],&#34;prodTrafficRoute&#34;:{&#34;listenerArns&#34;:[${ListenerArn}]},&#34;testTrafficRoute&#34;:{&#34;listenerArns&#34;:[${ListenerArn8080}]}}]}&#39;
 </code></pre>
 <h3 is-upgraded>result</h3>
 

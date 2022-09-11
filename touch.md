@@ -2836,7 +2836,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - docker version
-      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS -password-stdin ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com
       - RepositoryUri=${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
       - ImageTag=\$(echo \$CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
@@ -2878,7 +2878,7 @@ ls -l buildspec.yml
 #### result
 
 ```Cloud9
--rw-rw-r-- 1 ec2-user ec2-user 968 Sep  9 07:19 buildspec.yml
+-rw-rw-r-- 1 ec2-user ec2-user 1192 Sep 11 04:59 buildspec.yml
 ```
 
 ### ■appspec.ymlの新規作成
@@ -2916,7 +2916,7 @@ ls -l appspec.yml
 #### result
 
 ```Cloud9
--rw-rw-r-- 1 ec2-user ec2-user 255 Sep  9 07:25 appspec.yml
+-rw-rw-r-- 1 ec2-user ec2-user 240 Sep 11 05:04 appspec.yml
 ```
 
 ### ■taskdef.jsonの新規作成
@@ -2939,6 +2939,8 @@ aws ecs describe-task-definition \
 
 ・Cloud9のエディター機能を使って、6行目を変更します  
 ・変更後、Ctrl+Sでの保存をお忘れなく  
+・sedでやりたい・・・
+s
 
 #### 変更前
 
@@ -2968,7 +2970,22 @@ git push origin master
 #### result
 
 ```Cloud9
+[master (root-commit) 091ba9a] first commit
+ 5 files changed, 131 insertions(+)
+ create mode 100644 Dockerfile
+ create mode 100644 appspec.yml
+ create mode 100644 buildspec.yml
+ create mode 100644 src/index.php
+ create mode 100644 taskdef.json
 
+Enumerating objects: 8, done.
+Counting objects: 100% (8/8), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (8/8), 1.96 KiB | 1.96 MiB/s, done.
+Total 8 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
+ * [new branch]      master -> master
 ```
 
 ## CodeBuild作成
@@ -2978,6 +2995,10 @@ Duration: 0:05:00
 ### ■CodeBuild用Role作成
 
 #### cmd
+
+```Cloud9
+cd ~/environment
+```
 
 ```Cloud9
 cat << EOF > assume-role-policy-document.json
@@ -3006,24 +3027,31 @@ aws iam create-role \
 #### result
 
 ```Cloud9
-xxx
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "ContainerHandsOnForCodeBuild",
+        "RoleId": "AROASHENIAIFMIBJGIWAY",
+        "Arn": "arn:aws:iam::123456789012:role/ContainerHandsOnForCodeBuild",
+        "CreateDate": "2022-09-11T05:26:01Z",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "codebuild.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
 ```
 
 ### ■CodeBuild用RoleにPolicyをアタッチ
-
-#### cmd
-
-```
-aws iam attach-role-policy \
-  --role-name ContainerHandsOnForCodeBuild \
-  --policy-arn arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
-```
-
-#### result
-
-```
-（なし）
-```
 
 #### cmd
 
@@ -3084,8 +3112,12 @@ aws iam list-attached-role-policies \
             "PolicyArn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
         },
         {
-            "PolicyName": "AWSCodeBuildDeveloperAccess",
-            "PolicyArn": "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+            "PolicyName": "CloudWatchLogsFullAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+        },
+        {
+            "PolicyName": "AmazonS3FullAccess",
+            "PolicyArn": "arn:aws:iam::aws:policy/AmazonS3FullAccess"
         }
     ]
 }
@@ -3110,7 +3142,8 @@ cat << EOF > codebuild-create-project.json
     "environment": {
         "type": "LINUX_CONTAINER",
         "image": "aws/codebuild/amazonlinux2-x86_64-standard:4.0",
-        "computeType": "BUILD_GENERAL1_SMALL"
+        "computeType": "BUILD_GENERAL1_SMALL",
+        "privilegedMode": true
     },
     "serviceRole": "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeBuild"
 }
@@ -3130,6 +3163,7 @@ EOF
 ```Cloud9
 aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
+  --region ap-northeast-1 \
   --tags key=Name,value=ContainerHandsOn
 ```
 
@@ -3139,7 +3173,7 @@ aws codebuild create-project \
 {
     "project": {
         "name": "ContainerHandsOn",
-        "arn": "arn:aws:codebuild:ap-northeast-1:378647896848:project/ContainerHandsOn",
+        "arn": "arn:aws:codebuild:ap-northeast-1:123456789012:project/ContainerHandsOn",
         "source": {
             "type": "CODECOMMIT",
             "location": "https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn",
@@ -3160,18 +3194,18 @@ aws codebuild create-project \
             "privilegedMode": false,
             "imagePullCredentialsType": "CODEBUILD"
         },
-        "serviceRole": "arn:aws:iam::378647896848:role/ContainerHandsOnForCodeBuild",
+        "serviceRole": "arn:aws:iam::123456789012:role/ContainerHandsOnForCodeBuild",
         "timeoutInMinutes": 60,
         "queuedTimeoutInMinutes": 480,
-        "encryptionKey": "arn:aws:kms:ap-northeast-1:378647896848:alias/aws/s3",
+        "encryptionKey": "arn:aws:kms:ap-northeast-1:123456789012:alias/aws/s3",
         "tags": [
             {
                 "key": "Name",
                 "value": "ContainerHandsOn"
             }
         ],
-        "created": "2022-09-10T05:23:34.387000+00:00",
-        "lastModified": "2022-09-10T05:23:34.387000+00:00",
+        "created": 1662874335.259,
+        "lastModified": 1662874335.259,
         "badge": {
             "badgeEnabled": false
         },
@@ -3187,6 +3221,10 @@ Duration: 0:05:00
 ### ■CodeDeploy用Role作成
 
 #### cmd
+
+```Cloud9
+cd ~/environment
+```
 
 ```Cloud9
 cat << EOF > assume-role-policy-document.json
@@ -3215,10 +3253,31 @@ aws iam create-role \
 #### result
 
 ```Cloud9
-xxx
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "ContainerHandsOnForCodeDeploy",
+        "RoleId": "AROASHENIAIFMRHKSS3UR",
+        "Arn": "arn:aws:iam::123456789012:role/ContainerHandsOnForCodeDeploy",
+        "CreateDate": "2022-09-11T06:39:05Z",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "codedeploy.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
 ```
 
-### ■CodeBuild用RoleにPolicyをアタッチ
+### ■CodeDeploy用RoleにPolicyをアタッチ
 
 #### cmd
 
@@ -3248,6 +3307,30 @@ aws iam attach-role-policy \
 （なし）
 ```
 
+#### cmd
+
+```
+aws iam list-attached-role-policies \
+  --role-name ContainerHandsOnForCodeDeploy
+```
+
+#### result
+
+```Cloud9
+{
+    "AttachedPolicies": [
+        {
+            "PolicyName": "AmazonEC2ContainerRegistryPowerUser",
+            "PolicyArn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
+        },
+        {
+            "PolicyName": "AWSCodeDeployRoleForECS",
+            "PolicyArn": "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
+        }
+    ]
+}
+```
+
 ### ■アプリケーションを作成
 
 #### cmd
@@ -3256,6 +3339,7 @@ aws iam attach-role-policy \
 aws deploy create-application \
   --application-name ContainerHandsOn \
   --compute-platform ECS \
+  --region ap-northeast-1 \
   --tags Key=Name,Value=ContainerHandsOn
 ```
 
@@ -3289,11 +3373,11 @@ aws elbv2 create-target-group \
 {
     "TargetGroups": [
         {
-            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7",
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4",
             "TargetGroupName": "ContainerHandsOn8080",
             "Protocol": "HTTP",
             "Port": 8080,
-            "VpcId": "vpc-072d1e609d3b9157c",
+            "VpcId": "vpc-0320e7bf74af8bd72",
             "HealthCheckProtocol": "HTTP",
             "HealthCheckPort": "traffic-port",
             "HealthCheckEnabled": true,
@@ -3325,12 +3409,45 @@ TargetGroupArn8080=`aws elbv2 describe-target-groups \
 ```
 
 ```Cloud9
-echo ${TargetGroupArn8080}
+clear; cat << EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+LoadBalancersDnsName : ${LoadBalancersDnsName}
+LoadBalancerArn : ${LoadBalancerArn}
+TargetGroupArn : ${TargetGroupArn}
+RevisionNo : ${RevisionNo}
+TargetGroupArn8080 : ${TargetGroupArn8080}
+EOF
 ```
 
 #### result
 
 ```Cloud9
+AccoutID : 123456789012
+VpcId : vpc-0320e7bf74af8bd72
+SubnetId1aPublic : subnet-059ff12a72e014ca1
+SubnetId1cPublic : subnet-0076bf4756ca680d1
+SubnetId1aPrivate : subnet-000d7e1758777eb85
+SubnetId1cPrivate : subnet-04ec5cc1209d3c566
+InternetGatewayId : igw-015b39463b346214a
+RouteTableIdPublic : rtb-00a15f36fcbabe379
+RouteTableIdPrivate : rtb-086e760ddf493b0c3
+PublicSecurityGroupsId : sg-04a6d799d221392dc
+PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
+LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
+RevisionNo : 2
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
 ```
 
 ### ■リスナーの作成
@@ -3351,18 +3468,18 @@ aws elbv2 create-listener \
 {
     "Listeners": [
         {
-            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/556327e23f51a539",
-            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:loadbalancer/app/ContainerHandsOn/3486ec4e4bcbcfe7",
+            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff",
             "Port": 8080,
             "Protocol": "HTTP",
             "DefaultActions": [
                 {
                     "Type": "forward",
-                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4",
                     "ForwardConfig": {
                         "TargetGroups": [
                             {
-                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7",
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4",
                                 "Weight": 1
                             }
                         ],
@@ -3409,6 +3526,54 @@ ListenerArn8080=`aws elbv2 describe-listeners \
 （なし）
 ```
 
+#### cmd
+
+```Cloud9
+clear; cat << EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+LoadBalancersDnsName : ${LoadBalancersDnsName}
+LoadBalancerArn : ${LoadBalancerArn}
+TargetGroupArn : ${TargetGroupArn}
+RevisionNo : ${RevisionNo}
+TargetGroupArn8080 : ${TargetGroupArn8080}
+ListenerArn : ${ListenerArn}
+ListenerArn8080 : ${ListenerArn8080}
+EOF
+```
+
+#### result
+
+```Cloud9
+AccoutID : 123456789012
+VpcId : vpc-0320e7bf74af8bd72
+SubnetId1aPublic : subnet-059ff12a72e014ca1
+SubnetId1cPublic : subnet-0076bf4756ca680d1
+SubnetId1aPrivate : subnet-000d7e1758777eb85
+SubnetId1cPrivate : subnet-04ec5cc1209d3c566
+InternetGatewayId : igw-015b39463b346214a
+RouteTableIdPublic : rtb-00a15f36fcbabe379
+RouteTableIdPrivate : rtb-086e760ddf493b0c3
+PublicSecurityGroupsId : sg-04a6d799d221392dc
+PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
+LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
+RevisionNo : 2
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
+ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
+ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
+```
+
 ### ■PublicSubnetのインバウンドルールを追加
 
 #### cmd
@@ -3424,22 +3589,103 @@ aws ec2 authorize-security-group-ingress \
 #### result
 
 ```Cloud9
+{
+    "Return": true,
+    "SecurityGroupRules": [
+        {
+            "SecurityGroupRuleId": "sgr-0d94c6066ce720a52",
+            "GroupId": "sg-04a6d799d221392dc",
+            "GroupOwnerId": "152767562250",
+            "IsEgress": false,
+            "IpProtocol": "tcp",
+            "FromPort": 8080,
+            "ToPort": 8080,
+            "CidrIpv4": "0.0.0.0/0"
+        }
+    ]
+}
 ```
 
 ### ■デプロイグループの作成
+#### cmd
+```Cloud9
+cat << EOF > create-deployment-group.json
+{
+    "applicationName": "ContainerHandsOn",
+    "deploymentGroupName": "ContainerHandsOn",
+    "deploymentConfigName": "CodeDeployDefault.ECSAllAtOnce",
+    "serviceRoleArn": "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeDeploy",
+    "deploymentStyle": {
+        "deploymentType": "BLUE_GREEN",
+        "deploymentOption": "WITH_TRAFFIC_CONTROL"
+    },
+    "blueGreenDeploymentConfiguration": {
+        "terminateBlueInstancesOnDeploymentSuccess": {
+            "action": "TERMINATE",
+            "terminationWaitTimeInMinutes": 5
+        },
+        "deploymentReadyOption": {
+            "actionOnTimeout": "CONTINUE_DEPLOYMENT",
+            "waitTimeInMinutes": 0
+        }
+    },
+    "loadBalancerInfo": {
+        "targetGroupPairInfoList": [
+            {
+                "targetGroups": [
+                    {
+                        "name": "ContainerHandsOn"
+                    },
+                    {
+                        "name": "ContainerHandsOn8080"
+                    }
+                ],
+                "prodTrafficRoute": {
+                    "listenerArns": [
+                        "${ListenerArn}"
+                    ]
+                },
+                "testTrafficRoute": {
+                    "listenerArns": [
+                        "${ListenerArn8080}"
+                    ]
+                }
+            }
+        ]
+    },
+    "ecsServices": [
+        {
+            "serviceName": "ContainerHandsOn",
+            "clusterName": "ContainerHandsOn"
+        }
+    ]
+}
+EOF
+```
+
+```Cloud9
+aws deploy create-deployment-group \
+  --cli-input-json file://create-deployment-group.json
+```
+#### result
+```Cloud9
+{
+    "deploymentGroupId": "66c261d6-481c-411c-a450-408e4582d3a3"
+}
+```
 
 #### cmd ///できてない
 
 ```Cloud9
 aws deploy create-deployment-group \
-    --application-name ContainerHandsOn1 \
-    --deployment-group-name ContainerHandsOn1 \
+    --application-name ContainerHandsOn \
+    --deployment-group-name ContainerHandsOn \
     --deployment-config-name CodeDeployDefault.OneAtATime \
-    --service-role-arn "arn:aws:iam::378647896848:role/ContainerHandsOnForCodeDeploy" \
+    --service-role-arn "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeDeploy" \
     --ecs-services serviceName="ContainerHandsOn",clusterName="ContainerHandsOn" \
     --deployment-style deploymentType="BLUE_GREEN",deploymentOption="WITH_TRAFFIC_CONTROL" \
     --blue-green-deployment-configuration "terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5},deploymentReadyOption={actionOnTimeout=CONTINUE_DEPLOYMENT,waitTimeInMinutes=0}" \
-    --load-balancer-info '{"targetGroupPairInfoList":[{"targetGroups":[{"name":"ContainerHandsOn"},{"name":"ContainerHandsOn8080"}],"prodTrafficRoute":{"listenerArns":["${ListenerArn}"]},"testTrafficRoute":{"listenerArns":["${ListenerArn8080}"]}}]}'
+    --load-balancer-info '{"targetGroupPairInfoList":[{"targetGroups":[{"name":"ContainerHandsOn"},{"name":"ContainerHandsOn8080"}],"prodTrafficRoute":{"listenerArns":[${ListenerArn}]},"testTrafficRoute":{"listenerArns":[${ListenerArn8080}]}}]}'
 ```
 
 #### result
@@ -3614,7 +3860,6 @@ EOF
 ```Cloud9
 aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 ```
-
 
 #### result
 
