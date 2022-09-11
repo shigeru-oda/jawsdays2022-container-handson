@@ -3607,7 +3607,9 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 ### ■デプロイグループの作成
+
 #### cmd
+
 ```Cloud9
 cat << EOF > create-deployment-group.json
 {
@@ -3667,7 +3669,9 @@ EOF
 aws deploy create-deployment-group \
   --cli-input-json file://create-deployment-group.json
 ```
+
 #### result
+
 ```Cloud9
 {
     "deploymentGroupId": "66c261d6-481c-411c-a450-408e4582d3a3"
@@ -3738,9 +3742,187 @@ aws iam create-role \
 #### cmd
 
 ```Cloud9
-aws iam attach-role-policy \
+cat << EOF > InlinePolicy.json
+{
+    "Statement": [
+        {
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "*",
+            "Effect": "Allow",
+            "Condition": {
+                "StringEqualsIfExists": {
+                    "iam:PassedToService": [
+                        "cloudformation.amazonaws.com",
+                        "elasticbeanstalk.amazonaws.com",
+                        "ec2.amazonaws.com",
+                        "ecs-tasks.amazonaws.com"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": [
+                "codecommit:CancelUploadArchive",
+                "codecommit:GetBranch",
+                "codecommit:GetCommit",
+                "codecommit:GetRepository",
+                "codecommit:GetUploadArchiveStatus",
+                "codecommit:UploadArchive"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "codedeploy:CreateDeployment",
+                "codedeploy:GetApplication",
+                "codedeploy:GetApplicationRevision",
+                "codedeploy:GetDeployment",
+                "codedeploy:GetDeploymentConfig",
+                "codedeploy:RegisterApplicationRevision"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "codestar-connections:UseConnection"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "elasticbeanstalk:*",
+                "ec2:*",
+                "elasticloadbalancing:*",
+                "autoscaling:*",
+                "cloudwatch:*",
+                "s3:*",
+                "sns:*",
+                "cloudformation:*",
+                "rds:*",
+                "sqs:*",
+                "ecs:*"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "lambda:InvokeFunction",
+                "lambda:ListFunctions"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "opsworks:CreateDeployment",
+                "opsworks:DescribeApps",
+                "opsworks:DescribeCommands",
+                "opsworks:DescribeDeployments",
+                "opsworks:DescribeInstances",
+                "opsworks:DescribeStacks",
+                "opsworks:UpdateApp",
+                "opsworks:UpdateStack"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "cloudformation:CreateStack",
+                "cloudformation:DeleteStack",
+                "cloudformation:DescribeStacks",
+                "cloudformation:UpdateStack",
+                "cloudformation:CreateChangeSet",
+                "cloudformation:DeleteChangeSet",
+                "cloudformation:DescribeChangeSet",
+                "cloudformation:ExecuteChangeSet",
+                "cloudformation:SetStackPolicy",
+                "cloudformation:ValidateTemplate"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:BatchGetBuildBatches",
+                "codebuild:StartBuildBatch"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "devicefarm:ListProjects",
+                "devicefarm:ListDevicePools",
+                "devicefarm:GetRun",
+                "devicefarm:GetUpload",
+                "devicefarm:CreateUpload",
+                "devicefarm:ScheduleRun"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "servicecatalog:ListProvisioningArtifacts",
+                "servicecatalog:CreateProvisioningArtifact",
+                "servicecatalog:DescribeProvisioningArtifact",
+                "servicecatalog:DeleteProvisioningArtifact",
+                "servicecatalog:UpdateProduct"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:ValidateTemplate"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ecr:DescribeImages"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "states:DescribeExecution",
+                "states:DescribeStateMachine",
+                "states:StartExecution"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "appconfig:StartDeployment",
+                "appconfig:StopDeployment",
+                "appconfig:GetDeployment"
+            ],
+            "Resource": "*"
+        }
+    ],
+    "Version": "2012-10-17"
+}
+EOF
+```
+```Cloud9
+aws iam put-role-policy \
   --role-name ContainerHandsOnForPipeLine \
-  --policy-arn arn:aws:iam::aws:policy/AWSCodePipelineFullAccess
+  --policy-name InlinePolicy \
+  --policy-document file://InlinePolicy.json
 ```
 
 #### result
@@ -3750,10 +3932,13 @@ xxx
 ```
 
 ### ■S3 artifactStoreを作成
+
 #### cmd
+
 ```Cloud9
 YourName=shigeru-oda
 ```
+
 ```Cloud9
 S3Name=${YourName}-container-handson-`date +"%Y%m%d%H%M%S"`
 ```
@@ -3781,7 +3966,9 @@ ListenerArn8080 : ${ListenerArn8080}
 S3Name : ${S3Name}
 EOF
 ```
+
 #### result
+
 ```Cloud9
 AccoutID : 152767562250
 VpcId : vpc-0320e7bf74af8bd72
@@ -3803,6 +3990,11 @@ ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/
 ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
 S3Name : shigeru-oda-container-handson-20220911072649
 ```
+#### cmd
+```Cloud9
+aws s3 mb s3://${S3Name}
+```
+
 ### ■CodePipelineを作成
 
 #### cmd
@@ -3812,10 +4004,10 @@ cat << EOF > create-pipeline.json
 {
     "pipeline": {
         "name": "ContainerHandsOn",
-        "roleArn": "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForPipeLine",
+        "roleArn": "arn:aws:iam::`echo ${AccoutID}`:role/ContainerHandsOnForPipeLine",
         "artifactStore": {
             "type": "S3",
-            "location": "${S3Name}"
+            "location": "`echo ${S3Name}`"
         },
         "stages": [
             {
@@ -3925,16 +4117,125 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 #### result
 
 ```Cloud9
+{
+    "pipeline": {
+        "name": "ContainerHandsOn",
+        "roleArn": "arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine",
+        "artifactStore": {
+            "type": "S3",
+            "location": "shigeru-oda-container-handson-20220911072649"
+        },
+        "stages": [
+            {
+                "name": "Source",
+                "actions": [
+                    {
+                        "name": "Source",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "AWS",
+                            "provider": "CodeCommit",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "BranchName": "master",
+                            "OutputArtifactFormat": "CODE_ZIP",
+                            "PollForSourceChanges": "false",
+                            "RepositoryName": "ContainerHandsOn"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "inputArtifacts": [],
+                        "region": "ap-northeast-1",
+                        "namespace": "SourceVariables"
+                    }
+                ]
+            },
+            {
+                "name": "Build",
+                "actions": [
+                    {
+                        "name": "Build",
+                        "actionTypeId": {
+                            "category": "Build",
+                            "owner": "AWS",
+                            "provider": "CodeBuild",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "ProjectName": "ContainerHandsOn"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "BuildArtifact"
+                            }
+                        ],
+                        "inputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "region": "ap-northeast-1",
+                        "namespace": "BuildVariables"
+                    }
+                ]
+            },
+            {
+                "name": "Deploy",
+                "actions": [
+                    {
+                        "name": "Deploy",
+                        "actionTypeId": {
+                            "category": "Deploy",
+                            "owner": "AWS",
+                            "provider": "CodeDeployToECS",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "AppSpecTemplateArtifact": "SourceArtifact",
+                            "ApplicationName": "ContainerHandsOn",
+                            "DeploymentGroupName": "ContainerHandsOn",
+                            "Image1ArtifactName": "BuildArtifact",
+                            "Image1ContainerName": "IMAGE_NAME",
+                            "TaskDefinitionTemplateArtifact": "SourceArtifact"
+                        },
+                        "outputArtifacts": [],
+                        "inputArtifacts": [
+                            {
+                                "name": "BuildArtifact"
+                            },
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "region": "ap-northeast-1",
+                        "namespace": "DeployVariables"
+                    }
+                ]
+            }
+        ],
+        "version": 1
+    }
+}
 ```
 
 ## Dockerコンテナ再ビルド(Codeシリーズを利用)
 
 Duration: 0:05:00
+### ■課題
+・パイプラインが動かないな。。。
 
 ## 動作確認２
 
 Duration: 0:05:00
+### ■あああ
 
 ## 片付け
-
 Duration: 0:05:00
+### ■あああ
