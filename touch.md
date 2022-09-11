@@ -4377,14 +4377,13 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
     }
 }
 ```
+## EventBridge作成
+Duration: 0:05:00
 
 ## Dockerコンテナ再ビルド(Codeシリーズを利用)
 
 Duration: 0:05:00
 
-### ■課題
-
-・パイプラインが動かないな。。。
 
 ## 動作確認２
 
