@@ -2274,6 +2274,7 @@ export RevisionNo=&#34;8&#34;
 }
 </code></pre>
 <h2 is-upgraded>■CodeCommitリポジトリのクローン</h2>
+<p>・git cloneでリポジトリをcloneします、中身は空です</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/
 git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
@@ -2283,6 +2284,7 @@ git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/Container
 warning: You appear to have cloned an empty repository.
 </code></pre>
 <h2 is-upgraded>■資材の準備</h2>
+<p>・事前に作成した資材をgit管理ディレクトリにcopyします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ContainerHandsOn
 cp -p ../Dockerfile ./
@@ -2300,6 +2302,7 @@ total 4
 -rw-rw-r-- 1 ec2-user ec2-user 190 Sep  9 01:32 index.php
 </code></pre>
 <h2 is-upgraded>■buildspec.ymlの新規作成</h2>
+<p>・CodeBuildの仕様を記述したファイルを作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; buildspec.yml
 version: 0.2
@@ -2347,6 +2350,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 1192 Sep 11 04:59 buildspec.yml
 </code></pre>
 <h2 is-upgraded>■appspec.ymlの新規作成</h2>
+<p>・CodeDeployの仕様を記述したファイルを作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; appspec.yml
 version: 0.0
@@ -2371,6 +2375,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 240 Sep 11 05:04 appspec.yml
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの新規作成</h2>
+<p>・ECS Taskの仕様を記述したファイルを作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs describe-task-definition \
   --task-definition ContainerHandsOn:${RevisionNo} \
@@ -2380,7 +2385,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの変更</h2>
-<p>・Cloud9のエディター機能を使って、6行目を変更します<br> ・変更後、Ctrl+Sでの保存をお忘れなく<br> ・sedでやりたい・・・ s</p>
+<p>・Cloud9のエディター機能を使って、6行目を変更します<br> ・変更後、Ctrl+Sでの保存をお忘れなく<br> ・sedでやりたい・・・</p>
 <h3 is-upgraded>変更前</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
 </code></pre>

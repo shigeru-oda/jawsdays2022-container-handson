@@ -2926,6 +2926,7 @@ aws codecommit create-repository \
 ```
 
 ### ■CodeCommitリポジトリのクローン
+・git cloneでリポジトリをcloneします、中身は空です
 
 #### cmd
 
@@ -2942,6 +2943,7 @@ warning: You appear to have cloned an empty repository.
 ```
 
 ### ■資材の準備
+・事前に作成した資材をgit管理ディレクトリにcopyします
 
 #### cmd
 
@@ -2966,6 +2968,7 @@ total 4
 ```
 
 ### ■buildspec.ymlの新規作成
+・CodeBuildの仕様を記述したファイルを作成します
 
 #### cmd
 
@@ -3027,6 +3030,7 @@ ls -l buildspec.yml
 ```
 
 ### ■appspec.ymlの新規作成
+・CodeDeployの仕様を記述したファイルを作成します
 
 #### cmd
 
@@ -3065,6 +3069,7 @@ ls -l appspec.yml
 ```
 
 ### ■taskdef.jsonの新規作成
+・ECS Taskの仕様を記述したファイルを作成します
 
 #### cmd
 
@@ -3085,7 +3090,7 @@ aws ecs describe-task-definition \
 ・Cloud9のエディター機能を使って、6行目を変更します  
 ・変更後、Ctrl+Sでの保存をお忘れなく  
 ・sedでやりたい・・・
-s
+
 
 #### 変更前
 
