@@ -3058,7 +3058,7 @@ aws codebuild create-project \
 ## CodeDeploy作成
 
 Duration: 0:05:00
-### ■CodeBuild用Role作成
+### ■CodeDeploy用Role作成
 
 #### cmd
 
@@ -3107,8 +3107,21 @@ aws iam attach-role-policy \
 ```
 （なし）
 ```
+#### cmd
 
-### アプリケーションを作成
+```
+aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeDeploy \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+```
+
+#### result
+
+```
+（なし）
+```
+
+### ■アプリケーションを作成
 #### cmd
 ```Cloud9
 aws deploy create-application \
@@ -3122,32 +3135,151 @@ aws deploy create-application \
     "applicationId": "84eb81cb-1e84-46cb-9209-c17334e7bc15"
 }
 ```
+### ■ターゲットグループの作成
+#### cmd
+```Cloud9
+aws elbv2 create-target-group \
+    --name ContainerHandsOn8080 \
+    --protocol HTTP \
+    --port 8080 \
+    --target-type ip \
+    --health-check-protocol HTTP \
+    --health-check-port traffic-port \
+    --health-check-path /index.php \
+    --vpc-id ${VpcId}
+```
+#### result
+```Cloud9
+{
+    "TargetGroups": [
+        {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7",
+            "TargetGroupName": "ContainerHandsOn8080",
+            "Protocol": "HTTP",
+            "Port": 8080,
+            "VpcId": "vpc-072d1e609d3b9157c",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "UnhealthyThresholdCount": 2,
+            "HealthCheckPath": "/index.php",
+            "Matcher": {
+                "HttpCode": "200"
+            },
+            "TargetType": "ip",
+            "ProtocolVersion": "HTTP1",
+            "IpAddressType": "ipv4"
+        }
+    ]
+}
+```
+### ■ターゲットグループのARN取得
+#### cmd
+```Cloud9
+TargetGroupArn8080=`aws elbv2 describe-target-groups \
+  --names ContainerHandsOn8080 \
+  --query "TargetGroups[*].TargetGroupArn" \
+  --output text`
+```
+```Cloud9
+echo ${TargetGroupArn8080}
+```
+#### result
+```Cloud9
+```
+### ■リスナーの作成
+#### cmd
+```Cloud9
+aws elbv2 create-listener \
+    --load-balancer-arn ${LoadBalancerArn} \
+    --protocol HTTP \
+    --port 8080 \
+    --default-actions Type=forward,TargetGroupArn=${TargetGroupArn8080}
+```
+#### result
+```Cloud9
+{
+    "Listeners": [
+        {
+            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/556327e23f51a539",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:loadbalancer/app/ContainerHandsOn/3486ec4e4bcbcfe7",
+            "Port": 8080,
+            "Protocol": "HTTP",
+            "DefaultActions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7",
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:targetgroup/ContainerHandsOn8080/01734987c19827d7",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
+```
+### ■リスナーのARN取得
+#### cmd
+```Cloud9
+ListenerArn=`aws elbv2 describe-listeners \
+    --load-balancer-arn ${LoadBalancerArn} \
+    --query "Listeners[*].[Port,ListenerArn]" \
+    --output text | grep "^80\s" | cut -f 2`
+```
 
-### ■ デプロイグループの作成
+#### result
+```Cloud9
+（なし）
+```
+#### cmd
+```Cloud9
+ListenerArn8080=`aws elbv2 describe-listeners \
+    --load-balancer-arn ${LoadBalancerArn} \
+    --query "Listeners[*].[Port,ListenerArn]" \
+    --output text | grep "^8080" | cut -f 2`
+```
+
+#### result
+```Cloud9
+（なし）
+```
+
+
+### ■PublicSubnetのインバウンドルールを追加
+#### cmd
+```Cloud9
+aws ec2 authorize-security-group-ingress \
+    --group-id ${PublicSecurityGroupsId} \
+    --protocol tcp \
+    --port 8080 \
+    --cidr 0.0.0.0/0
+```
+#### result
+```Cloud9
+```
+### ■デプロイグループの作成
 #### cmd
 ```Cloud9
 aws deploy create-deployment-group \
-    --application-name ContainerHandsOn \
+    --application-name ContainerHandsOn1 \
     --deployment-group-name ContainerHandsOn1 \
     --deployment-config-name CodeDeployDefault.OneAtATime \
     --service-role-arn arn:aws:iam::aws:policy/ContainerHandsOnForCodeDeploy \
     --ecs-services serviceName="ContainerHandsOn",clusterName="ContainerHandsOn" \
     --deployment-style deploymentType="BLUE_GREEN",deploymentOption="WITH_TRAFFIC_CONTROL" \
     --blue-green-deployment-configuration "terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5},deploymentReadyOption={actionOnTimeout=CONTINUE_DEPLOYMENT,waitTimeInMinutes=0}" \
-    --load-balancer-info targetGroupPairInfoList=[\
-        {\
-            targetGroups=[\
-                {name="ContainerHandsOn"},\
-                {name="ContainerHandsOn8080"}\
-            ],\
-            prodTrafficRoute=[\
-                {listenerArns="arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/b29efabc14ecd74e"}\
-            ],\
-            testTrafficRoute=[\
-                {listenerArns="arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/185a48da480f1b3d"}\
-            ],\
-        }\
-    ]
+    --load-balancer-info '{"targetGroupPairInfoList":[{"targetGroups":[{"name":"ContainerHandsOn"}],"prodTrafficRoute":{"listenerArns":["${ListenerArn}"]},"testTrafficRoute":{"listenerArns":["${ListenerArn8080}"]}}]}'
 ```
 #### result
 ## CodePipeline作成
@@ -3166,10 +3298,3 @@ Duration: 0:05:00
 
 Duration: 0:05:00
 
-### 途中の見出し
-
-Positive
-: 何かお知らせを書きたい時のボックス
-
-Negative
-: 何か注意点などを書きたい時のボックス
