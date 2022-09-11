@@ -104,7 +104,7 @@
 <h3 is-upgraded>CloudShellボタン押下</h3>
 <p>・画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
 <h3 is-upgraded>CloudShellを起動</h3>
-<p>・今後はCloudShellの画面にcmdの内容をCopy &amp; Pasteし、resultの内容を確認し進めて下さい<br> ・resultに表示されるIDなどは個々に異なりますのでエラーではないかのチェックにご利用ください</p>
+<p>・今後はCloudShellの画面にcmdの内容をCopy &amp; Pasteし、resultの内容を確認し進めて下さい<br> ・resultに表示されるIDなどは個々に異なりますので、エラーではないかなどのチェックにご利用ください</p>
 <p class="image-container"><img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
 <p class="image-container"><img alt="img" src="img/f44362afeb0e4cfe.png"></p>
@@ -193,12 +193,17 @@ EOF
 <p>・Policyがアタッチされたことを確認します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam list-attached-role-policies \
-  --role-name ecsTaskExecutionRole \
-  | grep &#39;AmazonECSTaskExecutionRolePolicy&#39;
+  --role-name ecsTaskExecutionRole
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">            &#34;PolicyName&#34;: &#34;AmazonECSTaskExecutionRolePolicy&#34;,
+<pre><code language="language-Cloud9" class="language-Cloud9">{
+    &#34;AttachedPolicies&#34;: [
+        {
+            &#34;PolicyName&#34;: &#34;AmazonECSTaskExecutionRolePolicy&#34;,
             &#34;PolicyArn&#34;: &#34;arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy&#34;
+        }
+    ]
+}
 </code></pre>
 <h2 is-upgraded>■VPCの作成</h2>
 <p class="image-container"><img alt="img" src="img/455e3e2dc6190cce.png"></p>

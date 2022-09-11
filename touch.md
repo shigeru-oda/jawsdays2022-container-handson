@@ -121,7 +121,7 @@ Duration: 0:05:00
 #### CloudShellを起動
 
 ・今後はCloudShellの画面にcmdの内容をCopy & Pasteし、resultの内容を確認し進めて下さい  
-・resultに表示されるIDなどは個々に異なりますのでエラーではないかのチェックにご利用ください
+・resultに表示されるIDなどは個々に異なりますので、エラーではないかなどのチェックにご利用ください
 
 ![img](./image/img3-4.png)
 
@@ -258,15 +258,20 @@ aws iam attach-role-policy \
 
 ```Cloud9
 aws iam list-attached-role-policies \
-  --role-name ecsTaskExecutionRole \
-  | grep 'AmazonECSTaskExecutionRolePolicy'
+  --role-name ecsTaskExecutionRole
 ```
 
 #### result
 
 ```Cloud9
+{
+    "AttachedPolicies": [
+        {
             "PolicyName": "AmazonECSTaskExecutionRolePolicy",
             "PolicyArn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+        }
+    ]
+}
 ```
 
 ### ■VPCの作成
