@@ -2836,25 +2836,25 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - docker version
-      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 378647896848.dkr.ecr.ap-northeast-1.amazonaws.com
-      - RepositoryUri=378647896848.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
-      - ImageTag=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS -password-stdin ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com
+      - RepositoryUri=${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
+      - ImageTag=\$(echo \$CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
   build:
     commands:
-      - echo Build started on `date`
+      - echo Build started on \`date\`
       - echo Building the Docker image...          
       - docker build -t jaws-days-2022/container-hands-on .
-      - docker tag jaws-days-2022/container-hands-on:latest ${RepositoryUri}:latest
-      - docker tag jaws-days-2022/container-hands-on:latest ${RepositoryUri}:${ImageTag}
-      - printf '{"Version":"1.0","ImageURI":"%s"}' ${RepositoryUri}:${ImageTag} > imageDetail.json
+      - docker tag jaws-days-2022/container-hands-on:latest \${RepositoryUri}:latest
+      - docker tag jaws-days-2022/container-hands-on:latest \${RepositoryUri}:\${ImageTag}
+      - printf '{"Version":"1.0","ImageURI":"%s"}' \${RepositoryUri}:\${ImageTag} > imageDetail.json
 
   post_build:
     commands:
-      - echo Build completed on `date`
+      - echo Build completed on \`date\`
       - echo Pushing the Docker image...
-      - docker push ${RepositoryUri}:latest
-      - docker push ${RepositoryUri}:${ImageTag}
+      - docker push \${RepositoryUri}:latest
+      - docker push \${RepositoryUri}:\${ImageTag}
 
 artifacts:
   files: imageDetail.json
