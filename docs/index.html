@@ -2238,6 +2238,14 @@ EOF
 <pre><code>（なし）
 </code></pre>
 <h3 is-upgraded>cmd</h3>
+<pre><code>aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code>（なし）
+</code></pre>
+<h3 is-upgraded>cmd</h3>
 <pre><code>aws iam list-attached-role-policies \
   --role-name ContainerHandsOnForCodeBuild
 </code></pre>
@@ -2335,7 +2343,41 @@ EOF
       </google-codelab-step>
     
       <google-codelab-step label="CodeDeploy作成" duration="5">
-        <h2 is-upgraded>アプリケーションを作成</h2>
+        <h2 is-upgraded>■CodeBuild用Role作成</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+{
+  &#34;Version&#34;: &#34;2012-10-17&#34;,
+  &#34;Statement&#34;: [
+    {
+      &#34;Sid&#34;: &#34;&#34;,
+      &#34;Effect&#34;: &#34;Allow&#34;,
+      &#34;Principal&#34;: {
+        &#34;Service&#34;: &#34;codedeploy.amazonaws.com&#34;
+      },
+      &#34;Action&#34;: &#34;sts:AssumeRole&#34;
+    }
+  ]
+}
+EOF
+</code></pre>
+<pre><code language="language-Cloud9" class="language-Cloud9">aws iam create-role \
+  --role-name ContainerHandsOnForCodeDeploy \
+  --assume-role-policy-document file://assume-role-policy-document.json
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">xxx
+</code></pre>
+<h2 is-upgraded>■CodeBuild用RoleにPolicyをアタッチ</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code>aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeDeploy \
+  --policy-arn arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code>（なし）
+</code></pre>
+<h2 is-upgraded>アプリケーションを作成</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-application \
   --application-name ContainerHandsOn \
@@ -2351,11 +2393,26 @@ EOF
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-deployment-group \
     --application-name ContainerHandsOn \
-    --auto-scaling-groups CodeDeployDemo-ASG \
+    --deployment-group-name ContainerHandsOn1 \
     --deployment-config-name CodeDeployDefault.OneAtATime \
-    --deployment-group-name ContainerHandsOn \
-    --ec2-tag-filters Key=Name,Value=CodeDeployDemo,Type=KEY_AND_VALUE \
-    --service-role-arn arn:aws:iam::123456789012:role/CodeDeployDemoRol
+    --service-role-arn arn:aws:iam::aws:policy/ContainerHandsOnForCodeDeploy \
+    --ecs-services serviceName=&#34;ContainerHandsOn&#34;,clusterName=&#34;ContainerHandsOn&#34; \
+    --deployment-style deploymentType=&#34;BLUE_GREEN&#34;,deploymentOption=&#34;WITH_TRAFFIC_CONTROL&#34; \
+    --blue-green-deployment-configuration &#34;terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5},deploymentReadyOption={actionOnTimeout=CONTINUE_DEPLOYMENT,waitTimeInMinutes=0}&#34; \
+    --load-balancer-info targetGroupPairInfoList=[\
+        {\
+            targetGroups=[\
+                {name=&#34;ContainerHandsOn&#34;},\
+                {name=&#34;ContainerHandsOn8080&#34;}\
+            ],\
+            prodTrafficRoute=[\
+                {listenerArns=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/b29efabc14ecd74e&#34;}\
+            ],\
+            testTrafficRoute=[\
+                {listenerArns=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/185a48da480f1b3d&#34;}\
+            ],\
+        }\
+    ]
 </code></pre>
 <h3 is-upgraded>result</h3>
 

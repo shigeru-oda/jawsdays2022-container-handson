@@ -2942,6 +2942,19 @@ aws iam attach-role-policy \
 （なし）
 ```
 #### cmd
+
+```
+aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeBuild \
+  --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+```
+
+#### result
+
+```
+（なし）
+```
+#### cmd
 ```
 aws iam list-attached-role-policies \
   --role-name ContainerHandsOnForCodeBuild
@@ -3045,6 +3058,56 @@ aws codebuild create-project \
 ## CodeDeploy作成
 
 Duration: 0:05:00
+### ■CodeBuild用Role作成
+
+#### cmd
+
+```Cloud9
+cat << EOF > assume-role-policy-document.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codedeploy.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+```
+
+```Cloud9
+aws iam create-role \
+  --role-name ContainerHandsOnForCodeDeploy \
+  --assume-role-policy-document file://assume-role-policy-document.json
+```
+
+#### result
+
+```Cloud9
+xxx
+```
+
+### ■CodeBuild用RoleにPolicyをアタッチ
+
+#### cmd
+
+```
+aws iam attach-role-policy \
+  --role-name ContainerHandsOnForCodeDeploy \
+  --policy-arn arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS
+```
+
+#### result
+
+```
+（なし）
+```
+
 ### アプリケーションを作成
 #### cmd
 ```Cloud9
@@ -3065,11 +3128,26 @@ aws deploy create-application \
 ```Cloud9
 aws deploy create-deployment-group \
     --application-name ContainerHandsOn \
-    --auto-scaling-groups CodeDeployDemo-ASG \
+    --deployment-group-name ContainerHandsOn1 \
     --deployment-config-name CodeDeployDefault.OneAtATime \
-    --deployment-group-name ContainerHandsOn \
-    --ec2-tag-filters Key=Name,Value=CodeDeployDemo,Type=KEY_AND_VALUE \
-    --service-role-arn arn:aws:iam::123456789012:role/CodeDeployDemoRol
+    --service-role-arn arn:aws:iam::aws:policy/ContainerHandsOnForCodeDeploy \
+    --ecs-services serviceName="ContainerHandsOn",clusterName="ContainerHandsOn" \
+    --deployment-style deploymentType="BLUE_GREEN",deploymentOption="WITH_TRAFFIC_CONTROL" \
+    --blue-green-deployment-configuration "terminateBlueInstancesOnDeploymentSuccess={action=TERMINATE,terminationWaitTimeInMinutes=5},deploymentReadyOption={actionOnTimeout=CONTINUE_DEPLOYMENT,waitTimeInMinutes=0}" \
+    --load-balancer-info targetGroupPairInfoList=[\
+        {\
+            targetGroups=[\
+                {name="ContainerHandsOn"},\
+                {name="ContainerHandsOn8080"}\
+            ],\
+            prodTrafficRoute=[\
+                {listenerArns="arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/b29efabc14ecd74e"}\
+            ],\
+            testTrafficRoute=[\
+                {listenerArns="arn:aws:elasticloadbalancing:ap-northeast-1:378647896848:listener/app/ContainerHandsOn/3486ec4e4bcbcfe7/185a48da480f1b3d"}\
+            ],\
+        }\
+    ]
 ```
 #### result
 ## CodePipeline作成
