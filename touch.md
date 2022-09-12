@@ -2959,22 +2959,22 @@ EOF
 #### result
 
 ```Cloud9
-$ export AccoutID="152767562250"
-$ export VpcId="vpc-0eb621c4712ee0898"
-$ export SubnetId1aPublic="subnet-035db89cb1df815f1"
-$ export SubnetId1cPublic="subnet-04872b3467ca94ce2"
-$ export SubnetId1aPrivate="subnet-00d678e2982d487d0"
-$ export SubnetId1cPrivate="subnet-08bfff9af19697ab7"
-$ export InternetGatewayId="igw-0d4373c922961e230"
-$ export RouteTableIdPublic="rtb-0670248bec99ef90c"
-$ export RouteTableIdPrivate="rtb-004eba1faed81d581"
-$ export PublicSecurityGroupsId="sg-06931dc309a0879b2"
-$ export PrivateSecurityGroupsId="sg-05eb336035d38f645"
-$ export InstanceId="i-04c7c620fef60c9cb"
-$ export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/9f7c6d0c3b1b76da"
-$ export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/f46da45550c208d5"
-$ export LoadBalancersDnsName="ContainerHandsOn-879378718.ap-northeast-1.elb.amazonaws.com"
-$ export RevisionNo="6"
+export AccoutID="152767562250"
+export VpcId="vpc-0eb621c4712ee0898"
+export SubnetId1aPublic="subnet-035db89cb1df815f1"
+export SubnetId1cPublic="subnet-04872b3467ca94ce2"
+export SubnetId1aPrivate="subnet-00d678e2982d487d0"
+export SubnetId1cPrivate="subnet-08bfff9af19697ab7"
+export InternetGatewayId="igw-0d4373c922961e230"
+export RouteTableIdPublic="rtb-0670248bec99ef90c"
+export RouteTableIdPrivate="rtb-004eba1faed81d581"
+export PublicSecurityGroupsId="sg-06931dc309a0879b2"
+export PrivateSecurityGroupsId="sg-05eb336035d38f645"
+export InstanceId="i-04c7c620fef60c9cb"
+export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/9f7c6d0c3b1b76da"
+export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/f46da45550c208d5"
+export LoadBalancersDnsName="ContainerHandsOn-879378718.ap-northeast-1.elb.amazonaws.com"
+export RevisionNo="6"
 ```
 
 ## CodeCommit作成
@@ -4181,6 +4181,7 @@ aws iam put-role-policy \
 ### ■S3 artifactStoreを作成
 
 #### cmd
+
 Positive
 : あなたのフルネームを記載下さい、英語小文字でお願いします
 
@@ -4189,6 +4190,7 @@ YourName=shigeru-oda
 ```
 
 #### cmd
+
 ```Cloud9
 S3Name=${YourName}-container-handson-`date +"%Y%m%d%H%M%S"`
 ```
@@ -4477,21 +4479,72 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
     }
 }
 ```
+
 ## 動作確認２（Blue/Green Deployの確認）
 
 Duration: 0:05:00
 
 ### ■AWS コンソールでCodePipelineを検索
-- 上部の検索バーでCodePipelinと検索
+
+- 上部の検索バーでCodePipelineと検索
 - CodePipeline > ContainerHandsOn
+- Source、Buildが「成功しました」と表示されるまで暫く待機
+- Deployが「進行中」になった段階で「詳細」ボタン押下
 ![img](./image/img16-1.png)
 ![img](./image/img16-2.png)
+
+- Blue（オリジナル）にトラフィックが向いていることが確認できます。
 ![img](./image/img16-3.png)
+
+- 上部の検索バーでECSと検索
+- Amazon Elastic Container Service > クラスター > ContainerHandsOn > タスク
+- リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。
+![img](./image/img16-8.png)
+
+- リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。
+
+### ■アドレス確認 Blue（オリジナル）
+
+#### cmd
+
+```Cloud9
+echo "http://"${LoadBalancersDnsName}
+```
+
+#### result
+
+```Cloud9
+http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+```
+
+#### 画面
+
+- 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
+- ブラウザを更新すると２種類のタスクが確認できます
+
 ![img](./image/img16-4.png)
 ![img](./image/img16-5.png)
+
+### ■アドレス確認 Green（置換）
+
+#### cmd
+
+```Cloud9
+echo "http://"${LoadBalancersDnsName}:8080
+```
+
+#### result
+
+```Cloud9
+http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
+```
+
+#### 画面
+
+- 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
+- ブラウザを更新すると２種類のタスクが確認できます
 ![img](./image/img16-6.png)
 ![img](./image/img16-7.png)
-![img](./image/img16-8.png)
 
 ## EventBridge作成
 

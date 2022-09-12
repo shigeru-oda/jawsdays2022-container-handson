@@ -2297,22 +2297,22 @@ export RevisionNo=&#34;${RevisionNo}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">$ export AccoutID=&#34;152767562250&#34;
-$ export VpcId=&#34;vpc-0eb621c4712ee0898&#34;
-$ export SubnetId1aPublic=&#34;subnet-035db89cb1df815f1&#34;
-$ export SubnetId1cPublic=&#34;subnet-04872b3467ca94ce2&#34;
-$ export SubnetId1aPrivate=&#34;subnet-00d678e2982d487d0&#34;
-$ export SubnetId1cPrivate=&#34;subnet-08bfff9af19697ab7&#34;
-$ export InternetGatewayId=&#34;igw-0d4373c922961e230&#34;
-$ export RouteTableIdPublic=&#34;rtb-0670248bec99ef90c&#34;
-$ export RouteTableIdPrivate=&#34;rtb-004eba1faed81d581&#34;
-$ export PublicSecurityGroupsId=&#34;sg-06931dc309a0879b2&#34;
-$ export PrivateSecurityGroupsId=&#34;sg-05eb336035d38f645&#34;
-$ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
-$ export LoadBalancerArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/9f7c6d0c3b1b76da&#34;
-$ export TargetGroupArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/f46da45550c208d5&#34;
-$ export LoadBalancersDnsName=&#34;ContainerHandsOn-879378718.ap-northeast-1.elb.amazonaws.com&#34;
-$ export RevisionNo=&#34;6&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;152767562250&#34;
+export VpcId=&#34;vpc-0eb621c4712ee0898&#34;
+export SubnetId1aPublic=&#34;subnet-035db89cb1df815f1&#34;
+export SubnetId1cPublic=&#34;subnet-04872b3467ca94ce2&#34;
+export SubnetId1aPrivate=&#34;subnet-00d678e2982d487d0&#34;
+export SubnetId1cPrivate=&#34;subnet-08bfff9af19697ab7&#34;
+export InternetGatewayId=&#34;igw-0d4373c922961e230&#34;
+export RouteTableIdPublic=&#34;rtb-0670248bec99ef90c&#34;
+export RouteTableIdPrivate=&#34;rtb-004eba1faed81d581&#34;
+export PublicSecurityGroupsId=&#34;sg-06931dc309a0879b2&#34;
+export PrivateSecurityGroupsId=&#34;sg-05eb336035d38f645&#34;
+export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
+export LoadBalancerArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/9f7c6d0c3b1b76da&#34;
+export TargetGroupArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/f46da45550c208d5&#34;
+export LoadBalancersDnsName=&#34;ContainerHandsOn-879378718.ap-northeast-1.elb.amazonaws.com&#34;
+export RevisionNo=&#34;6&#34;
 </code></pre>
 
 
@@ -3558,8 +3558,40 @@ EOF
       <google-codelab-step label="動作確認２（Blue/Green Deployの確認）" duration="5">
         <h2 is-upgraded>■AWS コンソールでCodePipelineを検索</h2>
 <ul>
-<li>上部の検索バーでCodePipelinと検索</li>
-<li>CodePipeline &gt; ContainerHandsOn <img alt="img" src="img/46d94b4271bd7d0c.png"><img alt="img" src="img/c3d996875141ef1a.png"><img alt="img" src="img/9486bc7742ede2a9.png"><img alt="img" src="img/df5db472483e1c4d.png"><img alt="img" src="img/72c2ec54b62ebef7.png"><img alt="img" src="img/18e082d29fb3baa3.png"><img alt="img" src="img/b5ef7619890cf00b.png"><img alt="img" src="img/7667d50bd3747a07.png"></li>
+<li>上部の検索バーでCodePipelineと検索</li>
+<li>CodePipeline &gt; ContainerHandsOn</li>
+<li>Source、Buildが「成功しました」と表示されるまで暫く待機</li>
+<li>Deployが「進行中」になった段階で「詳細」ボタン押下 <img alt="img" src="img/46d94b4271bd7d0c.png"><img alt="img" src="img/5b09f59782be46ac.png"></li>
+<li>Blue（オリジナル）にトラフィックが向いていることが確認できます。 <img alt="img" src="img/9486bc7742ede2a9.png"></li>
+<li>上部の検索バーでECSと検索</li>
+<li>Amazon Elastic Container Service &gt; クラスター &gt; ContainerHandsOn &gt; タスク</li>
+<li>リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。 <img alt="img" src="img/7667d50bd3747a07.png"></li>
+<li>リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。</li>
+</ul>
+<h2 is-upgraded>■アドレス確認 Blue（オリジナル）</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">echo &#34;http://&#34;${LoadBalancersDnsName}
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+</code></pre>
+<h3 is-upgraded>画面</h3>
+<ul>
+<li>上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること</li>
+<li>ブラウザを更新すると２種類のタスクが確認できます</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/df5db472483e1c4d.png"><img alt="img" src="img/72c2ec54b62ebef7.png"></p>
+<h2 is-upgraded>■アドレス確認 Green（置換）</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">echo &#34;http://&#34;${LoadBalancersDnsName}:8080
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
+</code></pre>
+<h3 is-upgraded>画面</h3>
+<ul>
+<li>上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること</li>
+<li>ブラウザを更新すると２種類のタスクが確認できます <img alt="img" src="img/18e082d29fb3baa3.png"><img alt="img" src="img/b5ef7619890cf00b.png"></li>
 </ul>
 
 
