@@ -3069,7 +3069,8 @@ ls -l appspec.yml
 ```
 
 ### ■taskdef.jsonの新規作成
-・ECS Taskの仕様を記述したファイルを作成します
+・ECS Taskの仕様を記述したファイルを作成します  
+・前半のハンズオンで作成した内容を出力しています  
 
 #### cmd
 
@@ -3105,6 +3106,7 @@ aws ecs describe-task-definition \
 ```
 
 ### ■CodeCommitへのPush
+・作成したファイルをCodeCommitへPushし格納します
 
 #### cmd
 
@@ -3143,6 +3145,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 Duration: 0:05:00
 
 ### ■CodeBuild用Role作成
+・CodeBuildのためにRoleを作成します。
 
 #### cmd
 
@@ -3306,7 +3309,7 @@ EOF
 （なし）
 ```
 
-### CodeBuild作成
+### ■CodeBuild作成
 
 #### cmd
 

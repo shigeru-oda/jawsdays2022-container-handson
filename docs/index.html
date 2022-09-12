@@ -2375,7 +2375,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 240 Sep 11 05:04 appspec.yml
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの新規作成</h2>
-<p>・ECS Taskの仕様を記述したファイルを作成します</p>
+<p>・ECS Taskの仕様を記述したファイルを作成します<br> ・前半のハンズオンで作成した内容を出力しています</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs describe-task-definition \
   --task-definition ContainerHandsOn:${RevisionNo} \
@@ -2393,6 +2393,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;&lt;IMAGE_NAME&gt;&#34;,
 </code></pre>
 <h2 is-upgraded>■CodeCommitへのPush</h2>
+<p>・作成したファイルをCodeCommitへPushし格納します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">git config --global user.name &#34;Your Name&#34;
 git config --global user.email you@example.com
@@ -2425,6 +2426,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
     
       <google-codelab-step label="CodeBuild作成" duration="5">
         <h2 is-upgraded>■CodeBuild用Role作成</h2>
+<p>・CodeBuildのためにRoleを作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
 </code></pre>
@@ -2545,7 +2547,7 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
-<h2 is-upgraded>CodeBuild作成</h2>
+<h2 is-upgraded>■CodeBuild作成</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
