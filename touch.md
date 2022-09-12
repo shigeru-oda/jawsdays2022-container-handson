@@ -4175,17 +4175,20 @@ aws iam put-role-policy \
 #### result
 
 ```Cloud9
-xxx
+（なし）
 ```
 
 ### ■S3 artifactStoreを作成
 
 #### cmd
+Positive
+: あなたのフルネームを記載下さい、英語小文字でお願いします
 
 ```Cloud9
 YourName=shigeru-oda
 ```
 
+#### cmd
 ```Cloud9
 S3Name=${YourName}-container-handson-`date +"%Y%m%d%H%M%S"`
 ```
