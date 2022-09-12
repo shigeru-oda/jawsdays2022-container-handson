@@ -4484,6 +4484,14 @@ Duration: 0:05:00
 ### ■AWS コンソールでCodePipelineを検索
 - 上部の検索バーでCodePipelinと検索
 - CodePipeline > ContainerHandsOn
+![img](./image/img16-1.png)
+![img](./image/img16-2.png)
+![img](./image/img16-3.png)
+![img](./image/img16-4.png)
+![img](./image/img16-5.png)
+![img](./image/img16-6.png)
+![img](./image/img16-7.png)
+![img](./image/img16-8.png)
 
 ## EventBridge作成
 
