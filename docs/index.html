@@ -1178,18 +1178,18 @@ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
         <h2 is-upgraded>■環境変数を貼り付け</h2>
 <p>・CloudShellで取得した環境変数をCloud9へ移設</p>
 <h3 is-upgraded>cmd (以下はサンプルです、エディターに退避した結果を利用ください)</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">$ export AccoutID=&#34;123456789012&#34;
-$ export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
-$ export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
-$ export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
-$ export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
-$ export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
-$ export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
-$ export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
-$ export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
-$ export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
-$ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
-$ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
+export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
+export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
+export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
+export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
+export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
+export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
+export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
+export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
+export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
+export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
+export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 AccoutID : ${AccoutID}
@@ -1218,6 +1218,14 @@ RouteTableIdPublic : rtb-00cf30796b25b9bc9
 RouteTableIdPrivate : rtb-0afaac377925bca9a
 PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
+</code></pre>
+<h2 is-upgraded>■AWS CLI・gitの環境設定実施</h2>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">export AWS_DEFAULT_REGION=ap-northeast-1
+export AWS_DEFAULT_OUTPUT=json
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■ECRの作成</h2>
 <p class="image-container"><img alt="img" src="img/a54cbd1e2479d680.png"></p>

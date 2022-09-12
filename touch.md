@@ -1593,18 +1593,18 @@ Duration: 0:05:00
 #### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
-$ export AccoutID="123456789012"
-$ export VpcId="vpc-0d3c1c88db46cfba7"
-$ export SubnetId1aPublic="subnet-0f66f257f167a1d47"
-$ export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
-$ export SubnetId1aPrivate="subnet-049f0119237ff00a0"
-$ export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
-$ export InternetGatewayId="igw-0a511ba68ceb84ed8"
-$ export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
-$ export RouteTableIdPrivate="rtb-0afaac377925bca9a"
-$ export PublicSecurityGroupsId="sg-01cc901415c240504"
-$ export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-$ export InstanceId="i-04c7c620fef60c9cb"
+export AccoutID="123456789012"
+export VpcId="vpc-0d3c1c88db46cfba7"
+export SubnetId1aPublic="subnet-0f66f257f167a1d47"
+export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
+export SubnetId1aPrivate="subnet-049f0119237ff00a0"
+export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
+export InternetGatewayId="igw-0a511ba68ceb84ed8"
+export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
+export RouteTableIdPrivate="rtb-0afaac377925bca9a"
+export PublicSecurityGroupsId="sg-01cc901415c240504"
+export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
+export InstanceId="i-04c7c620fef60c9cb"
 ```
 
 ``` Cloud9
@@ -1638,6 +1638,21 @@ RouteTableIdPublic : rtb-00cf30796b25b9bc9
 RouteTableIdPrivate : rtb-0afaac377925bca9a
 PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
+```
+
+### ■AWS CLI・gitの環境設定実施
+
+#### cmd
+
+```Cloud9
+export AWS_DEFAULT_REGION=ap-northeast-1
+export AWS_DEFAULT_OUTPUT=json
+```
+
+#### result
+
+```Cloud9
+（なし）
 ```
 
 ### ■ECRの作成
