@@ -4477,6 +4477,13 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
     }
 }
 ```
+## 動作確認２（Blue/Green Deployの確認）
+
+Duration: 0:05:00
+
+### ■AWS コンソールでCodePipelineを検索
+- 上部の検索バーでCodePipelinと検索
+- CodePipeline > ContainerHandsOn
 
 ## EventBridge作成
 
@@ -4486,7 +4493,7 @@ Duration: 0:05:00
 
 Duration: 0:05:00
 
-## 動作確認２
+## 動作確認３
 
 Duration: 0:05:00
 
