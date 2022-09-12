@@ -3584,7 +3584,6 @@ aws iam list-attached-role-policies \
 aws deploy create-application \
   --application-name ContainerHandsOn \
   --compute-platform ECS \
-  --region ap-northeast-1 \
   --tags Key=Name,Value=ContainerHandsOn
 ```
 
