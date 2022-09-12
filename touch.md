@@ -1761,8 +1761,28 @@ docker build \
 #### result
 
 ```Cloud9
-（略）
-Successfully built fed9645afaae
+Sending build context to Docker daemon  9.823MB
+Step 1/2 : FROM php:7.4.0-apache
+7.4.0-apache: Pulling from library/php
+000eee12ec04: Pull complete 
+8ae4f9fcfeea: Pull complete 
+60f22fbbd07a: Pull complete 
+ccc7a63ad75f: Pull complete 
+a2427b8dd6e7: Pull complete 
+91cac3b30184: Pull complete 
+d6e40015fc10: Pull complete 
+9858aa646efe: Pull complete 
+7940985f7eb2: Pull complete 
+b23f72eebcfb: Pull complete 
+75bb7b8d192c: Pull complete 
+7edf943992b0: Pull complete 
+c8bf9d9d0e11: Pull complete 
+Digest: sha256:686af696a87d3836c694380588368ff4e7ad3e30f1faef387c545890b340edee
+Status: Downloaded newer image for php:7.4.0-apache
+ ---> bf262c8621c1
+Step 2/2 : COPY src/ /var/www/html/
+ ---> afc680b711d3
+Successfully built afc680b711d3
 Successfully tagged jaws-days-2022/container-hands-on:latest
 ```
 
@@ -2928,6 +2948,7 @@ export RouteTableIdPublic="${RouteTableIdPublic}"
 export RouteTableIdPrivate="${RouteTableIdPrivate}"
 export PublicSecurityGroupsId="${PublicSecurityGroupsId}"
 export PrivateSecurityGroupsId="${PrivateSecurityGroupsId}"
+export InstanceId="${InstanceId}"
 export LoadBalancerArn="${LoadBalancerArn}"
 export TargetGroupArn="${TargetGroupArn}"
 export LoadBalancersDnsName="${LoadBalancersDnsName}"
@@ -2938,21 +2959,22 @@ EOF
 #### result
 
 ```Cloud9
-export AccoutID="123456789012"
-export VpcId="vpc-0d3c1c88db46cfba7"
-export SubnetId1aPublic="subnet-0f66f257f167a1d47"
-export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
-export SubnetId1aPrivate="subnet-049f0119237ff00a0"
-export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
-export InternetGatewayId="igw-0a511ba68ceb84ed8"
-export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
-export RouteTableIdPrivate="rtb-0afaac377925bca9a"
-export PublicSecurityGroupsId="sg-01cc901415c240504"
-export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867"
-export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9"
-export LoadBalancersDnsName="ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com"
-export RevisionNo="8"
+$ export AccoutID="152767562250"
+$ export VpcId="vpc-0eb621c4712ee0898"
+$ export SubnetId1aPublic="subnet-035db89cb1df815f1"
+$ export SubnetId1cPublic="subnet-04872b3467ca94ce2"
+$ export SubnetId1aPrivate="subnet-00d678e2982d487d0"
+$ export SubnetId1cPrivate="subnet-08bfff9af19697ab7"
+$ export InternetGatewayId="igw-0d4373c922961e230"
+$ export RouteTableIdPublic="rtb-0670248bec99ef90c"
+$ export RouteTableIdPrivate="rtb-004eba1faed81d581"
+$ export PublicSecurityGroupsId="sg-06931dc309a0879b2"
+$ export PrivateSecurityGroupsId="sg-05eb336035d38f645"
+$ export InstanceId="i-04c7c620fef60c9cb"
+$ export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/9f7c6d0c3b1b76da"
+$ export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/f46da45550c208d5"
+$ export LoadBalancersDnsName="ContainerHandsOn-879378718.ap-northeast-1.elb.amazonaws.com"
+$ export RevisionNo="6"
 ```
 
 ## CodeCommit作成
@@ -3387,7 +3409,6 @@ EOF
 ```Cloud9
 aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
-  --region ap-northeast-1 \
   --tags key=Name,value=ContainerHandsOn
 ```
 

@@ -1299,8 +1299,28 @@ EOF
   -t jaws-days-2022/container-hands-on .
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">（略）
-Successfully built fed9645afaae
+<pre><code language="language-Cloud9" class="language-Cloud9">Sending build context to Docker daemon  9.823MB
+Step 1/2 : FROM php:7.4.0-apache
+7.4.0-apache: Pulling from library/php
+000eee12ec04: Pull complete 
+8ae4f9fcfeea: Pull complete 
+60f22fbbd07a: Pull complete 
+ccc7a63ad75f: Pull complete 
+a2427b8dd6e7: Pull complete 
+91cac3b30184: Pull complete 
+d6e40015fc10: Pull complete 
+9858aa646efe: Pull complete 
+7940985f7eb2: Pull complete 
+b23f72eebcfb: Pull complete 
+75bb7b8d192c: Pull complete 
+7edf943992b0: Pull complete 
+c8bf9d9d0e11: Pull complete 
+Digest: sha256:686af696a87d3836c694380588368ff4e7ad3e30f1faef387c545890b340edee
+Status: Downloaded newer image for php:7.4.0-apache
+ ---&gt; bf262c8621c1
+Step 2/2 : COPY src/ /var/www/html/
+ ---&gt; afc680b711d3
+Successfully built afc680b711d3
 Successfully tagged jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h2 is-upgraded>■Cloud9上でDocker イメージを構築されたことを確認</h2>
@@ -2269,6 +2289,7 @@ export RouteTableIdPublic=&#34;${RouteTableIdPublic}&#34;
 export RouteTableIdPrivate=&#34;${RouteTableIdPrivate}&#34;
 export PublicSecurityGroupsId=&#34;${PublicSecurityGroupsId}&#34;
 export PrivateSecurityGroupsId=&#34;${PrivateSecurityGroupsId}&#34;
+export InstanceId=&#34;${InstanceId}&#34;
 export LoadBalancerArn=&#34;${LoadBalancerArn}&#34;
 export TargetGroupArn=&#34;${TargetGroupArn}&#34;
 export LoadBalancersDnsName=&#34;${LoadBalancersDnsName}&#34;
@@ -2276,21 +2297,22 @@ export RevisionNo=&#34;${RevisionNo}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
-export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
-export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
-export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
-export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
-export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
-export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
-export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
-export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
-export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
-export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
-export LoadBalancerArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867&#34;
-export TargetGroupArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9&#34;
-export LoadBalancersDnsName=&#34;ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com&#34;
-export RevisionNo=&#34;8&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">$ export AccoutID=&#34;152767562250&#34;
+$ export VpcId=&#34;vpc-0eb621c4712ee0898&#34;
+$ export SubnetId1aPublic=&#34;subnet-035db89cb1df815f1&#34;
+$ export SubnetId1cPublic=&#34;subnet-04872b3467ca94ce2&#34;
+$ export SubnetId1aPrivate=&#34;subnet-00d678e2982d487d0&#34;
+$ export SubnetId1cPrivate=&#34;subnet-08bfff9af19697ab7&#34;
+$ export InternetGatewayId=&#34;igw-0d4373c922961e230&#34;
+$ export RouteTableIdPublic=&#34;rtb-0670248bec99ef90c&#34;
+$ export RouteTableIdPrivate=&#34;rtb-004eba1faed81d581&#34;
+$ export PublicSecurityGroupsId=&#34;sg-06931dc309a0879b2&#34;
+$ export PrivateSecurityGroupsId=&#34;sg-05eb336035d38f645&#34;
+$ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
+$ export LoadBalancerArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/9f7c6d0c3b1b76da&#34;
+$ export TargetGroupArn=&#34;arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/f46da45550c208d5&#34;
+$ export LoadBalancersDnsName=&#34;ContainerHandsOn-879378718.ap-northeast-1.elb.amazonaws.com&#34;
+$ export RevisionNo=&#34;6&#34;
 </code></pre>
 
 
@@ -2598,7 +2620,6 @@ EOF
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
-  --region ap-northeast-1 \
   --tags key=Name,value=ContainerHandsOn
 </code></pre>
 <h3 is-upgraded>result</h3>
