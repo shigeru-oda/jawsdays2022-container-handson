@@ -120,9 +120,6 @@ Duration: 0:05:00
 
 #### CloudShellを起動
 
-・今後はCloudShellの画面にcmdの内容をCopy & Pasteし、resultの内容を確認し進めて下さい  
-・resultに表示されるIDなどは個々に異なりますので、エラーではないかなどのチェックにご利用ください
-
 ![img](./image/img3-4.png)
 
 ### ■AWS Account IDの取得
@@ -212,9 +209,9 @@ aws iam create-role \
     "Role": {
         "Path": "/",
         "RoleName": "ecsTaskExecutionRole",
-        "RoleId": "AROASHENIAIFOV2DAKSWN",
+        "RoleId": "AROASHENIAIFFJ6CDBQVE",
         "Arn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
-        "CreateDate": "2022-09-06T14:50:16+00:00",
+        "CreateDate": "2022-09-12T20:01:28+00:00",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [
@@ -296,13 +293,13 @@ aws ec2 create-vpc \
         "CidrBlock": "10.0.0.0/16",
         "DhcpOptionsId": "dopt-c3de3ba5",
         "State": "pending",
-        "VpcId": "vpc-0d3c1c88db46cfba7",
+        "VpcId": "vpc-0eb621c4712ee0898",
         "OwnerId": "123456789012",
         "InstanceTenancy": "default",
         "Ipv6CidrBlockAssociationSet": [],
         "CidrBlockAssociationSet": [
             {
-                "AssociationId": "vpc-cidr-assoc-098ed848444db197b",
+                "AssociationId": "vpc-cidr-assoc-05cc0c368d9105817",
                 "CidrBlock": "10.0.0.0/16",
                 "CidrBlockState": {
                     "State": "associated"
@@ -1319,44 +1316,6 @@ aws logs describe-log-groups --log-group-name-prefix awslogs-container-hands-on
 }
 ```
 
-### ■環境変数をメモ
-
-・Cloud9で使うため、取得した変数をエディターに残して下さい
-
-#### cmd
-
-```CloudShell
-clear; cat << EOF
-export AccoutID="${AccoutID}"
-export VpcId="${VpcId}"
-export SubnetId1aPublic="${SubnetId1aPublic}"
-export SubnetId1cPublic="${SubnetId1cPublic}"
-export SubnetId1aPrivate="${SubnetId1aPrivate}"
-export SubnetId1cPrivate="${SubnetId1cPrivate}"
-export InternetGatewayId="${InternetGatewayId}"
-export RouteTableIdPublic="${RouteTableIdPublic}"
-export RouteTableIdPrivate="${RouteTableIdPrivate}"
-export PublicSecurityGroupsId="${PublicSecurityGroupsId}"
-export PrivateSecurityGroupsId="${PrivateSecurityGroupsId}"
-EOF
-```
-
-#### result
-
-```CloudShell
-export AccoutID="123456789012"
-export VpcId="vpc-0d3c1c88db46cfba7"
-export SubnetId1aPublic="subnet-0f66f257f167a1d47"
-export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
-export SubnetId1aPrivate="subnet-049f0119237ff00a0"
-export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
-export InternetGatewayId="igw-0a511ba68ceb84ed8"
-export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
-export RouteTableIdPrivate="rtb-0afaac377925bca9a"
-export PublicSecurityGroupsId="sg-01cc901415c240504"
-export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-```
-
 ## Cloud9作成
 
 Duration: 0:05:00
@@ -1467,7 +1426,7 @@ aws iam create-instance-profile \
         "Path": "/",
         "InstanceProfileName": "ContainerHandsOnForCloud9",
         "InstanceProfileId": "AIPASHENIAIFABKPZHZ6B",
-        "Arn": "arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9",
+        "Arn": "arn:aws:iam::123456789012:instance-profile/ContainerHandsOnForCloud9",
         "CreateDate": "2022-09-11T20:08:39+00:00",
         "Roles": []
     }
@@ -1475,7 +1434,9 @@ aws iam create-instance-profile \
 ```
 
 ### ■instance-profileにRole付与
+
 #### cmd
+
 ```CloudShell
 aws iam add-role-to-instance-profile \
     --role-name ContainerHandsOnForCloud9 \
@@ -1483,13 +1444,17 @@ aws iam add-role-to-instance-profile \
 ```
 
 #### result
+
 ```CloudShell
 （なし）
 ```
 
-### ■Cloud9環境RoleをAttach
+### ■Cloud9のInstanceIdの取得
+
+・IDを取得し、変数に格納・確認を行います
 
 #### cmd
+
 ```CloudShell
 InstanceId=`aws ec2 describe-instances \
     --query "Reservations[*].Instances[*].InstanceId" \
@@ -1498,24 +1463,103 @@ InstanceId=`aws ec2 describe-instances \
 ```
 
 ```CloudShell
+clear; cat << EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
+EOF
+```
+
+#### result
+
+```CloudShell
+AccoutID : 152767562250
+VpcId : vpc-0eb621c4712ee0898
+SubnetId1aPublic : subnet-035db89cb1df815f1
+SubnetId1cPublic : subnet-04872b3467ca94ce2
+SubnetId1aPrivate : subnet-00d678e2982d487d0
+SubnetId1cPrivate : subnet-08bfff9af19697ab7
+InternetGatewayId : igw-0d4373c922961e230
+RouteTableIdPublic : rtb-0670248bec99ef90c
+RouteTableIdPrivate : rtb-004eba1faed81d581
+PublicSecurityGroupsId : sg-06931dc309a0879b2
+PrivateSecurityGroupsId : sg-05eb336035d38f645
+InstanceId : i-04c7c620fef60c9cb
+```
+
+### ■Cloud9環境RoleをAttach
+
+#### cmd
+
+```CloudShell
 aws ec2 associate-iam-instance-profile \
     --instance-id ${InstanceId} \
     --iam-instance-profile Name=ContainerHandsOnForCloud9
 ```
 
 #### result
+
 ```CloudShell
 {
     "IamInstanceProfileAssociation": {
         "AssociationId": "iip-assoc-060b8208bb529670a",
         "InstanceId": "i-033ba336e274d34f3",
         "IamInstanceProfile": {
-            "Arn": "arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9",
+            "Arn": "arn:aws:iam::123456789012:instance-profile/ContainerHandsOnForCloud9",
             "Id": "AIPASHENIAIFABKPZHZ6B"
         },
         "State": "associating"
     }
 }
+```
+
+### ■環境変数をメモ
+
+・Cloud9で使うため、取得した変数をエディターに残して下さい
+
+#### cmd
+
+```CloudShell
+clear; cat << EOF
+export AccoutID="${AccoutID}"
+export VpcId="${VpcId}"
+export SubnetId1aPublic="${SubnetId1aPublic}"
+export SubnetId1cPublic="${SubnetId1cPublic}"
+export SubnetId1aPrivate="${SubnetId1aPrivate}"
+export SubnetId1cPrivate="${SubnetId1cPrivate}"
+export InternetGatewayId="${InternetGatewayId}"
+export RouteTableIdPublic="${RouteTableIdPublic}"
+export RouteTableIdPrivate="${RouteTableIdPrivate}"
+export PublicSecurityGroupsId="${PublicSecurityGroupsId}"
+export PrivateSecurityGroupsId="${PrivateSecurityGroupsId}"
+export InstanceId="${InstanceId}"
+EOF
+```
+
+#### result
+
+```CloudShell
+export AccoutID="123456789012"
+export VpcId="vpc-0d3c1c88db46cfba7"
+export SubnetId1aPublic="subnet-0f66f257f167a1d47"
+export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
+export SubnetId1aPrivate="subnet-049f0119237ff00a0"
+export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
+export InternetGatewayId="igw-0a511ba68ceb84ed8"
+export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
+export RouteTableIdPrivate="rtb-0afaac377925bca9a"
+export PublicSecurityGroupsId="sg-01cc901415c240504"
+export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
+export InstanceId="i-04c7c620fef60c9cb"
 ```
 
 ### ■AWS コンソールでCloud9を起動
@@ -1575,6 +1619,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 EOF
 ```
 
@@ -2250,6 +2295,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 EOF
 ```
@@ -2295,6 +2341,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 EOF
@@ -2342,6 +2389,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -2645,6 +2693,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -2926,6 +2975,7 @@ aws codecommit create-repository \
 ```
 
 ### ■CodeCommitリポジトリのクローン
+
 ・git cloneでリポジトリをcloneします、中身は空です
 
 #### cmd
@@ -2943,6 +2993,7 @@ warning: You appear to have cloned an empty repository.
 ```
 
 ### ■資材の準備
+
 ・事前に作成した資材をgit管理ディレクトリにcopyします
 
 #### cmd
@@ -2968,6 +3019,7 @@ total 4
 ```
 
 ### ■buildspec.ymlの新規作成
+
 ・CodeBuildの仕様を記述したファイルを作成します
 
 #### cmd
@@ -3030,6 +3082,7 @@ ls -l buildspec.yml
 ```
 
 ### ■appspec.ymlの新規作成
+
 ・CodeDeployの仕様を記述したファイルを作成します
 
 #### cmd
@@ -3069,6 +3122,7 @@ ls -l appspec.yml
 ```
 
 ### ■taskdef.jsonの新規作成
+
 ・ECS Taskの仕様を記述したファイルを作成します  
 ・前半のハンズオンで作成した内容を出力しています  
 
@@ -3092,7 +3146,6 @@ aws ecs describe-task-definition \
 ・変更後、Ctrl+Sでの保存をお忘れなく  
 ・sedでやりたい・・・
 
-
 #### 変更前
 
 ```Cloud9
@@ -3106,6 +3159,7 @@ aws ecs describe-task-definition \
 ```
 
 ### ■CodeCommitへのPush
+
 ・作成したファイルをCodeCommitへPushし格納します
 
 #### cmd
@@ -3145,6 +3199,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 Duration: 0:05:00
 
 ### ■CodeBuild用Role作成
+
 ・CodeBuildのためにRoleを作成します。
 
 #### cmd
@@ -3574,6 +3629,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -3694,6 +3750,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -3748,7 +3805,7 @@ aws ec2 authorize-security-group-ingress \
         {
             "SecurityGroupRuleId": "sgr-0d94c6066ce720a52",
             "GroupId": "sg-04a6d799d221392dc",
-            "GroupOwnerId": "152767562250",
+            "GroupOwnerId": "123456789012",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 8080,
@@ -3871,7 +3928,7 @@ aws iam create-role \
         "Path": "/",
         "RoleName": "ContainerHandsOnForPipeLine",
         "RoleId": "AROASHENIAIFE3VFSOI5C",
-        "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine",
+        "Arn": "arn:aws:iam::123456789012:role/ContainerHandsOnForPipeLine",
         "CreateDate": "2022-09-11T07:29:04Z",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
@@ -4110,6 +4167,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -4124,7 +4182,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 152767562250
+AccoutID : 123456789012
 VpcId : vpc-0320e7bf74af8bd72
 SubnetId1aPublic : subnet-059ff12a72e014ca1
 SubnetId1cPublic : subnet-0076bf4756ca680d1
@@ -4136,12 +4194,12 @@ RouteTableIdPrivate : rtb-086e760ddf493b0c3
 PublicSecurityGroupsId : sg-04a6d799d221392dc
 PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
 LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
-TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/d6ccd892547e534d
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
 RevisionNo : 2
-TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
-ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
-ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
+ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
+ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
 S3Name : shigeru-oda-container-handson-20220911072649
 ```
 
@@ -4276,7 +4334,7 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 {
     "pipeline": {
         "name": "ContainerHandsOn",
-        "roleArn": "arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine",
+        "roleArn": "arn:aws:iam::123456789012:role/ContainerHandsOnForPipeLine",
         "artifactStore": {
             "type": "S3",
             "location": "shigeru-oda-container-handson-20220911072649"
@@ -4380,13 +4438,14 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
     }
 }
 ```
+
 ## EventBridge作成
+
 Duration: 0:05:00
 
 ## Dockerコンテナ再ビルド(Codeシリーズを利用)
 
 Duration: 0:05:00
-
 
 ## 動作確認２
 

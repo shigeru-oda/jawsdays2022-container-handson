@@ -104,7 +104,6 @@
 <h3 is-upgraded>CloudShellボタン押下</h3>
 <p>・画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
 <h3 is-upgraded>CloudShellを起動</h3>
-<p>・今後はCloudShellの画面にcmdの内容をCopy &amp; Pasteし、resultの内容を確認し進めて下さい<br> ・resultに表示されるIDなどは個々に異なりますので、エラーではないかなどのチェックにご利用ください</p>
 <p class="image-container"><img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
 <p class="image-container"><img alt="img" src="img/f44362afeb0e4cfe.png"></p>
@@ -160,9 +159,9 @@ EOF
     &#34;Role&#34;: {
         &#34;Path&#34;: &#34;/&#34;,
         &#34;RoleName&#34;: &#34;ecsTaskExecutionRole&#34;,
-        &#34;RoleId&#34;: &#34;AROASHENIAIFOV2DAKSWN&#34;,
+        &#34;RoleId&#34;: &#34;AROASHENIAIFFJ6CDBQVE&#34;,
         &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:role/ecsTaskExecutionRole&#34;,
-        &#34;CreateDate&#34;: &#34;2022-09-06T14:50:16+00:00&#34;,
+        &#34;CreateDate&#34;: &#34;2022-09-12T20:01:28+00:00&#34;,
         &#34;AssumeRolePolicyDocument&#34;: {
             &#34;Version&#34;: &#34;2012-10-17&#34;,
             &#34;Statement&#34;: [
@@ -219,13 +218,13 @@ EOF
         &#34;CidrBlock&#34;: &#34;10.0.0.0/16&#34;,
         &#34;DhcpOptionsId&#34;: &#34;dopt-c3de3ba5&#34;,
         &#34;State&#34;: &#34;pending&#34;,
-        &#34;VpcId&#34;: &#34;vpc-0d3c1c88db46cfba7&#34;,
+        &#34;VpcId&#34;: &#34;vpc-0eb621c4712ee0898&#34;,
         &#34;OwnerId&#34;: &#34;123456789012&#34;,
         &#34;InstanceTenancy&#34;: &#34;default&#34;,
         &#34;Ipv6CidrBlockAssociationSet&#34;: [],
         &#34;CidrBlockAssociationSet&#34;: [
             {
-                &#34;AssociationId&#34;: &#34;vpc-cidr-assoc-098ed848444db197b&#34;,
+                &#34;AssociationId&#34;: &#34;vpc-cidr-assoc-05cc0c368d9105817&#34;,
                 &#34;CidrBlock&#34;: &#34;10.0.0.0/16&#34;,
                 &#34;CidrBlockState&#34;: {
                     &#34;State&#34;: &#34;associated&#34;
@@ -976,36 +975,6 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
     ]
 }
 </code></pre>
-<h2 is-upgraded>■環境変数をメモ</h2>
-<p>・Cloud9で使うため、取得した変数をエディターに残して下さい</p>
-<h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-export AccoutID=&#34;${AccoutID}&#34;
-export VpcId=&#34;${VpcId}&#34;
-export SubnetId1aPublic=&#34;${SubnetId1aPublic}&#34;
-export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
-export SubnetId1aPrivate=&#34;${SubnetId1aPrivate}&#34;
-export SubnetId1cPrivate=&#34;${SubnetId1cPrivate}&#34;
-export InternetGatewayId=&#34;${InternetGatewayId}&#34;
-export RouteTableIdPublic=&#34;${RouteTableIdPublic}&#34;
-export RouteTableIdPrivate=&#34;${RouteTableIdPrivate}&#34;
-export PublicSecurityGroupsId=&#34;${PublicSecurityGroupsId}&#34;
-export PrivateSecurityGroupsId=&#34;${PrivateSecurityGroupsId}&#34;
-EOF
-</code></pre>
-<h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;123456789012&#34;
-export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
-export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
-export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
-export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
-export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
-export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
-export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
-export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
-export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
-export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
-</code></pre>
 
 
       </google-codelab-step>
@@ -1083,7 +1052,7 @@ EOF
         &#34;Path&#34;: &#34;/&#34;,
         &#34;InstanceProfileName&#34;: &#34;ContainerHandsOnForCloud9&#34;,
         &#34;InstanceProfileId&#34;: &#34;AIPASHENIAIFABKPZHZ6B&#34;,
-        &#34;Arn&#34;: &#34;arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9&#34;,
+        &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:instance-profile/ContainerHandsOnForCloud9&#34;,
         &#34;CreateDate&#34;: &#34;2022-09-11T20:08:39+00:00&#34;,
         &#34;Roles&#34;: []
     }
@@ -1098,13 +1067,45 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">（なし）
 </code></pre>
-<h2 is-upgraded>■Cloud9環境RoleをAttach</h2>
+<h2 is-upgraded>■Cloud9のInstanceIdの取得</h2>
+<p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">InstanceId=`aws ec2 describe-instances \
     --query &#34;Reservations[*].Instances[*].InstanceId&#34; \
     --filters &#34;Name=vpc-id,Values=${VpcId}&#34; \
     --output text`
 </code></pre>
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+AccoutID : ${AccoutID}
+VpcId : ${VpcId}
+SubnetId1aPublic : ${SubnetId1aPublic}
+SubnetId1cPublic : ${SubnetId1cPublic}
+SubnetId1aPrivate : ${SubnetId1aPrivate}
+SubnetId1cPrivate : ${SubnetId1cPrivate}
+InternetGatewayId : ${InternetGatewayId}
+RouteTableIdPublic : ${RouteTableIdPublic}
+RouteTableIdPrivate : ${RouteTableIdPrivate}
+PublicSecurityGroupsId : ${PublicSecurityGroupsId}
+PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 152767562250
+VpcId : vpc-0eb621c4712ee0898
+SubnetId1aPublic : subnet-035db89cb1df815f1
+SubnetId1cPublic : subnet-04872b3467ca94ce2
+SubnetId1aPrivate : subnet-00d678e2982d487d0
+SubnetId1cPrivate : subnet-08bfff9af19697ab7
+InternetGatewayId : igw-0d4373c922961e230
+RouteTableIdPublic : rtb-0670248bec99ef90c
+RouteTableIdPrivate : rtb-004eba1faed81d581
+PublicSecurityGroupsId : sg-06931dc309a0879b2
+PrivateSecurityGroupsId : sg-05eb336035d38f645
+InstanceId : i-04c7c620fef60c9cb
+</code></pre>
+<h2 is-upgraded>■Cloud9環境RoleをAttach</h2>
+<h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-iam-instance-profile \
     --instance-id ${InstanceId} \
     --iam-instance-profile Name=ContainerHandsOnForCloud9
@@ -1115,12 +1116,44 @@ EOF
         &#34;AssociationId&#34;: &#34;iip-assoc-060b8208bb529670a&#34;,
         &#34;InstanceId&#34;: &#34;i-033ba336e274d34f3&#34;,
         &#34;IamInstanceProfile&#34;: {
-            &#34;Arn&#34;: &#34;arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9&#34;,
+            &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:instance-profile/ContainerHandsOnForCloud9&#34;,
             &#34;Id&#34;: &#34;AIPASHENIAIFABKPZHZ6B&#34;
         },
         &#34;State&#34;: &#34;associating&#34;
     }
 }
+</code></pre>
+<h2 is-upgraded>■環境変数をメモ</h2>
+<p>・Cloud9で使うため、取得した変数をエディターに残して下さい</p>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
+export AccoutID=&#34;${AccoutID}&#34;
+export VpcId=&#34;${VpcId}&#34;
+export SubnetId1aPublic=&#34;${SubnetId1aPublic}&#34;
+export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
+export SubnetId1aPrivate=&#34;${SubnetId1aPrivate}&#34;
+export SubnetId1cPrivate=&#34;${SubnetId1cPrivate}&#34;
+export InternetGatewayId=&#34;${InternetGatewayId}&#34;
+export RouteTableIdPublic=&#34;${RouteTableIdPublic}&#34;
+export RouteTableIdPrivate=&#34;${RouteTableIdPrivate}&#34;
+export PublicSecurityGroupsId=&#34;${PublicSecurityGroupsId}&#34;
+export PrivateSecurityGroupsId=&#34;${PrivateSecurityGroupsId}&#34;
+export InstanceId=&#34;${InstanceId}&#34;
+EOF
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;123456789012&#34;
+export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
+export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
+export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
+export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
+export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
+export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
+export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
+export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
+export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
+export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
+export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
 </code></pre>
 <h2 is-upgraded>■AWS コンソールでCloud9を起動</h2>
 <ul>
@@ -1169,6 +1202,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
@@ -1704,6 +1738,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 EOF
 </code></pre>
@@ -1740,6 +1775,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 EOF
@@ -1778,6 +1814,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -2038,6 +2075,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -2757,6 +2795,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -2851,6 +2890,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -2895,7 +2935,7 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
         {
             &#34;SecurityGroupRuleId&#34;: &#34;sgr-0d94c6066ce720a52&#34;,
             &#34;GroupId&#34;: &#34;sg-04a6d799d221392dc&#34;,
-            &#34;GroupOwnerId&#34;: &#34;152767562250&#34;,
+            &#34;GroupOwnerId&#34;: &#34;123456789012&#34;,
             &#34;IsEgress&#34;: false,
             &#34;IpProtocol&#34;: &#34;tcp&#34;,
             &#34;FromPort&#34;: 8080,
@@ -3001,7 +3041,7 @@ EOF
         &#34;Path&#34;: &#34;/&#34;,
         &#34;RoleName&#34;: &#34;ContainerHandsOnForPipeLine&#34;,
         &#34;RoleId&#34;: &#34;AROASHENIAIFE3VFSOI5C&#34;,
-        &#34;Arn&#34;: &#34;arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine&#34;,
+        &#34;Arn&#34;: &#34;arn:aws:iam::123456789012:role/ContainerHandsOnForPipeLine&#34;,
         &#34;CreateDate&#34;: &#34;2022-09-11T07:29:04Z&#34;,
         &#34;AssumeRolePolicyDocument&#34;: {
             &#34;Version&#34;: &#34;2012-10-17&#34;,
@@ -3223,6 +3263,7 @@ RouteTableIdPublic : ${RouteTableIdPublic}
 RouteTableIdPrivate : ${RouteTableIdPrivate}
 PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
+InstanceId : ${InstanceId}
 LoadBalancersDnsName : ${LoadBalancersDnsName}
 LoadBalancerArn : ${LoadBalancerArn}
 TargetGroupArn : ${TargetGroupArn}
@@ -3234,7 +3275,7 @@ S3Name : ${S3Name}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 152767562250
+<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
 VpcId : vpc-0320e7bf74af8bd72
 SubnetId1aPublic : subnet-059ff12a72e014ca1
 SubnetId1cPublic : subnet-0076bf4756ca680d1
@@ -3246,12 +3287,12 @@ RouteTableIdPrivate : rtb-086e760ddf493b0c3
 PublicSecurityGroupsId : sg-04a6d799d221392dc
 PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
 LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
-TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/d6ccd892547e534d
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
 RevisionNo : 2
-TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
-ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
-ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
+ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
+ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
 S3Name : shigeru-oda-container-handson-20220911072649
 </code></pre>
 <h3 is-upgraded>cmd</h3>
@@ -3374,7 +3415,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;pipeline&#34;: {
         &#34;name&#34;: &#34;ContainerHandsOn&#34;,
-        &#34;roleArn&#34;: &#34;arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine&#34;,
+        &#34;roleArn&#34;: &#34;arn:aws:iam::123456789012:role/ContainerHandsOnForPipeLine&#34;,
         &#34;artifactStore&#34;: {
             &#34;type&#34;: &#34;S3&#34;,
             &#34;location&#34;: &#34;shigeru-oda-container-handson-20220911072649&#34;
