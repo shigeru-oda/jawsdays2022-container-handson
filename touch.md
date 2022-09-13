@@ -3870,11 +3870,11 @@ cat << EOF > create-deployment-group.json
     "blueGreenDeploymentConfiguration": {
         "terminateBlueInstancesOnDeploymentSuccess": {
             "action": "TERMINATE",
-            "terminationWaitTimeInMinutes": 5
+            "terminationWaitTimeInMinutes": 60
         },
         "deploymentReadyOption": {
             "actionOnTimeout": "STOP_DEPLOYMENT",
-            "waitTimeInMinutes": 5
+            "waitTimeInMinutes": 60
         }
     },
     "loadBalancerInfo": {
@@ -4557,7 +4557,9 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 ![img](./image/img16-7.png)
 
 ### ■Blue/Greenの置換
+
 #### 画面
+
 - CodeDeployの画面に戻ります
 - 「トラフィックの再ルーティング」ボタン押下
 
@@ -4568,6 +4570,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 ![img](./image/img16-10.png)
 
 ### ■Blue/Greenの置換後
+
 #### 画面
 
 - 再度ECSの画面に戻るとタスクで古いリビジョンが削除されていることが確認できます。
@@ -4579,7 +4582,9 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 Duration: 0:05:00
 
 ### ■EventBridge用Role作成
+
 #### cmd
+
 ```Cloud9
 cd ~/environment
 ```
@@ -4608,8 +4613,9 @@ aws iam create-role \
 ```
 
 #### result
+
 ```Cloud9
-xx{
+{
     "Role": {
         "Path": "/",
         "RoleName": "ContainerHandsOnForEventBridge",
@@ -4633,7 +4639,9 @@ xx{
 ```
 
 ### ■EventBridge用RoleにPolicyをアタッチ
+
 #### cmd
+
 ```Cloud9
 cat << EOF > InlinePolicy.json
 {
@@ -4659,12 +4667,16 @@ aws iam put-role-policy \
   --policy-name InlinePolicy \
   --policy-document file://InlinePolicy.json
 ```
+
 #### result
+
 ```Cloud9
 ```
 
-## ■EventBridgeを作成
+## EventBridgeを作成
+
 #### cmd
+
 ```Cloud9
 aws events put-rule \
   --name "ContainerHandsOnForEventBridge" \
@@ -4685,6 +4697,7 @@ aws events put-rule \
 ```
 
 #### result
+
 ```Cloud9
 {
     "RuleArn": "arn:aws:events:ap-northeast-1:152767562250:rule/ContainerHandsOnForEventBridge"
@@ -4692,7 +4705,9 @@ aws events put-rule \
 ```
 
 ### ■targetを作成
+
 #### cmd
+
 ```Cloud9
 aws events put-targets \
   --rule ContainerHandsOnForEventBridge \
@@ -4700,6 +4715,7 @@ aws events put-targets \
 ```
 
 #### result
+
 ```Cloud9
 {
     "FailedEntryCount": 0,
@@ -4707,15 +4723,16 @@ aws events put-targets \
 }
 ```
 
-
 ## 動作確認２−２（Codeシリーズを利用)）
 
 Duration: 0:05:00
 
 ### ■srcの変更
+
 ・Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する
 
 #### cmd
+
 ```Cloud9
 cd ~/environment/ContainerHandsOn/src
 ```
@@ -4741,6 +4758,7 @@ git diff index.php
 ```
 
 #### result
+
 ```Cloud9
 diff --git a/src/index.php b/src/index.php
 index 3e2ebff..f6a5cd5 100644
@@ -4757,7 +4775,9 @@ index 3e2ebff..f6a5cd5 100644
 ```
 
 ### ■git操作
+
 #### cmd
+
 ```Cloud9
 git add ./index.php
 git commit -m "CICD TEST"
@@ -4765,6 +4785,7 @@ git push
 ```
 
 #### result
+
 ```Cloud9
 [master 1f49fba] CICD TEST
  1 file changed, 1 insertion(+)
@@ -4782,8 +4803,96 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 
 ### ■CodePipeline確認
 
+### 画面
+
+- git操作でCodePipelineが稼働することを確認する
+- Deployの詳細ボタンを選択する
+
+![img](./image/img19-1.png)
+![img](./image/img19-2.png)
+
+- ステップ１・２が完了済みであることを確認
+![img](./image/img19-3.png)
+
+### ■アドレス確認
+
+- Blue（オリジナル）でのアクセスを確認する
+
+#### cmd
+
+```Cloud9
+echo "http://"${LoadBalancersDnsName}
+```
+
+#### result
+
+```Cloud9
+http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+```
+
+### ■画面
+
+![img](./image/img19-4.png)
+
+### ■アドレス確認
+
+- Green（置換）でのアクセスを確認する
+
+#### cmd
+
+```Cloud9
+echo "http://"${LoadBalancersDnsName}":8080"
+```
+
+#### result
+
+```Cloud9
+http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
+```
+
+### ■画面
+
+- CICD-ContainerHandONと表示されていることを確認
+![img](./image/img19-5.png)
+
+### ■トラフィックの再ルーティング
+
+- 「トラフィックの再ルーティング」ボタンを押下
+- Blue/Greenの切り替えが行われる
+![img](./image/img19-3.png)
+
+### ■元のタスクセットの終了
+
+- 「元のタスクセットの終了」ボタンを押下
+- Blueのタスクセットを終了させる
+![img](./image/img19-6.png)
+
+### ■画面
+- 全ての処理が終了する
+![img](./image/img19-7.png)
+
+### ■アドレス確認
+
+- Blue（オリジナル）でのアクセスを確認する
+
+#### cmd
+
+```Cloud9
+echo "http://"${LoadBalancersDnsName}
+```
+
+#### result
+
+```Cloud9
+http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+```
+
+### ■画面
+
+![img](./image/img19-5.png)
+
 ## 片付け
 
 Duration: 0:05:00
 
-### ■あああ
+

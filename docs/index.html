@@ -2989,11 +2989,11 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
     &#34;blueGreenDeploymentConfiguration&#34;: {
         &#34;terminateBlueInstancesOnDeploymentSuccess&#34;: {
             &#34;action&#34;: &#34;TERMINATE&#34;,
-            &#34;terminationWaitTimeInMinutes&#34;: 5
+            &#34;terminationWaitTimeInMinutes&#34;: 60
         },
         &#34;deploymentReadyOption&#34;: {
             &#34;actionOnTimeout&#34;: &#34;STOP_DEPLOYMENT&#34;,
-            &#34;waitTimeInMinutes&#34;: 5
+            &#34;waitTimeInMinutes&#34;: 60
         }
     },
     &#34;loadBalancerInfo&#34;: {
@@ -3651,7 +3651,7 @@ EOF
   --assume-role-policy-document file://assume-role-policy-document.json
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">xx{
+<pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;Role&#34;: {
         &#34;Path&#34;: &#34;/&#34;,
         &#34;RoleName&#34;: &#34;ContainerHandsOnForEventBridge&#34;,
@@ -3703,7 +3703,7 @@ EOF
 
       </google-codelab-step>
     
-      <google-codelab-step label="■EventBridgeを作成" duration="0">
+      <google-codelab-step label="EventBridgeを作成" duration="0">
         <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws events put-rule \
   --name &#34;ContainerHandsOnForEventBridge&#34; \
@@ -3800,13 +3800,73 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
    dc004ac..1f49fba  master -&gt; master
 </code></pre>
 <h2 is-upgraded>■CodePipeline確認</h2>
+<h2 is-upgraded>画面</h2>
+<ul>
+<li>git操作でCodePipelineが稼働することを確認する</li>
+<li>Deployの詳細ボタンを選択する</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/f9b856f1b85b8e71.png"><img alt="img" src="img/2b20bdad4ba63bab.png"></p>
+<ul>
+<li>ステップ１・２が完了済みであることを確認 <img alt="img" src="img/746e4a78f321468a.png"></li>
+</ul>
+<h2 is-upgraded>■アドレス確認</h2>
+<ul>
+<li>Blue（オリジナル）でのアクセスを確認する</li>
+</ul>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">echo &#34;http://&#34;${LoadBalancersDnsName}
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+</code></pre>
+<h2 is-upgraded>■画面</h2>
+<p class="image-container"><img alt="img" src="img/22f9cf18ab812ebe.png"></p>
+<h2 is-upgraded>■アドレス確認</h2>
+<ul>
+<li>Green（置換）でのアクセスを確認する</li>
+</ul>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">echo &#34;http://&#34;${LoadBalancersDnsName}&#34;:8080&#34;
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
+</code></pre>
+<h2 is-upgraded>■画面</h2>
+<ul>
+<li>CICD-ContainerHandONと表示されていることを確認 <img alt="img" src="img/4dfcb5a535fe5846.png"></li>
+</ul>
+<h2 is-upgraded>■トラフィックの再ルーティング</h2>
+<ul>
+<li>「トラフィックの再ルーティング」ボタンを押下</li>
+<li>Blue/Greenの切り替えが行われる <img alt="img" src="img/746e4a78f321468a.png"></li>
+</ul>
+<h2 is-upgraded>■元のタスクセットの終了</h2>
+<ul>
+<li>「元のタスクセットの終了」ボタンを押下</li>
+<li>Blueのタスクセットを終了させる <img alt="img" src="img/5c62d4676a8ed2eb.png"></li>
+</ul>
+<h2 is-upgraded>■画面</h2>
+<ul>
+<li>全ての処理が終了する <img alt="img" src="img/ba5c344c68af9591.png"></li>
+</ul>
+<h2 is-upgraded>■アドレス確認</h2>
+<ul>
+<li>Blue（オリジナル）でのアクセスを確認する</li>
+</ul>
+<h3 is-upgraded>cmd</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">echo &#34;http://&#34;${LoadBalancersDnsName}
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+</code></pre>
+<h2 is-upgraded>■画面</h2>
+<p class="image-container"><img alt="img" src="img/4dfcb5a535fe5846.png"></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="片付け" duration="5">
-        <h2 is-upgraded>■あああ</h2>
-
+        
 
       </google-codelab-step>
     
