@@ -4522,11 +4522,12 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - ブラウザを更新すると２種類のタスクが確認できます
+- パターン１
 
-** パターン１**
 ![img](./image/img16-4.png)
 
-** パターン２**
+- パターン２
+
 ![img](./image/img16-5.png)
 
 ### ■アドレス確認 Green（置換）
@@ -4547,12 +4548,12 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - ブラウザを更新すると先ほどとは異なる２種類のタスクが確認できます
-
-** パターン１**
+- パターン１
 
 ![img](./image/img16-6.png)
 
-** パターン２**
+- パターン２
+
 ![img](./image/img16-7.png)
 
 ### ■Blue/Greenの置換
@@ -4566,20 +4567,220 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 
 ![img](./image/img16-10.png)
 
+### ■Blue/Greenの置換後
+#### 画面
+
+- 再度ECSの画面に戻るとタスクで古いリビジョンが削除されていることが確認できます。
+
+![img](./image/img16-11.png)
 
 ## EventBridge作成
 
 Duration: 0:05:00
 
-## Dockerコンテナ再ビルド(Codeシリーズを利用)
+### ■EventBridge用Role作成
+#### cmd
+```Cloud9
+cd ~/environment
+```
+
+```Cloud9
+cat << EOF > assume-role-policy-document.json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "events.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+EOF
+```
+
+```
+aws iam create-role \
+  --role-name ContainerHandsOnForEventBridge \
+  --assume-role-policy-document file://assume-role-policy-document.json
+```
+
+#### result
+```Cloud9
+xx{
+    "Role": {
+        "Path": "/",
+        "RoleName": "ContainerHandsOnForEventBridge",
+        "RoleId": "AROASHENIAIFKIXIOXE3I",
+        "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForEventBridge",
+        "CreateDate": "2022-09-13T05:32:16Z",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "events.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
+```
+
+### ■EventBridge用RoleにPolicyをアタッチ
+#### cmd
+```Cloud9
+cat << EOF > InlinePolicy.json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "codepipeline:StartPipelineExecution"
+            ],
+            "Resource": [
+                "arn:aws:codepipeline:ap-northeast-1:${AccoutID}:*"
+            ]
+        }
+    ]
+}
+EOF
+```
+
+```Cloud9
+aws iam put-role-policy \
+  --role-name ContainerHandsOnForEventBridge \
+  --policy-name InlinePolicy \
+  --policy-document file://InlinePolicy.json
+```
+#### result
+```Cloud9
+```
+
+## ■EventBridgeを作成
+#### cmd
+```Cloud9
+aws events put-rule \
+  --name "ContainerHandsOnForEventBridge" \
+  --state "ENABLED" \
+  --description "ContainerHandsOnForEventBridge" \
+  --event-bus-name "default" \
+  --event-pattern "{ \
+    \"source\":[\"aws.codecommit\"], \
+    \"detail-type\":[\"CodeCommit Repository State Change\"], \
+    \"resources\":[\"arn:aws:codecommit:ap-northeast-1:${AccoutID}:ContainerHandsOn\"], \
+    \"detail\":{ \
+        \"event\":[\"referenceCreated\",\"referenceUpdated\"], \
+        \"referenceType\": [\"branch\"], \
+        \"referenceName\":[\"master\"] \
+    } \
+  }" \
+  --role-arn "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge"
+```
+
+#### result
+```Cloud9
+{
+    "RuleArn": "arn:aws:events:ap-northeast-1:152767562250:rule/ContainerHandsOnForEventBridge"
+}
+```
+
+### ■targetを作成
+#### cmd
+```Cloud9
+aws events put-targets \
+  --rule ContainerHandsOnForEventBridge \
+  --targets "Id"="1","Arn"="arn:aws:codepipeline:ap-northeast-1:${AccoutID}:ContainerHandsOn","RoleArn"="arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge"
+```
+
+#### result
+```Cloud9
+{
+    "FailedEntryCount": 0,
+    "FailedEntries": []
+}
+```
+
+
+## 動作確認２−２（Codeシリーズを利用)）
 
 Duration: 0:05:00
 
-## 動作確認３
+### ■srcの変更
+・Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する
 
-Duration: 0:05:00
+#### cmd
+```Cloud9
+cd ~/environment/ContainerHandsOn/src
+```
 
-### ■あああ
+```Cloud9
+cat << EOF > index.php
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>Hello! Jaws Days 2022!!</title>
+  </head>
+  <body>
+    <p>Hello! Jaws Days 2022!!</p>
+    <p>CICD ContainerHandOn!!!</p>
+    <?php echo gethostname(); ?>
+  </body>
+</html>
+EOF
+```
+
+```Cloud9
+git diff index.php
+```
+
+#### result
+```Cloud9
+diff --git a/src/index.php b/src/index.php
+index 3e2ebff..f6a5cd5 100644
+--- a/src/index.php
++++ b/src/index.php
+@@ -5,6 +5,7 @@
+   </head>
+   <body>
+     <p>Hello! Jaws Days 2022!!</p>
++    <p>CICD ContainerHandOn!!!</p>
+     <?php echo gethostname(); ?>
+   </body>
+ </html>
+```
+
+### ■git操作
+#### cmd
+```Cloud9
+git add ./index.php
+git commit -m "CICD TEST"
+git push
+```
+
+#### result
+```Cloud9
+[master 1f49fba] CICD TEST
+ 1 file changed, 1 insertion(+)
+
+
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 361 bytes | 361.00 KiB/s, done.
+Total 4 (delta 2), reused 0 (delta 0), pack-reused 0
+To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
+   dc004ac..1f49fba  master -> master
+```
+
+### ■CodePipeline確認
 
 ## 片付け
 
