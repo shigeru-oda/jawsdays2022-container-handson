@@ -4480,14 +4480,14 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 }
 ```
 
-## 動作確認２（Blue/Green Deployの確認）
+## 動作確認２−１（Blue/Green Deployの確認）
 
 Duration: 0:05:00
 
 ### ■AWS コンソールでCodePipelineを検索
 
 - 上部の検索バーでCodePipelineと検索
-- CodePipeline > ContainerHandsOn
+- パイプラインの画面が表示されるのでContainerHandsOnを選択
 - Source、Buildが「成功しました」と表示されるまで暫く待機
 - Deployが「進行中」になった段階で「詳細」ボタン押下
 ![img](./image/img16-1.png)
@@ -4496,8 +4496,9 @@ Duration: 0:05:00
 - Blue（オリジナル）にトラフィックが向いていることが確認できます。
 ![img](./image/img16-3.png)
 
-- 上部の検索バーでECSと検索
-- Amazon Elastic Container Service > クラスター > ContainerHandsOn > タスク
+- 上部の検索バーで「Elastic Container Service」と検索
+- クラスター一覧の画面が表示されるのでContainerHandsOnを選択
+- タスクタブを選択
 - リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。
 ![img](./image/img16-8.png)
 

@@ -3555,17 +3555,18 @@ EOF
 
       </google-codelab-step>
     
-      <google-codelab-step label="動作確認２（Blue/Green Deployの確認）" duration="5">
+      <google-codelab-step label="動作確認２−１（Blue/Green Deployの確認）" duration="5">
         <h2 is-upgraded>■AWS コンソールでCodePipelineを検索</h2>
 <ul>
 <li>上部の検索バーでCodePipelineと検索</li>
-<li>CodePipeline &gt; ContainerHandsOn</li>
+<li>パイプラインの画面が表示されるのでContainerHandsOnを選択</li>
 <li>Source、Buildが「成功しました」と表示されるまで暫く待機</li>
 <li>Deployが「進行中」になった段階で「詳細」ボタン押下 <img alt="img" src="img/46d94b4271bd7d0c.png"><img alt="img" src="img/5b09f59782be46ac.png"></li>
 <li>Blue（オリジナル）にトラフィックが向いていることが確認できます。 <img alt="img" src="img/9486bc7742ede2a9.png"></li>
-<li>上部の検索バーでECSと検索</li>
-<li>Amazon Elastic Container Service &gt; クラスター &gt; ContainerHandsOn &gt; タスク</li>
-<li>リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。 <img alt="img" src="img/7667d50bd3747a07.png"></li>
+<li>上部の検索バーで「Elastic Container Service」と検索</li>
+<li>クラスター一覧の画面が表示されるのでContainerHandsOnを選択</li>
+<li>タスクタブを選択</li>
+<li>リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。 <img alt="img" src="img/c0bf88422d5581e3.png"></li>
 <li>リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。</li>
 </ul>
 <h2 is-upgraded>■アドレス確認 Blue（オリジナル）</h2>
