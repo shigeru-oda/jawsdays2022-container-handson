@@ -3580,7 +3580,8 @@ EOF
 <li>上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること</li>
 <li>ブラウザを更新すると２種類のタスクが確認できます</li>
 </ul>
-<p class="image-container"><img alt="img" src="img/df5db472483e1c4d.png"><img alt="img" src="img/72c2ec54b62ebef7.png"></p>
+<p>** パターン１** <img alt="img" src="img/df5db472483e1c4d.png"></p>
+<p>** パターン２** <img alt="img" src="img/72c2ec54b62ebef7.png"></p>
 <h2 is-upgraded>■アドレス確認 Green（置換）</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">echo &#34;http://&#34;${LoadBalancersDnsName}:8080
@@ -3591,8 +3592,22 @@ EOF
 <h3 is-upgraded>画面</h3>
 <ul>
 <li>上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること</li>
-<li>ブラウザを更新すると２種類のタスクが確認できます <img alt="img" src="img/18e082d29fb3baa3.png"><img alt="img" src="img/b5ef7619890cf00b.png"></li>
+<li>ブラウザを更新すると先ほどとは異なる２種類のタスクが確認できます</li>
 </ul>
+<p>** パターン１**</p>
+<p class="image-container"><img alt="img" src="img/18e082d29fb3baa3.png"></p>
+<p>** パターン２** <img alt="img" src="img/b5ef7619890cf00b.png"></p>
+<h2 is-upgraded>■Blue/Greenの置換</h2>
+<h3 is-upgraded>画面</h3>
+<ul>
+<li>CodeDeployの画面に戻ります</li>
+<li>「トラフィックの再ルーティング」ボタン押下</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/c168b60387e8450.png"></p>
+<ul>
+<li>暫くするとトラフィックがGreen（置換）に切り替わっていることが確認できます。</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/2fe296f45c6b9089.png"></p>
 
 
       </google-codelab-step>

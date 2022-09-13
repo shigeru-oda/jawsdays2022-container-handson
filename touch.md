@@ -4522,7 +4522,10 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - ブラウザを更新すると２種類のタスクが確認できます
 
+** パターン１**
 ![img](./image/img16-4.png)
+
+** パターン２**
 ![img](./image/img16-5.png)
 
 ### ■アドレス確認 Green（置換）
@@ -4542,9 +4545,26 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 #### 画面
 
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
-- ブラウザを更新すると２種類のタスクが確認できます
+- ブラウザを更新すると先ほどとは異なる２種類のタスクが確認できます
+
+** パターン１**
+
 ![img](./image/img16-6.png)
+
+** パターン２**
 ![img](./image/img16-7.png)
+
+### ■Blue/Greenの置換
+#### 画面
+- CodeDeployの画面に戻ります
+- 「トラフィックの再ルーティング」ボタン押下
+
+![img](./image/img16-9.png)
+
+- 暫くするとトラフィックがGreen（置換）に切り替わっていることが確認できます。
+
+![img](./image/img16-10.png)
+
 
 ## EventBridge作成
 
