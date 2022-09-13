@@ -2982,6 +2982,7 @@ export RevisionNo="6"
 Duration: 0:05:00
 
 ### ■CodeCommitの作成
+![img](./image/drowio-12-1.png)
 
 ・git互換のソースリポジトリであるCodeCommitを作成
 
