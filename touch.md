@@ -3014,6 +3014,7 @@ aws codecommit create-repository \
 ```
 
 ### ■CodeCommitリポジトリのクローン
+![img](./image/drowio-12-2.png)
 
 ・git cloneでリポジトリをcloneします、中身は空です
 
@@ -3238,7 +3239,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 Duration: 0:05:00
 
 ### ■CodeBuild用Role作成
-
+![img](./image/drowio-13-1.png)
 ・CodeBuildのためにRoleを作成します。
 
 #### cmd
@@ -3404,7 +3405,7 @@ EOF
 ```
 
 ### ■CodeBuild作成
-
+![img](./image/drowio-13-2.png)
 #### cmd
 
 ```Cloud9
@@ -3465,7 +3466,7 @@ aws codebuild create-project \
 Duration: 0:05:00
 
 ### ■CodeDeploy用Role作成
-
+![img](./image/drowio-14-1.png)
 #### cmd
 
 ```Cloud9
@@ -3578,6 +3579,7 @@ aws iam list-attached-role-policies \
 ```
 
 ### ■アプリケーションを作成
+![img](./image/drowio-14-2.png)
 
 #### cmd
 

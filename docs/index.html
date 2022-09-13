@@ -2344,6 +2344,7 @@ export RevisionNo=&#34;6&#34;
 }
 </code></pre>
 <h2 is-upgraded>■CodeCommitリポジトリのクローン</h2>
+<p class="image-container"><img alt="img" src="img/5fc6f9a3318822a8.png"></p>
 <p>・git cloneでリポジトリをcloneします、中身は空です</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/
@@ -2496,7 +2497,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
     
       <google-codelab-step label="CodeBuild作成" duration="5">
         <h2 is-upgraded>■CodeBuild用Role作成</h2>
-<p>・CodeBuildのためにRoleを作成します。</p>
+<p><img alt="img" src="img/cf566afd00aff913.png"> ・CodeBuildのためにRoleを作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
 </code></pre>
@@ -2618,6 +2619,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■CodeBuild作成</h2>
+<p class="image-container"><img alt="img" src="img/9567040e4860af92.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
@@ -2673,6 +2675,7 @@ EOF
     
       <google-codelab-step label="CodeDeploy作成" duration="5">
         <h2 is-upgraded>■CodeDeploy用Role作成</h2>
+<p class="image-container"><img alt="img" src="img/d414988313bc067f.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
 </code></pre>
@@ -2756,6 +2759,7 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■アプリケーションを作成</h2>
+<p class="image-container"><img alt="img" src="img/d807a59bffeb79b4.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-application \
   --application-name ContainerHandsOn \
