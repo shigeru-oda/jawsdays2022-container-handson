@@ -321,7 +321,7 @@ aws ec2 create-vpc \
 
 ### ■VpcIdの取得
 
-・作成したVPC IDを取得し、変数に格納・確認を行います
+・IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -1173,7 +1173,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
 ### ■PublicSubnetのインバウンドルールを追加
-
+![img](./image/drowio-3-13.png)
 ・InternetからのHTTPでのアクセスを許可します
 
 #### cmd
@@ -1207,7 +1207,7 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 ### ■PrivateSubnetのインバウンドルールを追加１
-
+![img](./image/drowio-3-14.png)
 ・PublicSubnet経由でのHTTPでのアクセスを許可します
 
 #### cmd
@@ -1278,7 +1278,7 @@ aws ec2 authorize-security-group-ingress \
 
 ### ■CloudWatch LogGroupの作成
 
-![img](./image/drowio-3-13.png)
+![img](./image/drowio-3-15.png)
 
 ・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。
 
