@@ -1709,7 +1709,9 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■ターゲットグループの作成</h2>
-<p>・タスクはどのようなプロトコルで稼働するターゲットであるか定義します</p>
+<ul>
+<li>タスクはどのようなプロトコルで稼働するターゲットであるか定義します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-target-group \
     --name ContainerHandsOn \
@@ -2760,6 +2762,9 @@ EOF
 </code></pre>
 <h2 is-upgraded>■アプリケーションを作成</h2>
 <p class="image-container"><img alt="img" src="img/d807a59bffeb79b4.png"></p>
+<ul>
+<li>デプロイするアプリケーションを識別する名前を定義します。</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-application \
   --application-name ContainerHandsOn \
@@ -2772,6 +2777,9 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■ターゲットグループの作成</h2>
+<ul>
+<li>ALBのターゲットグループを新規作成します、テスト用として通常利用とはポートは変更します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-target-group \
     --name ContainerHandsOn8080 \
@@ -2811,6 +2819,9 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■ターゲットグループのARN取得</h2>
+<ul>
+<li>上記で作成したターゲットグループのARNを取得します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">TargetGroupArn8080=`aws elbv2 describe-target-groups \
   --names ContainerHandsOn8080 \
@@ -2856,7 +2867,10 @@ RevisionNo : 2
 TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
 </code></pre>
 <h2 is-upgraded>■リスナーの作成</h2>
-<h3 is-upgraded>cmd</h3>
+<ul>
+<li>ALBに対する接続リクエストを追加します。8080ポートでテスト用として受け口となるリスナーです。  <h3 is-upgraded>cmd</h3>
+</li>
+</ul>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-listener \
     --load-balancer-arn ${LoadBalancerArn} \
     --protocol HTTP \
@@ -2893,6 +2907,9 @@ TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:ta
 }
 </code></pre>
 <h2 is-upgraded>■リスナーのARN取得</h2>
+<ul>
+<li>リスナーのARNを取得します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">ListenerArn=`aws elbv2 describe-listeners \
     --load-balancer-arn ${LoadBalancerArn} \
@@ -2955,7 +2972,10 @@ ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/
 ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
 </code></pre>
 <h2 is-upgraded>■PublicSubnetのインバウンドルールを追加</h2>
-<h3 is-upgraded>cmd</h3>
+<ul>
+<li>リスナーとして8080ポートを追加するので、セキュリティグループにも8080ポートを許可します  <h3 is-upgraded>cmd</h3>
+</li>
+</ul>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 authorize-security-group-ingress \
     --group-id ${PublicSecurityGroupsId} \
     --protocol tcp \
@@ -2980,6 +3000,9 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
 }
 </code></pre>
 <h2 is-upgraded>■デプロイグループの作成</h2>
+<ul>
+<li>デプロイ環境の定義を行います</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; create-deployment-group.json
 {
@@ -3048,6 +3071,7 @@ EOF
     
       <google-codelab-step label="CodePipeline作成" duration="5">
         <h2 is-upgraded>■CodePipeline用Role作成</h2>
+<p class="image-container"><img alt="img" src="img/aee3e2d4381aa00f.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
@@ -3280,6 +3304,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■S3 artifactStoreを作成</h2>
+<p class="image-container"><img alt="img" src="img/b47c7963da53d3c3.png"></p>
 <h3 is-upgraded>cmd</h3>
 <aside class="special"><p>あなたのフルネームを記載下さい、英語小文字でお願いします</p>
 </aside>
@@ -3336,6 +3361,7 @@ S3Name : shigeru-oda-container-handson-20220911072649
 <pre><code language="language-Cloud9" class="language-Cloud9">aws s3 mb s3://${S3Name}
 </code></pre>
 <h2 is-upgraded>■CodePipelineを作成</h2>
+<p class="image-container"><img alt="img" src="img/405850217c0ff27a.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; create-pipeline.json
 {

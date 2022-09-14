@@ -2261,7 +2261,7 @@ aws elbv2 create-load-balancer \
 
 ### ■ターゲットグループの作成
 
-・タスクはどのようなプロトコルで稼働するターゲットであるか定義します
+- タスクはどのようなプロトコルで稼働するターゲットであるか定義します
 
 #### cmd
 
@@ -3581,6 +3581,8 @@ aws iam list-attached-role-policies \
 ### ■アプリケーションを作成
 ![img](./image/drowio-14-2.png)
 
+- デプロイするアプリケーションを識別する名前を定義します。
+
 #### cmd
 
 ```Cloud9
@@ -3599,6 +3601,7 @@ aws deploy create-application \
 ```
 
 ### ■ターゲットグループの作成
+- ALBのターゲットグループを新規作成します、テスト用として通常利用とはポートは変更します
 
 #### cmd
 
@@ -3645,6 +3648,7 @@ aws elbv2 create-target-group \
 ```
 
 ### ■ターゲットグループのARN取得
+- 上記で作成したターゲットグループのARNを取得します
 
 #### cmd
 
@@ -3699,7 +3703,7 @@ TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:ta
 ```
 
 ### ■リスナーの作成
-
+- ALBに対する接続リクエストを追加します。8080ポートでテスト用として受け口となるリスナーです。
 #### cmd
 
 ```Cloud9
@@ -3743,6 +3747,7 @@ aws elbv2 create-listener \
 ```
 
 ### ■リスナーのARN取得
+- リスナーのARNを取得します
 
 #### cmd
 
@@ -3824,7 +3829,7 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
 ```
 
 ### ■PublicSubnetのインバウンドルールを追加
-
+- リスナーとして8080ポートを追加するので、セキュリティグループにも8080ポートを許可します
 #### cmd
 
 ```Cloud9
@@ -3856,6 +3861,7 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 ### ■デプロイグループの作成
+- デプロイ環境の定義を行います
 
 #### cmd
 
@@ -3932,7 +3938,7 @@ aws deploy create-deployment-group \
 Duration: 0:05:00
 
 ### ■CodePipeline用Role作成
-
+![img](./image/drowio-15-1.png)
 #### cmd
 
 ```Cloud9
@@ -4182,6 +4188,7 @@ aws iam put-role-policy \
 ```
 
 ### ■S3 artifactStoreを作成
+![img](./image/drowio-15-2.png)
 
 #### cmd
 
@@ -4254,7 +4261,7 @@ aws s3 mb s3://${S3Name}
 ```
 
 ### ■CodePipelineを作成
-
+![img](./image/drowio-15-3.png)
 #### cmd
 
 ```Cloud9
