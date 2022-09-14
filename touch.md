@@ -75,6 +75,8 @@ IDなどは個々に異なりますので
 ```Sample
 cmd実行後の結果です
 ```
+#### 画面
+画面と記載された項目にある内容はコンソール操作の手順を記載したモノとなります
 
 ## ハンズオンを通して学ぶこと
 
@@ -95,7 +97,7 @@ Duration: 0:05:00
 - CodeDeployを使ったECS/Fargateへのデプロイ
 - CodePipelineを使ったCI/CDパイプラインの構築
 
-**あとで完成図を挿入**
+![img](./image/drowio-2-2.png)
 
 ## 事前準備とネットワーク周りの構築
 
@@ -4592,7 +4594,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 Duration: 0:05:00
 
 ### ■EventBridge用Role作成
-
+![img](./image/drowio-17-1.png)
 #### cmd
 
 ```Cloud9
