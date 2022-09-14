@@ -1348,6 +1348,7 @@ aws cloud9 create-environment-ec2 \
 ```
 
 ### ■Cloud9環境Roleを作成
+![img](./image/drowio-4-2.png)
 
 #### cmd
 
@@ -1595,18 +1596,18 @@ Duration: 0:05:00
 #### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
-export AccoutID="123456789012"
-export VpcId="vpc-0d3c1c88db46cfba7"
-export SubnetId1aPublic="subnet-0f66f257f167a1d47"
-export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
-export SubnetId1aPrivate="subnet-049f0119237ff00a0"
-export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
-export InternetGatewayId="igw-0a511ba68ceb84ed8"
-export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
-export RouteTableIdPrivate="rtb-0afaac377925bca9a"
-export PublicSecurityGroupsId="sg-01cc901415c240504"
-export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-export InstanceId="i-04c7c620fef60c9cb"
+$ export AccoutID="123456789012"
+$ export VpcId="vpc-0d3c1c88db46cfba7"
+$ export SubnetId1aPublic="subnet-0f66f257f167a1d47"
+$ export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
+$ export SubnetId1aPrivate="subnet-049f0119237ff00a0"
+$ export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
+$ export InternetGatewayId="igw-0a511ba68ceb84ed8"
+$ export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
+$ export RouteTableIdPrivate="rtb-0afaac377925bca9a"
+$ export PublicSecurityGroupsId="sg-01cc901415c240504"
+$ export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
+$ export InstanceId="i-04c7c620fef60c9cb"
 ```
 
 ``` Cloud9
@@ -1835,7 +1836,7 @@ docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
 ```
 
-### ■DockerImageにTag付けを行う
+### ■Docker ImageにTag付けを行う
 
 #### cmd
 
@@ -1850,7 +1851,7 @@ docker tag \
 （なし）
 ```
 
-### ■DockerImageにTag付けの確認
+### ■Docker ImageにTag付けの確認
 
 #### cmd
 
@@ -1889,7 +1890,7 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 Login Succeeded
 ```
 
-### ■DockerImageをECRにPush
+### ■Docker ImageをECRにPush
 
 ![img](./image/drowio-6-1.png)
 
@@ -2887,12 +2888,9 @@ echo "http://"${LoadBalancersDnsName}
 http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ```
 
-### ■画面確認
-
-![img](./image/drowio-10-1.png)
-
-- 503エラーの場合には1分程度待って、リトライをお願いします
+### ■ブラウザ確認
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
+- 503エラーの場合にはデプロイ中のため、1分程度待って、リトライをお願いします
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
 
 ### ■表示結果例
@@ -2907,22 +2905,23 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ### ■CloudWatch Logsの確認
 
-- 上部の検索バーで`CloudWatch`と検索
+- 上部の検索バーでCloudWatchと検索
 - CloudWatch > ロググループ > awslogs-container-hands-on > 2つのログストリームを確認
 - "ロードバランサーのアクセスログ" と "ブラウザアクセスログ"をそれぞれのログストリームで確認
 
-#### ログストリームを確認
+#### 画面
+- ログストリームを確認
 
 ![img](./image/img10-3.png)
 
-#### ロードバランサーアクセスログを確認
+- ロードバランサーアクセスログを確認
 
 ```CloudWatch
 10.0.0.102 - - [09/Sep/2022:03:09:33 +0000] \
 "GET /index.php HTTP/1.1" 200 403 "-" "ELB-HealthChecker/2.0"
 ```
 
-#### ブラウザアクセスログを確認
+- ブラウザアクセスログを確認
 
 ```CloudWatch
 10.0.0.102 - - [09/Sep/2022:03:10:00 +0000] \

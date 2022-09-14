@@ -83,7 +83,7 @@
 <li>VPCエンドポイントを使ったセキュア環境の構築</li>
 <li>ECS /Fargateを使ったサーバーレスコンテナ運用の構築</li>
 </ul>
-<p class="image-container"><img alt="img" src="img/90d89f9364c9e539.png"></p>
+<p class="image-container"><img alt="img" src="img/82fd59c38aae112a.png"></p>
 <h2 is-upgraded>■ハンズオン２</h2>
 <ul>
 <li>CoceCommitを使ったソースコード管理</li>
@@ -983,7 +983,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
     
       <google-codelab-step label="Cloud9作成" duration="5">
         <h2 is-upgraded>■Cloud9の作成</h2>
-<p class="image-container"><img alt="img" src="img/6312f100725debe3.png"></p>
+<p class="image-container"><img alt="img" src="img/6bb3dcef091abeb0.png"></p>
 <p>・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws cloud9 create-environment-ec2 \
@@ -999,6 +999,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■Cloud9環境Roleを作成</h2>
+<p class="image-container"><img alt="img" src="img/80b44a9435aa14dc.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
@@ -1180,18 +1181,18 @@ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
         <h2 is-upgraded>■環境変数を貼り付け</h2>
 <p>・CloudShellで取得した環境変数をCloud9へ移設</p>
 <h3 is-upgraded>cmd (以下はサンプルです、エディターに退避した結果を利用ください)</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
-export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
-export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
-export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
-export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
-export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
-export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
-export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
-export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
-export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
-export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
-export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">$ export AccoutID=&#34;123456789012&#34;
+$ export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
+$ export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
+$ export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
+$ export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
+$ export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
+$ export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
+$ export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
+$ export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
+$ export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
+$ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
+$ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 AccoutID : ${AccoutID}
@@ -1230,7 +1231,7 @@ export AWS_DEFAULT_OUTPUT=json
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■ECRの作成</h2>
-<p class="image-container"><img alt="img" src="img/a54cbd1e2479d680.png"></p>
+<p class="image-container"><img alt="img" src="img/347a1df18f53d23.png"></p>
 <p>・コンテナイメージのレジストリであるECRを作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecr create-repository \
@@ -1354,7 +1355,7 @@ jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   41
 <pre><code language="language-Cloud9" class="language-Cloud9">docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
 </code></pre>
-<h2 is-upgraded>■DockerImageにTag付けを行う</h2>
+<h2 is-upgraded>■Docker ImageにTag付けを行う</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker tag \
   jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
@@ -1362,7 +1363,7 @@ docker rm $(docker ps -q -a)
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
-<h2 is-upgraded>■DockerImageにTag付けの確認</h2>
+<h2 is-upgraded>■Docker ImageにTag付けの確認</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker images \
   --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
@@ -1387,8 +1388,8 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 
 Login Succeeded
 </code></pre>
-<h2 is-upgraded>■DockerImageをECRにPush</h2>
-<p class="image-container"><img alt="img" src="img/504dfce3257ecb8.png"></p>
+<h2 is-upgraded>■Docker ImageをECRにPush</h2>
+<p class="image-container"><img alt="img" src="img/5b6a2a96098bbb08.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker push \
   `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
@@ -1424,7 +1425,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <li>com.amazonaws.ap-northeast-1.logs</li>
 </ul>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.s3</h2>
-<p class="image-container"><img alt="img" src="img/f515a098a3ca490d.png"></p>
+<p class="image-container"><img alt="img" src="img/3871c4d228880be6.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
     --vpc-id ${VpcId} \
@@ -1463,7 +1464,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.dkr</h2>
-<p class="image-container"><img alt="img" src="img/87982f70217b1f13.png"></p>
+<p class="image-container"><img alt="img" src="img/f3bae0dc8785c261.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
     --vpc-id ${VpcId} \
@@ -1532,7 +1533,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.api</h2>
-<p class="image-container"><img alt="img" src="img/ac4f870d288d455c.png"></p>
+<p class="image-container"><img alt="img" src="img/365d8818452e3a9a.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
     --vpc-id ${VpcId} \
@@ -1597,7 +1598,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.logs</h2>
-<p class="image-container"><img alt="img" src="img/73734ade64ba36f.png"></p>
+<p class="image-container"><img alt="img" src="img/2d766fe3db95705c.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
     --vpc-id ${VpcId} \
@@ -1667,7 +1668,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     
       <google-codelab-step label="ALB作成" duration="5">
         <h2 is-upgraded>■アプリケーションロードバランサーの作成</h2>
-<p><img alt="img" src="img/6e9c557b86455601.png"> ・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します</p>
+<p><img alt="img" src="img/a058c202c2286c2a.png"> ・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-load-balancer \
     --name ContainerHandsOn \
@@ -1937,7 +1938,7 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 <li>タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義</li>
 </ul>
 <h2 is-upgraded>■クラスターの作成</h2>
-<p class="image-container"><img alt="img" src="img/768424469d8b3069.png"></p>
+<p class="image-container"><img alt="img" src="img/5ce6317e570bede.png"></p>
 <p>・クラスターという実行環境の境界線を作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-cluster \
@@ -1973,7 +1974,7 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 }
 </code></pre>
 <h2 is-upgraded>■タスク定義の作成</h2>
-<p class="image-container"><img alt="img" src="img/828f2c1b1932ca79.png"></p>
+<p class="image-container"><img alt="img" src="img/1fd769514e68d504.png"></p>
 <p>・どのようなタスクが稼働するかを定義します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; register-task-definition.json
@@ -2133,7 +2134,7 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 RevisionNo : 2
 </code></pre>
 <h2 is-upgraded>■サービスの作成</h2>
-<p class="image-container"><img alt="img" src="img/363edc2a84dccf6c.png"></p>
+<p class="image-container"><img alt="img" src="img/fb913af7e7473432.png"></p>
 <p>・実行数やネットワーク周りをまとめます</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-service \
@@ -2245,11 +2246,10 @@ RevisionNo : 2
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 </code></pre>
-<h2 is-upgraded>■画面確認</h2>
-<p class="image-container"><img alt="img" src="img/67e8b6b5866fd0ca.png"></p>
+<h2 is-upgraded>■ブラウザ確認</h2>
 <ul>
-<li>503エラーの場合には1分程度待って、リトライをお願いします</li>
 <li>上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること</li>
+<li>503エラーの場合にはデプロイ中のため、1分程度待って、リトライをお願いします</li>
 <li>更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）</li>
 </ul>
 <h2 is-upgraded>■表示結果例</h2>
@@ -2259,17 +2259,24 @@ RevisionNo : 2
 <p class="image-container"><img alt="img" src="img/b321ec2d09376beb.png"></p>
 <h2 is-upgraded>■CloudWatch Logsの確認</h2>
 <ul>
-<li>上部の検索バーで<code>CloudWatch</code>と検索</li>
+<li>上部の検索バーでCloudWatchと検索</li>
 <li>CloudWatch &gt; ロググループ &gt; awslogs-container-hands-on &gt; 2つのログストリームを確認</li>
 <li>&#34;ロードバランサーのアクセスログ&#34; と &#34;ブラウザアクセスログ&#34;をそれぞれのログストリームで確認</li>
 </ul>
-<h3 is-upgraded>ログストリームを確認</h3>
+<h3 is-upgraded>画面</h3>
+<ul>
+<li>ログストリームを確認</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/575c856891b5b153.png"></p>
-<h3 is-upgraded>ロードバランサーアクセスログを確認</h3>
+<ul>
+<li>ロードバランサーアクセスログを確認</li>
+</ul>
 <pre><code language="language-CloudWatch" class="language-CloudWatch">10.0.0.102 - - [09/Sep/2022:03:09:33 +0000] \
 &#34;GET /index.php HTTP/1.1&#34; 200 403 &#34;-&#34; &#34;ELB-HealthChecker/2.0&#34;
 </code></pre>
-<h3 is-upgraded>ブラウザアクセスログを確認</h3>
+<ul>
+<li>ブラウザアクセスログを確認</li>
+</ul>
 <pre><code language="language-CloudWatch" class="language-CloudWatch">10.0.0.102 - - [09/Sep/2022:03:10:00 +0000] \
 &#34;GET / HTTP/1.1&#34; 200 384 &#34;-&#34; &#34;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36&#34;
 </code></pre>
