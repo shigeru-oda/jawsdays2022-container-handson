@@ -4683,7 +4683,7 @@ aws iam put-role-policy \
 ```Cloud9
 ```
 
-## EventBridgeを作成
+### ■EventBridgeを作成
 
 #### cmd
 
@@ -4818,11 +4818,11 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 - git操作でCodePipelineが稼働することを確認する
 - Deployの詳細ボタンを選択する
 
-![img](./image/img19-1.png)
-![img](./image/img19-2.png)
+![img](./image/img18-1.png)
+![img](./image/img18-2.png)
 
 - ステップ１・２が完了済みであることを確認
-![img](./image/img19-3.png)
+![img](./image/img18-3.png)
 
 ### ■アドレス確認
 
@@ -4842,7 +4842,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ### ■画面
 
-![img](./image/img19-4.png)
+![img](./image/img18-4.png)
 
 ### ■アドレス確認
 
@@ -4863,23 +4863,23 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 ### ■画面
 
 - CICD-ContainerHandONと表示されていることを確認
-![img](./image/img19-5.png)
+![img](./image/img18-5.png)
 
 ### ■トラフィックの再ルーティング
 
 - 「トラフィックの再ルーティング」ボタンを押下
 - Blue/Greenの切り替えが行われる
-![img](./image/img19-3.png)
+![img](./image/img18-3.png)
 
 ### ■元のタスクセットの終了
 
 - 「元のタスクセットの終了」ボタンを押下
 - Blueのタスクセットを終了させる
-![img](./image/img19-6.png)
+![img](./image/img18-6.png)
 
 ### ■画面
 - 全ての処理が終了する
-![img](./image/img19-7.png)
+![img](./image/img18-7.png)
 
 ### ■アドレス確認
 
@@ -4899,7 +4899,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ### ■画面
 
-![img](./image/img19-5.png)
+![img](./image/img18-5.png)
 
 ## 片付け
 
