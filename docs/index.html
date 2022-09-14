@@ -108,7 +108,7 @@
 <h3 is-upgraded>CloudShellを起動</h3>
 <p class="image-container"><img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
-<p class="image-container"><img alt="img" src="img/f44362afeb0e4cfe.png"></p>
+<p class="image-container"><img alt="img" src="img/54f3afc539095974.png"></p>
 <p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID=`aws sts get-caller-identity --query Account --output text`
@@ -121,7 +121,7 @@ EOF
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 </code></pre>
 <h2 is-upgraded>■ECSタスクの実行Roleの存在確認</h2>
-<p class="image-container"><img alt="img" src="img/601a4c4b7e50e288.png"></p>
+<p class="image-container"><img alt="img" src="img/dc49b865deb5e1fe.png"></p>
 <p>・ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam list-roles | grep &#34;RoleName&#34; | grep &#34;ecsTaskExecutionRole&#34;
@@ -133,7 +133,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■ECSの実行Role作成（Roleが存在しない場合のみ実行）</h2>
-<p class="image-container"><img alt="img" src="img/601a4c4b7e50e288.png"></p>
+<p class="image-container"><img alt="img" src="img/dc49b865deb5e1fe.png"></p>
 <p>・ecsTaskExecutionRoleが存在しない場合のみ実行します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
@@ -181,7 +181,7 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■RoleにPolicyをアタッチ（Roleが存在しない場合のみ実行）</h2>
-<p class="image-container"><img alt="img" src="img/6b4e60d623322cff.png"></p>
+<p class="image-container"><img alt="img" src="img/7d76bf6d6743da53.png"></p>
 <p>・作成したRoleにPolicyをアタッチします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam attach-role-policy \
@@ -207,7 +207,7 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■VPCの作成</h2>
-<p class="image-container"><img alt="img" src="img/455e3e2dc6190cce.png"></p>
+<p class="image-container"><img alt="img" src="img/9624902962ab2ee9.png"></p>
 <p>・VPCを新規に作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-vpc \
@@ -244,7 +244,7 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■VpcIdの取得</h2>
-<p>・作成したVPC IDを取得し、変数に格納・確認を行います</p>
+<p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId=`aws ec2 describe-vpcs \
     --query &#39;Vpcs[*].VpcId&#39; \
@@ -308,7 +308,7 @@ VpcId : vpc-0d3c1c88db46cfba7
 }
 </code></pre>
 <h2 is-upgraded>■Subnetの作成</h2>
-<p class="image-container"><img alt="img" src="img/435a16ded7ac40a4.png"></p>
+<p class="image-container"><img alt="img" src="img/4b6c8ed3cde1b482.png"></p>
 <p>・作成したVPCの中にSubnetを4つ作成します<br> ・Private Subnetが2つ、Public Subnetが2つです</p>
 <h3 is-upgraded>cmd (Public Subnet 1つ目)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
@@ -515,7 +515,7 @@ SubnetId1aPrivate : subnet-049f0119237ff00a0
 SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 </code></pre>
 <h2 is-upgraded>■InternetGatewayの作成</h2>
-<p class="image-container"><img alt="img" src="img/9892abf54820d3bc.png"></p>
+<p class="image-container"><img alt="img" src="img/45a631880772ed3d.png"></p>
 <p>・Internetの出入り口であるInternetGatewayを作成する</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-internet-gateway \
@@ -565,7 +565,7 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 InternetGatewayId : igw-0a511ba68ceb84ed8
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCにAttach</h2>
-<p class="image-container"><img alt="img" src="img/44449b873de62ca7.png"></p>
+<p class="image-container"><img alt="img" src="img/57c1596c33ffed93.png"></p>
 <p>・VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 attach-internet-gateway \
@@ -589,7 +589,7 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 <pre><code language="language-CloudShell" class="language-CloudShell">available
 </code></pre>
 <h2 is-upgraded>■RouteTableの作成</h2>
-<p class="image-container"><img alt="img" src="img/b5394b54c384f8d0.png"></p>
+<p class="image-container"><img alt="img" src="img/ed1a5faf3cef0944.png"></p>
 <p>・PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します<br> ・現時点ではRouteTableとSubnetの紐付けはないです</p>
 <h3 is-upgraded>cmd (PublicSubnet)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route-table \
@@ -692,7 +692,7 @@ RouteTableIdPublic : rtb-00cf30796b25b9bc9
 RouteTableIdPrivate : rtb-0afaac377925bca9a
 </code></pre>
 <h2 is-upgraded>■RouteTableにSubnetを紐付け</h2>
-<p class="image-container"><img alt="img" src="img/5119d308a1222c8b.png"></p>
+<p class="image-container"><img alt="img" src="img/aa08c9402ecac2c6.png"></p>
 <p>・RouteTableとSubnetを紐付けします</p>
 <h3 is-upgraded>cmd (PublicSubnet 1つ目)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
@@ -747,7 +747,7 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 }
 </code></pre>
 <h2 is-upgraded>■RouteTableにInternetGatewayを紐付け</h2>
-<p class="image-container"><img alt="img" src="img/39f2483d057bb3e1.png"></p>
+<p class="image-container"><img alt="img" src="img/5f8c0b4a1ae909b9.png"></p>
 <p>・PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route \
@@ -761,7 +761,7 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 }
 </code></pre>
 <h2 is-upgraded>■PublicSubnet用のSecurityGroup作成</h2>
-<p class="image-container"><img alt="img" src="img/7b216dd35e095f42.png"></p>
+<p class="image-container"><img alt="img" src="img/24c36db597450cbb.png"></p>
 <p>・PublicSubnet用のSecurityGroup作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
@@ -816,7 +816,7 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 PublicSecurityGroupsId : sg-01cc901415c240504
 </code></pre>
 <h2 is-upgraded>■PrivateSubnet用のSecurityGroup作成</h2>
-<p class="image-container"><img alt="img" src="img/d5e673c91aa88988.png"></p>
+<p class="image-container"><img alt="img" src="img/b314e27b8454719.png"></p>
 <p>・PrivateSubnet用のSecurityGroup作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
@@ -872,7 +872,7 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 </code></pre>
 <h2 is-upgraded>■PublicSubnetのインバウンドルールを追加</h2>
-<p>・InternetからのHTTPでのアクセスを許可します</p>
+<p><img alt="img" src="img/4f75c4cd8ddf9874.png"> ・InternetからのHTTPでのアクセスを許可します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
     --group-id ${PublicSecurityGroupsId} \
@@ -898,7 +898,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■PrivateSubnetのインバウンドルールを追加１</h2>
-<p>・PublicSubnet経由でのHTTPでのアクセスを許可します</p>
+<p><img alt="img" src="img/bc805771477af86.png"> ・PublicSubnet経由でのHTTPでのアクセスを許可します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
     --group-id ${PrivateSecurityGroupsId} \
@@ -952,7 +952,7 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■CloudWatch LogGroupの作成</h2>
-<p class="image-container"><img alt="img" src="img/eba6aa195fae755d.png"></p>
+<p class="image-container"><img alt="img" src="img/fe856b76c8cbed22.png"></p>
 <p>・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws logs create-log-group --log-group-name awslogs-container-hands-on
