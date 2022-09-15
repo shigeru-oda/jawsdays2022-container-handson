@@ -9,7 +9,7 @@ analytics account: XXXXXXXX
 
 # [JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～
 
-Duration: 0:05:00
+Duration: 0:10:00
 
 ![img](./image/img1-1.png)
 
@@ -49,6 +49,7 @@ Duration: 0:05:00
 
 - [AWS CI/CD for Amazon ECS ハンズオン~ Cloud9, Docker, Code Services を⽤いた開発効率向上 ~](https://pages.awscloud.com/rs/112-TZM-766/images/AWS_CICD_ECS_Handson.pdf)
 - [20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
+- [202106 AWS Black Belt Online Seminar CON110 なぜ今コンテナなのか](https://www.slideshare.net/AmazonWebServicesJapan/202106-aws-black-belt-online-seminar-con110-249613926)
 
 ### ■手順について
 
@@ -143,7 +144,7 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
+AccoutID : 152767562250
 ```
 
 ### ■ECSタスクの実行Roleの存在確認
@@ -209,9 +210,9 @@ aws iam create-role \
     "Role": {
         "Path": "/",
         "RoleName": "ecsTaskExecutionRole",
-        "RoleId": "AROASHENIAIFFJ6CDBQVE",
-        "Arn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
-        "CreateDate": "2022-09-12T20:01:28+00:00",
+        "RoleId": "AROASHENIAIFBW66KV4HJ",
+        "Arn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
+        "CreateDate": "2022-09-15T11:39:04+00:00",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [
@@ -293,13 +294,13 @@ aws ec2 create-vpc \
         "CidrBlock": "10.0.0.0/16",
         "DhcpOptionsId": "dopt-c3de3ba5",
         "State": "pending",
-        "VpcId": "vpc-0eb621c4712ee0898",
-        "OwnerId": "123456789012",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "OwnerId": "152767562250",
         "InstanceTenancy": "default",
         "Ipv6CidrBlockAssociationSet": [],
         "CidrBlockAssociationSet": [
             {
-                "AssociationId": "vpc-cidr-assoc-05cc0c368d9105817",
+                "AssociationId": "vpc-cidr-assoc-0b14e52ce4b43dd1e",
                 "CidrBlock": "10.0.0.0/16",
                 "CidrBlockState": {
                     "State": "associated"
@@ -341,8 +342,8 @@ EOF
 #### results
 
 ```CloudShell
-AccoutID : 123456789012
-VpcId : vpc-0d3c1c88db46cfba7
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
 ```
 
 #### ■DNS名前解決をONにする
@@ -353,7 +354,7 @@ VpcId : vpc-0d3c1c88db46cfba7
 ### cmd
 
 ```CloudShell
- aws ec2 modify-vpc-attribute \
+aws ec2 modify-vpc-attribute \
   --vpc-id ${VpcId}  \
   --enable-dns-support  '{"Value":true}' 
 ```
@@ -393,7 +394,7 @@ aws ec2 describe-vpc-attribute \
 ### cmd
 
 ```CloudShell
- aws ec2 modify-vpc-attribute \
+aws ec2 modify-vpc-attribute \
   --vpc-id ${VpcId}  \
   --enable-dns-hostnames  '{"Value":true}' 
 ```
@@ -454,9 +455,9 @@ aws ec2 create-subnet \
         "DefaultForAz": false,
         "MapPublicIpOnLaunch": false,
         "State": "available",
-        "SubnetId": "subnet-0f66f257f167a1d47",
-        "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "123456789012",
+        "SubnetId": "subnet-0356b36ba2daa766c",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "OwnerId": "152767562250",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -465,7 +466,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPublic"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0f66f257f167a1d47",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0356b36ba2daa766c",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -499,9 +500,9 @@ aws ec2 create-subnet \
         "DefaultForAz": false,
         "MapPublicIpOnLaunch": false,
         "State": "available",
-        "SubnetId": "subnet-0a1e2afffc8c140d8",
-        "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "123456789012",
+        "SubnetId": "subnet-0dabe411bfdc835fb",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "OwnerId": "152767562250",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -510,7 +511,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPublic"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0a1e2afffc8c140d8",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0dabe411bfdc835fb",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -544,9 +545,9 @@ aws ec2 create-subnet \
         "DefaultForAz": false,
         "MapPublicIpOnLaunch": false,
         "State": "available",
-        "SubnetId": "subnet-049f0119237ff00a0",
-        "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "123456789012",
+        "SubnetId": "subnet-0d99180ac3baeb5fa",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "OwnerId": "152767562250",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -555,7 +556,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPrivate"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-049f0119237ff00a0",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0d99180ac3baeb5fa",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -589,9 +590,9 @@ aws ec2 create-subnet \
         "DefaultForAz": false,
         "MapPublicIpOnLaunch": false,
         "State": "available",
-        "SubnetId": "subnet-0ea89b6bc85e0ec61",
-        "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "123456789012",
+        "SubnetId": "subnet-0a66f1c2d5ce3b939",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "OwnerId": "152767562250",
         "AssignIpv6AddressOnCreation": false,
         "Ipv6CidrBlockAssociationSet": [],
         "Tags": [
@@ -600,7 +601,7 @@ aws ec2 create-subnet \
                 "Value": "ContainerHandsOnPrivate"
             }
         ],
-        "SubnetArn": "arn:aws:ec2:ap-northeast-1:123456789012:subnet/subnet-0ea89b6bc85e0ec61",
+        "SubnetArn": "arn:aws:ec2:ap-northeast-1:152767562250:subnet/subnet-0a66f1c2d5ce3b939",
         "EnableDns64": false,
         "Ipv6Native": false,
         "PrivateDnsNameOptionsOnLaunch": {
@@ -668,12 +669,12 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
-VpcId : vpc-0d3c1c88db46cfba7
-SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic : subnet-0a1e2afffc8c140d8
-SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
 ```
 
 ### ■InternetGatewayの作成
@@ -695,8 +696,8 @@ aws ec2 create-internet-gateway \
 {
     "InternetGateway": {
         "Attachments": [],
-        "InternetGatewayId": "igw-0a511ba68ceb84ed8",
-        "OwnerId": "123456789012",
+        "InternetGatewayId": "igw-082f42082d7748713",
+        "OwnerId": "152767562250",
         "Tags": [
             {
                 "Key": "Name",
@@ -736,13 +737,13 @@ EOF
 #### result
 
 ``` CloudShell
-AccoutID : 123456789012
-VpcId : vpc-0d3c1c88db46cfba7
-SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic : subnet-0a1e2afffc8c140d8
-SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
-InternetGatewayId : igw-0a511ba68ceb84ed8
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
 ```
 
 ### ■InternetGatewayをVPCにAttach
@@ -808,7 +809,7 @@ aws ec2 create-route-table \
     "RouteTable": {
         "Associations": [],
         "PropagatingVgws": [],
-        "RouteTableId": "rtb-00cf30796b25b9bc9",
+        "RouteTableId": "rtb-000a11e6eacc5c263",
         "Routes": [
             {
                 "DestinationCidrBlock": "10.0.0.0/16",
@@ -823,8 +824,8 @@ aws ec2 create-route-table \
                 "Value": "ContainerHandsOnPublic"
             }
         ],
-        "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "123456789012"
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "OwnerId": "152767562250"
     }
 }
 ```
@@ -844,7 +845,7 @@ aws ec2 create-route-table \
     "RouteTable": {
         "Associations": [],
         "PropagatingVgws": [],
-        "RouteTableId": "rtb-0afaac377925bca9a",
+        "RouteTableId": "rtb-077b87e7eb65d1f43",
         "Routes": [
             {
                 "DestinationCidrBlock": "10.0.0.0/16",
@@ -859,8 +860,8 @@ aws ec2 create-route-table \
                 "Value": "ContainerHandsOnPrivate"
             }
         ],
-        "VpcId": "vpc-0d3c1c88db46cfba7",
-        "OwnerId": "123456789012"
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "OwnerId": "152767562250"
     }
 }
 ```
@@ -906,15 +907,15 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
-VpcId : vpc-0d3c1c88db46cfba7
-SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic : subnet-0a1e2afffc8c140d8
-SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
-InternetGatewayId : igw-0a511ba68ceb84ed8
-RouteTableIdPublic : rtb-00cf30796b25b9bc9
-RouteTableIdPrivate : rtb-0afaac377925bca9a
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
 ```
 
 ### ■RouteTableにSubnetを紐付け
@@ -935,7 +936,7 @@ aws ec2 associate-route-table \
 
 ```CloudShell
 {
-    "AssociationId": "rtbassoc-0e98cb5f6c54d5d83",
+    "AssociationId": "rtbassoc-0fdd06641008db840",
     "AssociationState": {
         "State": "associated"
     }
@@ -954,7 +955,7 @@ aws ec2 associate-route-table \
 
 ```CloudShell
 {
-    "AssociationId": "rtbassoc-0f3ca785ae8675b6f",
+    "AssociationId": "rtbassoc-067b436f3f7eb8e3a",
     "AssociationState": {
         "State": "associated"
     }
@@ -973,7 +974,7 @@ aws ec2 associate-route-table \
 
 ```CloudShell
 {
-    "AssociationId": "rtbassoc-07f8b8f8aa65d0df8",
+    "AssociationId": "rtbassoc-0d02b62aeb39e373e",
     "AssociationState": {
         "State": "associated"
     }
@@ -992,7 +993,7 @@ aws ec2 associate-route-table \
 
 ```CloudShell
 {
-    "AssociationId": "rtbassoc-008c971373c02cf69",
+    "AssociationId": "rtbassoc-07780995550f76761",
     "AssociationState": {
         "State": "associated"
     }
@@ -1042,7 +1043,7 @@ aws ec2 create-security-group \
 
 ```CloudShell
 {
-    "GroupId": "sg-01cc901415c240504",
+    "GroupId": "sg-065a7c8eceb9759d4",
     "Tags": [
         {
             "Key": "Name",
@@ -1084,16 +1085,16 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
-VpcId : vpc-0d3c1c88db46cfba7
-SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic : subnet-0a1e2afffc8c140d8
-SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
-InternetGatewayId : igw-0a511ba68ceb84ed8
-RouteTableIdPublic : rtb-00cf30796b25b9bc9
-RouteTableIdPrivate : rtb-0afaac377925bca9a
-PublicSecurityGroupsId : sg-01cc901415c240504
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
 ```
 
 ### ■PrivateSubnet用のSecurityGroup作成
@@ -1116,7 +1117,7 @@ aws ec2 create-security-group \
 
 ```CloudShell
 {
-    "GroupId": "sg-040aff209e1fe59cc",
+    "GroupId": "sg-0f59547a1185820b5",
     "Tags": [
         {
             "Key": "Name",
@@ -1157,17 +1158,17 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
-VpcId : vpc-0d3c1c88db46cfba7
-SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic : subnet-0a1e2afffc8c140d8
-SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
-InternetGatewayId : igw-0a511ba68ceb84ed8
-RouteTableIdPublic : rtb-00cf30796b25b9bc9
-RouteTableIdPrivate : rtb-0afaac377925bca9a
-PublicSecurityGroupsId : sg-01cc901415c240504
-PrivateSecurityGroupsId : sg-040aff209e1fe59cc
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
 ```
 
 ### ■PublicSubnetのインバウンドルールを追加
@@ -1193,9 +1194,9 @@ aws ec2 authorize-security-group-ingress \
     "Return": true,
     "SecurityGroupRules": [
         {
-            "SecurityGroupRuleId": "sgr-011c9bf434c9439a0",
-            "GroupId": "sg-01cc901415c240504",
-            "GroupOwnerId": "123456789012",
+            "SecurityGroupRuleId": "sgr-0fa3570659990ac7c",
+            "GroupId": "sg-065a7c8eceb9759d4",
+            "GroupOwnerId": "152767562250",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 80,
@@ -1229,15 +1230,15 @@ aws ec2 authorize-security-group-ingress \
     "Return": true,
     "SecurityGroupRules": [
         {
-            "SecurityGroupRuleId": "sgr-0eca9b6518889b4ca",
-            "GroupId": "sg-040aff209e1fe59cc",
-            "GroupOwnerId": "123456789012",
+            "SecurityGroupRuleId": "sgr-03987cbc28a10ec4c",
+            "GroupId": "sg-0f59547a1185820b5",
+            "GroupOwnerId": "152767562250",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 80,
             "ToPort": 80,
             "ReferencedGroupInfo": {
-                "GroupId": "sg-01cc901415c240504"
+                "GroupId": "sg-065a7c8eceb9759d4"
             }
         }
     ]
@@ -1246,7 +1247,7 @@ aws ec2 authorize-security-group-ingress \
 
 ### ■PrivateSubnetのインバウンドルールを追加２
 
-- 後で設定するVPCエンドポイントの為にHTTPSアクセスを許可します
+- 後で設定するVPCエンドポイントの為にHTTPS（プロトコルtcp ポート443）アクセスを許可します
 
 #### cmd
 
@@ -1265,9 +1266,9 @@ aws ec2 authorize-security-group-ingress \
     "Return": true,
     "SecurityGroupRules": [
         {
-            "SecurityGroupRuleId": "sgr-0d637ce636f2f14d9",
-            "GroupId": "sg-040aff209e1fe59cc",
-            "GroupOwnerId": "123456789012",
+            "SecurityGroupRuleId": "sgr-0597c6c5a6a6f4758",
+            "GroupId": "sg-0f59547a1185820b5",
+            "GroupOwnerId": "152767562250",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 443,
@@ -1311,9 +1312,9 @@ aws logs describe-log-groups --log-group-name-prefix awslogs-container-hands-on
     "logGroups": [
         {
             "logGroupName": "awslogs-container-hands-on",
-            "creationTime": 1662547861755,
+            "creationTime": 1663242536780,
             "metricFilterCount": 0,
-            "arn": "arn:aws:logs:ap-northeast-1:378647896848:log-group:awslogs-container-hands-on:*",
+            "arn": "arn:aws:logs:ap-northeast-1:152767562250:log-group:awslogs-container-hands-on:*",
             "storedBytes": 0
         }
     ]
@@ -1345,7 +1346,7 @@ aws cloud9 create-environment-ec2 \
 
 ```CloudShell
 {
-    "environmentId": "aa2999a731eb4178aed99069f1b683aa"
+    "environmentId": "d95af67d7d5f4a9782475b0549bf1fe2"
 }
 ```
 
@@ -1379,6 +1380,32 @@ EOF
 aws iam create-role \
   --role-name ContainerHandsOnForCloud9 \
   --assume-role-policy-document file://assume-role-policy-document.json
+```
+
+#### result
+```CloudShell
+{
+    "Role": {
+        "Path": "/",
+        "RoleName": "ContainerHandsOnForCloud9",
+        "RoleId": "AROASHENIAIFELRPUULUJ",
+        "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForCloud9",
+        "CreateDate": "2022-09-15T11:49:42+00:00",
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "ec2.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        }
+    }
+}
 ```
 
 ### ■Cloud9環境RoleにPolicy追加
@@ -1435,9 +1462,9 @@ aws iam create-instance-profile \
     "InstanceProfile": {
         "Path": "/",
         "InstanceProfileName": "ContainerHandsOnForCloud9",
-        "InstanceProfileId": "AIPASHENIAIFABKPZHZ6B",
-        "Arn": "arn:aws:iam::123456789012:instance-profile/ContainerHandsOnForCloud9",
-        "CreateDate": "2022-09-11T20:08:39+00:00",
+        "InstanceProfileId": "AIPASHENIAIFEVHXOW7NP",
+        "Arn": "arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9",
+        "CreateDate": "2022-09-15T11:50:50+00:00",
         "Roles": []
     }
 }
@@ -1493,17 +1520,17 @@ EOF
 
 ```CloudShell
 AccoutID : 152767562250
-VpcId : vpc-0eb621c4712ee0898
-SubnetId1aPublic : subnet-035db89cb1df815f1
-SubnetId1cPublic : subnet-04872b3467ca94ce2
-SubnetId1aPrivate : subnet-00d678e2982d487d0
-SubnetId1cPrivate : subnet-08bfff9af19697ab7
-InternetGatewayId : igw-0d4373c922961e230
-RouteTableIdPublic : rtb-0670248bec99ef90c
-RouteTableIdPrivate : rtb-004eba1faed81d581
-PublicSecurityGroupsId : sg-06931dc309a0879b2
-PrivateSecurityGroupsId : sg-05eb336035d38f645
-InstanceId : i-04c7c620fef60c9cb
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
 ```
 
 ### ■Cloud9環境RoleをAttach
@@ -1521,11 +1548,11 @@ aws ec2 associate-iam-instance-profile \
 ```CloudShell
 {
     "IamInstanceProfileAssociation": {
-        "AssociationId": "iip-assoc-060b8208bb529670a",
-        "InstanceId": "i-033ba336e274d34f3",
+        "AssociationId": "iip-assoc-0989fcd85f472ddc6",
+        "InstanceId": "i-0ddf413a91a008a52",
         "IamInstanceProfile": {
-            "Arn": "arn:aws:iam::123456789012:instance-profile/ContainerHandsOnForCloud9",
-            "Id": "AIPASHENIAIFABKPZHZ6B"
+            "Arn": "arn:aws:iam::152767562250:instance-profile/ContainerHandsOnForCloud9",
+            "Id": "AIPASHENIAIFEVHXOW7NP"
         },
         "State": "associating"
     }
@@ -1558,24 +1585,24 @@ EOF
 #### result
 
 ```CloudShell
-export AccoutID="123456789012"
-export VpcId="vpc-0d3c1c88db46cfba7"
-export SubnetId1aPublic="subnet-0f66f257f167a1d47"
-export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
-export SubnetId1aPrivate="subnet-049f0119237ff00a0"
-export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
-export InternetGatewayId="igw-0a511ba68ceb84ed8"
-export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
-export RouteTableIdPrivate="rtb-0afaac377925bca9a"
-export PublicSecurityGroupsId="sg-01cc901415c240504"
-export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-export InstanceId="i-04c7c620fef60c9cb"
+export AccoutID="152767562250"
+export VpcId="vpc-010a940bbd8f747c2"
+export SubnetId1aPublic="subnet-0356b36ba2daa766c"
+export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
+export SubnetId1aPrivate="subnet-0d99180ac3baeb5fa"
+export SubnetId1cPrivate="subnet-0a66f1c2d5ce3b939"
+export InternetGatewayId="igw-082f42082d7748713"
+export RouteTableIdPublic="rtb-000a11e6eacc5c263"
+export RouteTableIdPrivate="rtb-077b87e7eb65d1f43"
+export PublicSecurityGroupsId="sg-065a7c8eceb9759d4"
+export PrivateSecurityGroupsId="sg-0f59547a1185820b5"
+export InstanceId="i-0ddf413a91a008a52"
 ```
 
 ### ■AWS コンソールでCloud9を起動
 
-- 上部の検索バーで`Cloud9`と検索
-- `AWS Cloud9 > Your environments`に`ContainerHandsOn`が作成されているので`Open IDE`ボタン押下
+- 上部の検索バーでCloud9と検索
+- AWS Cloud9 > Your environmentsにContainerHandsOnが作成されているので、Open IDEボタン押下
 - Cloud9の画面が表示される
 
 - 今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます
@@ -1603,18 +1630,18 @@ Duration: 0:05:00
 #### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
-export AccoutID="123456789012"
-export VpcId="vpc-0d3c1c88db46cfba7"
-export SubnetId1aPublic="subnet-0f66f257f167a1d47"
-export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
-export SubnetId1aPrivate="subnet-049f0119237ff00a0"
-export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
-export InternetGatewayId="igw-0a511ba68ceb84ed8"
-export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
-export RouteTableIdPrivate="rtb-0afaac377925bca9a"
-export PublicSecurityGroupsId="sg-01cc901415c240504"
-export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-export InstanceId="i-04c7c620fef60c9cb"
+$ export AccoutID="152767562250"
+$ export VpcId="vpc-010a940bbd8f747c2"
+$ export SubnetId1aPublic="subnet-0356b36ba2daa766c"
+$ export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
+$ export SubnetId1aPrivate="subnet-0d99180ac3baeb5fa"
+$ export SubnetId1cPrivate="subnet-0a66f1c2d5ce3b939"
+$ export InternetGatewayId="igw-082f42082d7748713"
+$ export RouteTableIdPublic="rtb-000a11e6eacc5c263"
+$ export RouteTableIdPrivate="rtb-077b87e7eb65d1f43"
+$ export PublicSecurityGroupsId="sg-065a7c8eceb9759d4"
+$ export PrivateSecurityGroupsId="sg-0f59547a1185820b5"
+$ export InstanceId="i-0ddf413a91a008a52"
 ```
 
 ``` Cloud9
@@ -1637,17 +1664,18 @@ EOF
 #### result
 
 ``` Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0d3c1c88db46cfba7
-SubnetId1aPublic : subnet-0f66f257f167a1d47
-SubnetId1cPublic : subnet-0a1e2afffc8c140d8
-SubnetId1aPrivate : subnet-049f0119237ff00a0
-SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
-InternetGatewayId : igw-0a511ba68ceb84ed8
-RouteTableIdPublic : rtb-00cf30796b25b9bc9
-RouteTableIdPrivate : rtb-0afaac377925bca9a
-PublicSecurityGroupsId : sg-01cc901415c240504
-PrivateSecurityGroupsId : sg-040aff209e1fe59cc
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
 ```
 
 ### ■AWS CLI・gitの環境設定実施
@@ -1684,11 +1712,11 @@ aws ecr create-repository \
 ```Cloud9
 {
     "repository": {
-        "repositoryArn": "arn:aws:ecr:ap-northeast-1:123456789012:repository/jaws-days-2022/container-hands-on",
-        "registryId": "123456789012",
+        "repositoryArn": "arn:aws:ecr:ap-northeast-1:152767562250:repository/jaws-days-2022/container-hands-on",
+        "registryId": "152767562250",
         "repositoryName": "jaws-days-2022/container-hands-on",
-        "repositoryUri": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on",
-        "createdAt": "2022-09-06T13:21:42+00:00",
+        "repositoryUri": "152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on",
+        "createdAt": 1663243247.0,
         "imageTagMutability": "MUTABLE",
         "imageScanningConfiguration": {
             "scanOnPush": false
@@ -1755,8 +1783,8 @@ ls -l ./Dockerfile ./src/index.php
 #### result
 
 ```Cloud9
--rw-rw-r-- 1 ec2-user ec2-user  47 Sep  6 13:26 ./Dockerfile
--rw-rw-r-- 1 ec2-user ec2-user 190 Sep  6 13:26 ./src/index.php
+-rw-rw-r-- 1 ec2-user ec2-user  47 Sep 15 12:01 ./Dockerfile
+-rw-rw-r-- 1 ec2-user ec2-user 190 Sep 15 12:01 ./src/index.php
 ```
 
 ### ■Cloud9上でDocker イメージを構築
@@ -1771,7 +1799,7 @@ docker build \
 #### result
 
 ```Cloud9
-Sending build context to Docker daemon  9.823MB
+Sending build context to Docker daemon  9.822MB
 Step 1/2 : FROM php:7.4.0-apache
 7.4.0-apache: Pulling from library/php
 000eee12ec04: Pull complete 
@@ -1791,8 +1819,8 @@ Digest: sha256:686af696a87d3836c694380588368ff4e7ad3e30f1faef387c545890b340edee
 Status: Downloaded newer image for php:7.4.0-apache
  ---> bf262c8621c1
 Step 2/2 : COPY src/ /var/www/html/
- ---> afc680b711d3
-Successfully built afc680b711d3
+ ---> 31879637952a
+Successfully built 31879637952a
 Successfully tagged jaws-days-2022/container-hands-on:latest
 ```
 
@@ -1809,7 +1837,7 @@ docker images \
 
 ```cloud9
 REPOSITORY                          TAG       IMAGE ID       CREATED          SIZE
-jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   414MB
+jaws-days-2022/container-hands-on   latest    31879637952a   47 seconds ago   414MB
 ```
 
 ### ■Cloud9上でDocker イメージを起動
@@ -1825,7 +1853,7 @@ docker run \
 #### result
 
 ```Cloud9
-dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
+90d092942d12681bcf38fe41e72e56bec3b241be4560e12365169c6a773b809c
 ```
 
 #### 画面
@@ -1865,14 +1893,13 @@ docker tag \
 ```Cloud9
 docker images \
   --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
-
 ```
 
 #### result
 
 ```Cloud9
-REPOSITORY                                                                            TAG       IMAGE ID       CREATED          SIZE
-123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 minutes ago   414MB
+REPOSITORY                                                                            TAG       IMAGE ID       CREATED              SIZE
+152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on   latest    31879637952a   About a minute ago   414MB
 ```
 
 ### ■認証トークンを取得し、レジストリに対して Docker クライアントを認証します
@@ -1907,14 +1934,14 @@ Login Succeeded
 
 ```Cloud9
 docker push \
-  `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+  ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
 
 ```Cloud9
-The push refers to repository [123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
-9f8ad0ecf420: Pushed 
+The push refers to repository [152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
+3d025b51ca1a: Pushed 
 536365481ed8: Pushed 
 4b3693c51878: Pushed 
 677c3ce9f0b4: Pushed 
@@ -1928,12 +1955,12 @@ ec64f555d498: Pushed
 840f3f414cf6: Pushed 
 17fce12edef0: Pushed 
 831c5620387f: Pushed 
-latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1cae3ffd3 size: 3242
+latest: digest: sha256:385537de56b405bf07d5218a21eb9160bf023021713bbe05582cd9a2d7365ce5 size: 3242
 ```
 
 ## VPCエンドポイント作成
 
-Duration: 0:05:00
+Duration: 0:10:00
 
 FargateをPrivateSubnetで稼働させるため、以下VPCエンドポイントを準備します  
 ECRに格納されたイメージを取得するためには通常Internet経由となります、しかし今回はFargateはPrivateSubnetというInternetに接続されていないので、Internet経由ではECRにアクセスできません  
@@ -1966,29 +1993,29 @@ aws ec2 create-vpc-endpoint \
 ```Cloud9
 {
     "VpcEndpoint": {
-        "PolicyDocument": "{\"Version\":\"2008-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":\"*\",\"Resource\":\"*\"}]}", 
-        "VpcId": "vpc-0d3c1c88db46cfba7", 
+        "VpcEndpointId": "vpce-06659337f5464d836",
+        "VpcEndpointType": "Gateway",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "ServiceName": "com.amazonaws.ap-northeast-1.s3",
+        "State": "available",
+        "PolicyDocument": "{\"Version\":\"2008-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":\"*\",\"Resource\":\"*\"}]}",
+        "RouteTableIds": [
+            "rtb-077b87e7eb65d1f43"
+        ],
+        "SubnetIds": [],
+        "Groups": [],
+        "PrivateDnsEnabled": false,
+        "RequesterManaged": false,
+        "NetworkInterfaceIds": [],
+        "DnsEntries": [],
+        "CreationTimestamp": "2022-09-15T12:05:51.000Z",
         "Tags": [
             {
-                "Value": "ContainerHands", 
-                "Key": "Name"
+                "Key": "Name",
+                "Value": "ContainerHandsOn"
             }
-        ], 
-        "NetworkInterfaceIds": [], 
-        "SubnetIds": [], 
-        "RequesterManaged": false, 
-        "PrivateDnsEnabled": false, 
-        "State": "available", 
-        "ServiceName": "com.amazonaws.ap-northeast-1.s3", 
-        "RouteTableIds": [
-            "rtb-0afaac377925bca9a"
-        ], 
-        "Groups": [], 
-        "OwnerId": "123456789012", 
-        "VpcEndpointId": "vpce-035934e1a19b46f78", 
-        "VpcEndpointType": "Gateway", 
-        "CreationTimestamp": "2022-09-06T14:14:54.000Z", 
-        "DnsEntries": []
+        ],
+        "OwnerId": "152767562250"
     }
 }
 ```
@@ -2016,58 +2043,62 @@ aws ec2 create-vpc-endpoint \
 ```Cloud9
 {
     "VpcEndpoint": {
-        "VpcId": "vpc-0d3c1c88db46cfba7", 
-        "Tags": [
-            {
-                "Value": "ContainerHands", 
-                "Key": "Name"
-            }
-        ], 
-        "NetworkInterfaceIds": [
-            "eni-09e0a49241653c549", 
-            "eni-05e27340a7008c6c5"
-        ], 
+        "VpcEndpointId": "vpce-01b89cdff71057ac6",
+        "VpcEndpointType": "Interface",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.dkr",
+        "State": "pending",
+        "RouteTableIds": [],
         "SubnetIds": [
-            "subnet-0ea89b6bc85e0ec61", 
-            "subnet-049f0119237ff00a0"
-        ], 
-        "RequesterManaged": false, 
-        "PrivateDnsEnabled": true, 
-        "State": "pending", 
-        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.dkr", 
-        "RouteTableIds": [], 
+            "subnet-0d99180ac3baeb5fa",
+            "subnet-0a66f1c2d5ce3b939"
+        ],
         "Groups": [
             {
-                "GroupName": "PrivateSecurityGroup", 
-                "GroupId": "sg-040aff209e1fe59cc"
+                "GroupId": "sg-0f59547a1185820b5",
+                "GroupName": "PrivateSecurityGroup"
             }
-        ], 
-        "OwnerId": "123456789012", 
-        "VpcEndpointId": "vpce-0dceb08e8bffc9a0c", 
-        "VpcEndpointType": "Interface", 
-        "CreationTimestamp": "2022-09-06T14:15:53.158Z", 
+        ],
+        "IpAddressType": "ipv4",
+        "DnsOptions": {
+            "DnsRecordIpType": "ipv4"
+        },
+        "PrivateDnsEnabled": true,
+        "RequesterManaged": false,
+        "NetworkInterfaceIds": [
+            "eni-05c8a332e7c1cd6f1",
+            "eni-0f512a24a322c2df6"
+        ],
         "DnsEntries": [
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-0dceb08e8bffc9a0c-nuehayud.dkr.ecr.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-01b89cdff71057ac6-9xjg2vqn.dkr.ecr.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-0dceb08e8bffc9a0c-nuehayud-ap-northeast-1a.dkr.ecr.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-01b89cdff71057ac6-9xjg2vqn-ap-northeast-1c.dkr.ecr.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-0dceb08e8bffc9a0c-nuehayud-ap-northeast-1c.dkr.ecr.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-01b89cdff71057ac6-9xjg2vqn-ap-northeast-1a.dkr.ecr.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "ZONEIDPENDING", 
-                "DnsName": "dkr.ecr.ap-northeast-1.amazonaws.com"
-            }, 
+                "DnsName": "dkr.ecr.ap-northeast-1.amazonaws.com",
+                "HostedZoneId": "ZONEIDPENDING"
+            },
             {
-                "HostedZoneId": "ZONEIDPENDING", 
-                "DnsName": "*.dkr.ecr.ap-northeast-1.amazonaws.com"
+                "DnsName": "*.dkr.ecr.ap-northeast-1.amazonaws.com",
+                "HostedZoneId": "ZONEIDPENDING"
             }
-        ]
+        ],
+        "CreationTimestamp": "2022-09-15T12:06:12.996Z",
+        "Tags": [
+            {
+                "Key": "Name",
+                "Value": "ContainerHandsOn"
+            }
+        ],
+        "OwnerId": "152767562250"
     }
 }
 ```
@@ -2095,54 +2126,58 @@ aws ec2 create-vpc-endpoint \
 ```Cloud9
 {
     "VpcEndpoint": {
-        "VpcId": "vpc-0d3c1c88db46cfba7", 
-        "Tags": [
-            {
-                "Value": "ContainerHands", 
-                "Key": "Name"
-            }
-        ], 
-        "NetworkInterfaceIds": [
-            "eni-084e01fac365b44eb", 
-            "eni-0f8846781b4fb82ee"
-        ], 
+        "VpcEndpointId": "vpce-0b393692593886a63",
+        "VpcEndpointType": "Interface",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.api",
+        "State": "pending",
+        "RouteTableIds": [],
         "SubnetIds": [
-            "subnet-0ea89b6bc85e0ec61", 
-            "subnet-049f0119237ff00a0"
-        ], 
-        "RequesterManaged": false, 
-        "PrivateDnsEnabled": true, 
-        "State": "pending", 
-        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.api", 
-        "RouteTableIds": [], 
+            "subnet-0d99180ac3baeb5fa",
+            "subnet-0a66f1c2d5ce3b939"
+        ],
         "Groups": [
             {
-                "GroupName": "PrivateSecurityGroup", 
-                "GroupId": "sg-040aff209e1fe59cc"
+                "GroupId": "sg-0f59547a1185820b5",
+                "GroupName": "PrivateSecurityGroup"
             }
-        ], 
-        "OwnerId": "123456789012", 
-        "VpcEndpointId": "vpce-0e45e7f04848a0600", 
-        "VpcEndpointType": "Interface", 
-        "CreationTimestamp": "2022-09-06T14:16:25.698Z", 
+        ],
+        "IpAddressType": "ipv4",
+        "DnsOptions": {
+            "DnsRecordIpType": "ipv4"
+        },
+        "PrivateDnsEnabled": true,
+        "RequesterManaged": false,
+        "NetworkInterfaceIds": [
+            "eni-08db2d56fe23f4746",
+            "eni-010e2407de481c23e"
+        ],
         "DnsEntries": [
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-0e45e7f04848a0600-kef4k347.api.ecr.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-0b393692593886a63-w1unh4qj.api.ecr.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-0e45e7f04848a0600-kef4k347-ap-northeast-1c.api.ecr.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-0b393692593886a63-w1unh4qj-ap-northeast-1c.api.ecr.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-0e45e7f04848a0600-kef4k347-ap-northeast-1a.api.ecr.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-0b393692593886a63-w1unh4qj-ap-northeast-1a.api.ecr.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "ZONEIDPENDING", 
-                "DnsName": "api.ecr.ap-northeast-1.amazonaws.com"
+                "DnsName": "api.ecr.ap-northeast-1.amazonaws.com",
+                "HostedZoneId": "ZONEIDPENDING"
             }
-        ]
+        ],
+        "CreationTimestamp": "2022-09-15T12:06:37.143Z",
+        "Tags": [
+            {
+                "Key": "Name",
+                "Value": "ContainerHandsOn"
+            }
+        ],
+        "OwnerId": "152767562250"
     }
 }
 ```
@@ -2170,54 +2205,58 @@ aws ec2 create-vpc-endpoint \
 ```Cloud9
 {
     "VpcEndpoint": {
-        "VpcId": "vpc-0d3c1c88db46cfba7", 
-        "Tags": [
-            {
-                "Value": "ContainerHands", 
-                "Key": "Name"
-            }
-        ], 
-        "NetworkInterfaceIds": [
-            "eni-04b15926212e8ea31", 
-            "eni-0514bbba136ec6108"
-        ], 
+        "VpcEndpointId": "vpce-0aa40c4643e1f52ea",
+        "VpcEndpointType": "Interface",
+        "VpcId": "vpc-010a940bbd8f747c2",
+        "ServiceName": "com.amazonaws.ap-northeast-1.logs",
+        "State": "pending",
+        "RouteTableIds": [],
         "SubnetIds": [
-            "subnet-0ea89b6bc85e0ec61", 
-            "subnet-049f0119237ff00a0"
-        ], 
-        "RequesterManaged": false, 
-        "PrivateDnsEnabled": true, 
-        "State": "pending", 
-        "ServiceName": "com.amazonaws.ap-northeast-1.logs", 
-        "RouteTableIds": [], 
+            "subnet-0d99180ac3baeb5fa",
+            "subnet-0a66f1c2d5ce3b939"
+        ],
         "Groups": [
             {
-                "GroupName": "PrivateSecurityGroup", 
-                "GroupId": "sg-040aff209e1fe59cc"
+                "GroupId": "sg-0f59547a1185820b5",
+                "GroupName": "PrivateSecurityGroup"
             }
-        ], 
-        "OwnerId": "123456789012", 
-        "VpcEndpointId": "vpce-05ae88af55de2bf71", 
-        "VpcEndpointType": "Interface", 
-        "CreationTimestamp": "2022-09-06T14:16:50.374Z", 
+        ],
+        "IpAddressType": "ipv4",
+        "DnsOptions": {
+            "DnsRecordIpType": "ipv4"
+        },
+        "PrivateDnsEnabled": true,
+        "RequesterManaged": false,
+        "NetworkInterfaceIds": [
+            "eni-0b0fb7fc59f22f128",
+            "eni-06d10382813d38317"
+        ],
         "DnsEntries": [
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-05ae88af55de2bf71-5ltns582.logs.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-0aa40c4643e1f52ea-6rcso5ee.logs.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-05ae88af55de2bf71-5ltns582-ap-northeast-1c.logs.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-0aa40c4643e1f52ea-6rcso5ee-ap-northeast-1c.logs.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "Z2E726K9Y6RL4W", 
-                "DnsName": "vpce-05ae88af55de2bf71-5ltns582-ap-northeast-1a.logs.ap-northeast-1.vpce.amazonaws.com"
-            }, 
+                "DnsName": "vpce-0aa40c4643e1f52ea-6rcso5ee-ap-northeast-1a.logs.ap-northeast-1.vpce.amazonaws.com",
+                "HostedZoneId": "Z2E726K9Y6RL4W"
+            },
             {
-                "HostedZoneId": "ZONEIDPENDING", 
-                "DnsName": "logs.ap-northeast-1.amazonaws.com"
+                "DnsName": "logs.ap-northeast-1.amazonaws.com",
+                "HostedZoneId": "ZONEIDPENDING"
             }
-        ]
+        ],
+        "CreationTimestamp": "2022-09-15T12:07:05.639Z",
+        "Tags": [
+            {
+                "Key": "Name",
+                "Value": "ContainerHandsOn"
+            }
+        ],
+        "OwnerId": "152767562250"
     }
 }
 ```
@@ -2247,33 +2286,33 @@ aws elbv2 create-load-balancer \
 {
     "LoadBalancers": [
         {
-            "IpAddressType": "ipv4", 
-            "VpcId": "vpc-0d3c1c88db46cfba7", 
-            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867", 
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053",
+            "DNSName": "ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com",
+            "CanonicalHostedZoneId": "Z14GRHDCWA56QT",
+            "CreatedTime": "2022-09-15T12:07:31.550Z",
+            "LoadBalancerName": "ContainerHandsOn",
+            "Scheme": "internet-facing",
+            "VpcId": "vpc-010a940bbd8f747c2",
             "State": {
                 "Code": "provisioning"
-            }, 
-            "DNSName": "ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com", 
-            "SecurityGroups": [
-                "sg-08822a4834ed05f46"
-            ], 
-            "LoadBalancerName": "ContainerHandsOn", 
-            "CreatedTime": "2022-09-06T14:21:35.730Z", 
-            "Scheme": "internet-facing", 
-            "Type": "application", 
-            "CanonicalHostedZoneId": "Z14GRHDCWA56QT", 
+            },
+            "Type": "application",
             "AvailabilityZones": [
                 {
-                    "SubnetId": "subnet-0a1e2afffc8c140d8", 
-                    "LoadBalancerAddresses": [], 
-                    "ZoneName": "ap-northeast-1c"
-                }, 
+                    "ZoneName": "ap-northeast-1a",
+                    "SubnetId": "subnet-0356b36ba2daa766c",
+                    "LoadBalancerAddresses": []
+                },
                 {
-                    "SubnetId": "subnet-0f66f257f167a1d47", 
-                    "LoadBalancerAddresses": [], 
-                    "ZoneName": "ap-northeast-1a"
+                    "ZoneName": "ap-northeast-1c",
+                    "SubnetId": "subnet-0dabe411bfdc835fb",
+                    "LoadBalancerAddresses": []
                 }
-            ]
+            ],
+            "SecurityGroups": [
+                "sg-065a7c8eceb9759d4"
+            ],
+            "IpAddressType": "ipv4"
         }
     ]
 }
@@ -2303,11 +2342,11 @@ aws elbv2 create-target-group \
 {
     "TargetGroups": [
         {
-            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148",
             "TargetGroupName": "ContainerHandsOn",
             "Protocol": "HTTP",
             "Port": 80,
-            "VpcId": "vpc-0d3c1c88db46cfba7",
+            "VpcId": "vpc-010a940bbd8f747c2",
             "HealthCheckProtocol": "HTTP",
             "HealthCheckPort": "traffic-port",
             "HealthCheckEnabled": true,
@@ -2359,18 +2398,19 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0320e7bf74af8bd72
-SubnetId1aPublic : subnet-059ff12a72e014ca1
-SubnetId1cPublic : subnet-0076bf4756ca680d1
-SubnetId1aPrivate : subnet-000d7e1758777eb85
-SubnetId1cPrivate : subnet-04ec5cc1209d3c566
-InternetGatewayId : igw-015b39463b346214a
-RouteTableIdPublic : rtb-00a15f36fcbabe379
-RouteTableIdPrivate : rtb-086e760ddf493b0c3
-PublicSecurityGroupsId : sg-04a6d799d221392dc
-PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
-LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
+LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
 ```
 
 ### ■アプリケーションロードバランサーのARN取得
@@ -2406,19 +2446,20 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0320e7bf74af8bd72
-SubnetId1aPublic : subnet-059ff12a72e014ca1
-SubnetId1cPublic : subnet-0076bf4756ca680d1
-SubnetId1aPrivate : subnet-000d7e1758777eb85
-SubnetId1cPrivate : subnet-04ec5cc1209d3c566
-InternetGatewayId : igw-015b39463b346214a
-RouteTableIdPublic : rtb-00a15f36fcbabe379
-RouteTableIdPrivate : rtb-086e760ddf493b0c3
-PublicSecurityGroupsId : sg-04a6d799d221392dc
-PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
-LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
+LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053
 ```
 
 ### ■ターゲットグループのARN取得
@@ -2455,20 +2496,21 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0320e7bf74af8bd72
-SubnetId1aPublic : subnet-059ff12a72e014ca1
-SubnetId1cPublic : subnet-0076bf4756ca680d1
-SubnetId1aPrivate : subnet-000d7e1758777eb85
-SubnetId1cPrivate : subnet-04ec5cc1209d3c566
-InternetGatewayId : igw-015b39463b346214a
-RouteTableIdPublic : rtb-00a15f36fcbabe379
-RouteTableIdPrivate : rtb-086e760ddf493b0c3
-PublicSecurityGroupsId : sg-04a6d799d221392dc
-PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
-LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
-TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
+LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148
 ```
 
 ### ■リスナーの追加
@@ -2491,18 +2533,18 @@ aws elbv2 create-listener \
 {
     "Listeners": [
         {
-            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/75145ed42d9a3867/1245c4be3b3230b7",
-            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/75145ed42d9a3867",
+            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/b392eaa096f09053/b5d7e272d5152d8d",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053",
             "Port": 80,
             "Protocol": "HTTP",
             "DefaultActions": [
                 {
                     "Type": "forward",
-                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148",
                     "ForwardConfig": {
                         "TargetGroups": [
                             {
-                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7f11fa9e9d635ce9",
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148",
                                 "Weight": 1
                             }
                         ],
@@ -2519,7 +2561,7 @@ aws elbv2 create-listener \
 
 ## ECS/Fargate作成
 
-Duration: 0:05:00
+Duration: 0:15:00
 
 ### ■ECS/Fargate周辺の説明
 
@@ -2570,28 +2612,28 @@ aws ecs create-cluster \
 ```Cloud9
 {
     "cluster": {
-        "status": "ACTIVE", 
-        "defaultCapacityProviderStrategy": [], 
-        "statistics": [], 
-        "capacityProviders": [], 
+        "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn",
+        "clusterName": "ContainerHandsOn",
+        "status": "ACTIVE",
+        "registeredContainerInstancesCount": 0,
+        "runningTasksCount": 0,
+        "pendingTasksCount": 0,
+        "activeServicesCount": 0,
+        "statistics": [],
         "tags": [
             {
-                "value": "ContainerHandsOn", 
-                "key": "Name"
+                "key": "Name",
+                "value": "ContainerHandsOn"
             }
-        ], 
-        "clusterName": "ContainerHandsOn", 
+        ],
         "settings": [
             {
-                "name": "containerInsights", 
+                "name": "containerInsights",
                 "value": "disabled"
             }
-        ], 
-        "registeredContainerInstancesCount": 0, 
-        "pendingTasksCount": 0, 
-        "runningTasksCount": 0, 
-        "activeServicesCount": 0, 
-        "clusterArn": "arn:aws:ecs:ap-northeast-1:123456789012:cluster/ContainerHandsOn"
+        ],
+        "capacityProviders": [],
+        "defaultCapacityProviderStrategy": []
     }
 }
 ```
@@ -2657,11 +2699,11 @@ aws ecs register-task-definition \
 ```Cloud9
 {
     "taskDefinition": {
-        "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1",
+        "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:11",
         "containerDefinitions": [
             {
                 "name": "ContainerHandsOn",
-                "image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
+                "image": "152767562250.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
                 "cpu": 0,
                 "portMappings": [
                     {
@@ -2673,18 +2715,36 @@ aws ecs register-task-definition \
                 "essential": true,
                 "environment": [],
                 "mountPoints": [],
-                "volumesFrom": []
+                "volumesFrom": [],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-create-group": "true",
+                        "awslogs-group": "awslogs-container-hands-on",
+                        "awslogs-region": "ap-northeast-1",
+                        "awslogs-stream-prefix": "hands-on"
+                    }
+                }
             }
         ],
         "family": "ContainerHandsOn",
-        "executionRoleArn": "arn:aws:iam::123456789012:role/ecsTaskExecutionRole",
+        "executionRoleArn": "arn:aws:iam::152767562250:role/ecsTaskExecutionRole",
         "networkMode": "awsvpc",
-        "revision": 1,
+        "revision": 11,
         "volumes": [],
         "status": "ACTIVE",
         "requiresAttributes": [
             {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
                 "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
             },
             {
                 "name": "ecs.capability.execution-role-ecr-pull"
@@ -2694,6 +2754,9 @@ aws ecs register-task-definition \
             },
             {
                 "name": "ecs.capability.task-eni"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
             }
         ],
         "placementConstraints": [],
@@ -2710,8 +2773,8 @@ aws ecs register-task-definition \
         ],
         "cpu": "256",
         "memory": "512",
-        "registeredAt": "2022-09-06T14:59:53.594000+00:00",
-        "registeredBy": "arn:aws:sts::123456789012:assumed-role/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022/ShigeruOda"
+        "registeredAt": 1663243819.62,
+        "registeredBy": "arn:aws:sts::152767562250:assumed-role/ContainerHandsOnForCloud9/i-0ddf413a91a008a52"
     },
     "tags": [
         {
@@ -2760,21 +2823,22 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0320e7bf74af8bd72
-SubnetId1aPublic : subnet-059ff12a72e014ca1
-SubnetId1cPublic : subnet-0076bf4756ca680d1
-SubnetId1aPrivate : subnet-000d7e1758777eb85
-SubnetId1cPrivate : subnet-04ec5cc1209d3c566
-InternetGatewayId : igw-015b39463b346214a
-RouteTableIdPublic : rtb-00a15f36fcbabe379
-RouteTableIdPrivate : rtb-086e760ddf493b0c3
-PublicSecurityGroupsId : sg-04a6d799d221392dc
-PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
-LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
-TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
-RevisionNo : 2
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
+LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148
+RevisionNo : 11
 ```
 
 ### ■サービスの作成
@@ -2803,12 +2867,12 @@ aws ecs create-service \
 ```Cloud9
 {
     "service": {
-        "serviceArn": "arn:aws:ecs:ap-northeast-1:123456789012:service/ContainerHandsOn/ContainerHandsOn",
+        "serviceArn": "arn:aws:ecs:ap-northeast-1:152767562250:service/ContainerHandsOn/ContainerHandsOn",
         "serviceName": "ContainerHandsOn",
-        "clusterArn": "arn:aws:ecs:ap-northeast-1:123456789012:cluster/ContainerHandsOn",
+        "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn",
         "loadBalancers": [
             {
-                "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/7624dfd8f556a2d9",
+                "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148",
                 "containerName": "ContainerHandsOn",
                 "containerPort": 80
             }
@@ -2819,67 +2883,82 @@ aws ecs create-service \
         "runningCount": 0,
         "pendingCount": 0,
         "launchType": "FARGATE",
-        "platformVersion": "LATEST",
+        "platformVersion": "1.4.0",
         "platformFamily": "Linux",
-        "taskDefinition": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:8",
+        "taskDefinition": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:11",
         "deploymentConfiguration": {
-            "deploymentCircuitBreaker": {
-                "enable": false,
-                "rollback": false
-            },
             "maximumPercent": 200,
             "minimumHealthyPercent": 100
         },
-        "deployments": [
+        "taskSets": [
             {
-                "id": "ecs-svc/9015413324295259653",
+                "id": "ecs-svc/1465112757677924538",
+                "taskSetArn": "arn:aws:ecs:ap-northeast-1:152767562250:task-set/ContainerHandsOn/ContainerHandsOn/ecs-svc/1465112757677924538",
+                "serviceArn": "arn:aws:ecs:ap-northeast-1:152767562250:service/ContainerHandsOn",
+                "clusterArn": "arn:aws:ecs:ap-northeast-1:152767562250:cluster/ContainerHandsOn",
                 "status": "PRIMARY",
-                "taskDefinition": "arn:aws:ecs:ap-northeast-1:123456789012:task-definition/ContainerHandsOn:1",
-                "desiredCount": 2,
+                "taskDefinition": "arn:aws:ecs:ap-northeast-1:152767562250:task-definition/ContainerHandsOn:11",
+                "computedDesiredCount": 2,
                 "pendingCount": 0,
                 "runningCount": 0,
-                "failedTasks": 0,
-                "createdAt": "2022-09-07T02:14:18.688000+00:00",
-                "updatedAt": "2022-09-07T02:14:18.688000+00:00",
+                "createdAt": 1663243874.599,
+                "updatedAt": 1663243874.599,
                 "launchType": "FARGATE",
                 "platformVersion": "1.4.0",
                 "platformFamily": "Linux",
                 "networkConfiguration": {
                     "awsvpcConfiguration": {
                         "subnets": [
-                            "subnet-0ea89b6bc85e0ec61",
-                            "subnet-049f0119237ff00a0"
+                            "subnet-0d99180ac3baeb5fa",
+                            "subnet-0a66f1c2d5ce3b939"
                         ],
                         "securityGroups": [
-                            "sg-040aff209e1fe59cc"
+                            "sg-0f59547a1185820b5"
                         ],
                         "assignPublicIp": "DISABLED"
                     }
                 },
-                "rolloutState": "IN_PROGRESS",
-                "rolloutStateReason": "ECS deployment ecs-svc/9015413324295259653 in progress."
+                "loadBalancers": [
+                    {
+                        "targetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148",
+                        "containerName": "ContainerHandsOn",
+                        "containerPort": 80
+                    }
+                ],
+                "serviceRegistries": [],
+                "scale": {
+                    "value": 100.0,
+                    "unit": "PERCENT"
+                },
+                "stabilityStatus": "STABILIZING",
+                "stabilityStatusAt": 1663243874.599,
+                "tags": []
             }
         ],
-        "roleArn": "arn:aws:iam::123456789012:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+        "deployments": [],
+        "roleArn": "arn:aws:iam::152767562250:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
         "events": [],
-        "createdAt": "2022-09-07T02:14:18.688000+00:00",
+        "createdAt": 1663243874.599,
         "placementConstraints": [],
         "placementStrategy": [],
         "networkConfiguration": {
             "awsvpcConfiguration": {
                 "subnets": [
-                    "subnet-0ea89b6bc85e0ec61",
-                    "subnet-049f0119237ff00a0"
+                    "subnet-0d99180ac3baeb5fa",
+                    "subnet-0a66f1c2d5ce3b939"
                 ],
                 "securityGroups": [
-                    "sg-040aff209e1fe59cc"
+                    "sg-0f59547a1185820b5"
                 ],
                 "assignPublicIp": "DISABLED"
             }
         },
         "healthCheckGracePeriodSeconds": 0,
         "schedulingStrategy": "REPLICA",
-        "createdBy": "arn:aws:iam::123456789012:role/aws-reserved/sso.amazonaws.com/ap-northeast-1/AWSReservedSSO_AWSAdministratorAccess_8fe206b83490a022",
+        "deploymentController": {
+            "type": "CODE_DEPLOY"
+        },
+        "createdBy": "arn:aws:iam::152767562250:role/ContainerHandsOnForCloud9",
         "enableECSManagedTags": false,
         "propagateTags": "NONE",
         "enableExecuteCommand": false
@@ -2980,26 +3059,26 @@ EOF
 
 ```Cloud9
 export AccoutID="152767562250"
-export VpcId="vpc-0eb621c4712ee0898"
-export SubnetId1aPublic="subnet-035db89cb1df815f1"
-export SubnetId1cPublic="subnet-04872b3467ca94ce2"
-export SubnetId1aPrivate="subnet-00d678e2982d487d0"
-export SubnetId1cPrivate="subnet-08bfff9af19697ab7"
-export InternetGatewayId="igw-0d4373c922961e230"
-export RouteTableIdPublic="rtb-0670248bec99ef90c"
-export RouteTableIdPrivate="rtb-004eba1faed81d581"
-export PublicSecurityGroupsId="sg-06931dc309a0879b2"
-export PrivateSecurityGroupsId="sg-05eb336035d38f645"
-export InstanceId="i-04c7c620fef60c9cb"
-export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/9f7c6d0c3b1b76da"
-export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/f46da45550c208d5"
-export LoadBalancersDnsName="ContainerHandsOn-879378718.ap-northeast-1.elb.amazonaws.com"
-export RevisionNo="6"
+export VpcId="vpc-010a940bbd8f747c2"
+export SubnetId1aPublic="subnet-0356b36ba2daa766c"
+export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
+export SubnetId1aPrivate="subnet-0d99180ac3baeb5fa"
+export SubnetId1cPrivate="subnet-0a66f1c2d5ce3b939"
+export InternetGatewayId="igw-082f42082d7748713"
+export RouteTableIdPublic="rtb-000a11e6eacc5c263"
+export RouteTableIdPrivate="rtb-077b87e7eb65d1f43"
+export PublicSecurityGroupsId="sg-065a7c8eceb9759d4"
+export PrivateSecurityGroupsId="sg-0f59547a1185820b5"
+export InstanceId="i-0ddf413a91a008a52"
+export LoadBalancerArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053"
+export TargetGroupArn="arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148"
+export LoadBalancersDnsName="ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com"
+export RevisionNo="11"
 ```
 
 ## CodeCommit作成
 
-Duration: 0:05:00
+Duration: 0:15:00
 
 ### ■CodeCommitの作成
 
@@ -3021,15 +3100,15 @@ aws codecommit create-repository \
 ```Cloud9
 {
     "repositoryMetadata": {
-        "accountId": "378647896848",
-        "repositoryId": "b4e47286-11a4-4280-9760-8c8103a5ace7",
+        "accountId": "152767562250",
+        "repositoryId": "45fe4e7e-d7bb-4e06-9ee4-9d959888be4b",
         "repositoryName": "ContainerHandsOn",
         "repositoryDescription": "ContainerHandsOn",
-        "lastModifiedDate": 1662705554.252,
-        "creationDate": 1662705554.252,
+        "lastModifiedDate": 1663244011.08,
+        "creationDate": 1663244011.08,
         "cloneUrlHttp": "https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn",
         "cloneUrlSsh": "ssh://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn",
-        "Arn": "arn:aws:codecommit:ap-northeast-1:378647896848:ContainerHandsOn"
+        "Arn": "arn:aws:codecommit:ap-northeast-1:152767562250:ContainerHandsOn"
     }
 }
 ```
@@ -3070,12 +3149,12 @@ ls -lR
 ```Cloud9
 .:
 total 8
--rw-rw-r-- 1 ec2-user ec2-user   47 Sep  9 01:31 Dockerfile
-drwxrwxr-x 2 ec2-user ec2-user 4096 Sep  9 01:32 src
+-rw-rw-r-- 1 ec2-user ec2-user   47 Sep 15 12:01 Dockerfile
+drwxrwxr-x 2 ec2-user ec2-user 4096 Sep 15 12:01 src
 
 ./src:
 total 4
--rw-rw-r-- 1 ec2-user ec2-user 190 Sep  9 01:32 index.php
+-rw-rw-r-- 1 ec2-user ec2-user 190 Sep 15 12:01 index.php
 ```
 
 ### ■buildspec.ymlの新規作成
@@ -3138,7 +3217,7 @@ ls -l buildspec.yml
 #### result
 
 ```Cloud9
--rw-rw-r-- 1 ec2-user ec2-user 1192 Sep 11 04:59 buildspec.yml
+-rw-rw-r-- 1 ec2-user ec2-user 1193 Sep 15 12:14 buildspec.yml
 ```
 
 ### ■appspec.ymlの新規作成
@@ -3179,7 +3258,7 @@ ls -l appspec.yml
 #### result
 
 ```Cloud9
--rw-rw-r-- 1 ec2-user ec2-user 240 Sep 11 05:04 appspec.yml
+-rw-rw-r-- 1 ec2-user ec2-user 240 Sep 15 12:14 appspec.yml
 ```
 
 ### ■taskdef.jsonの新規作成
@@ -3238,7 +3317,7 @@ git push origin master
 #### result
 
 ```Cloud9
-[master (root-commit) 091ba9a] first commit
+[master (root-commit) 15052c6] first commit
  5 files changed, 131 insertions(+)
  create mode 100644 Dockerfile
  create mode 100644 appspec.yml
@@ -3250,7 +3329,7 @@ Enumerating objects: 8, done.
 Counting objects: 100% (8/8), done.
 Delta compression using up to 2 threads
 Compressing objects: 100% (6/6), done.
-Writing objects: 100% (8/8), 1.96 KiB | 1.96 MiB/s, done.
+Writing objects: 100% (8/8), 1.93 KiB | 1.93 MiB/s, done.
 Total 8 (delta 0), reused 0 (delta 0), pack-reused 0
 To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
  * [new branch]      master -> master
@@ -3258,7 +3337,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 
 ## CodeBuild作成
 
-Duration: 0:05:00
+Duration: 0:10:00
 
 ### ■CodeBuild用Role作成
 
@@ -3303,9 +3382,9 @@ aws iam create-role \
     "Role": {
         "Path": "/",
         "RoleName": "ContainerHandsOnForCodeBuild",
-        "RoleId": "AROASHENIAIFMIBJGIWAY",
-        "Arn": "arn:aws:iam::123456789012:role/ContainerHandsOnForCodeBuild",
-        "CreateDate": "2022-09-11T05:26:01Z",
+        "RoleId": "AROASHENIAIFI52SKC5CK",
+        "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForCodeBuild",
+        "CreateDate": "2022-09-15T12:17:11Z",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [
@@ -3446,7 +3525,7 @@ aws codebuild create-project \
 {
     "project": {
         "name": "ContainerHandsOn",
-        "arn": "arn:aws:codebuild:ap-northeast-1:123456789012:project/ContainerHandsOn",
+        "arn": "arn:aws:codebuild:ap-northeast-1:152767562250:project/ContainerHandsOn",
         "source": {
             "type": "CODECOMMIT",
             "location": "https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn",
@@ -3464,21 +3543,21 @@ aws codebuild create-project \
             "image": "aws/codebuild/amazonlinux2-x86_64-standard:4.0",
             "computeType": "BUILD_GENERAL1_SMALL",
             "environmentVariables": [],
-            "privilegedMode": false,
+            "privilegedMode": true,
             "imagePullCredentialsType": "CODEBUILD"
         },
-        "serviceRole": "arn:aws:iam::123456789012:role/ContainerHandsOnForCodeBuild",
+        "serviceRole": "arn:aws:iam::152767562250:role/ContainerHandsOnForCodeBuild",
         "timeoutInMinutes": 60,
         "queuedTimeoutInMinutes": 480,
-        "encryptionKey": "arn:aws:kms:ap-northeast-1:123456789012:alias/aws/s3",
+        "encryptionKey": "arn:aws:kms:ap-northeast-1:152767562250:alias/aws/s3",
         "tags": [
             {
                 "key": "Name",
                 "value": "ContainerHandsOn"
             }
         ],
-        "created": 1662874335.259,
-        "lastModified": 1662874335.259,
+        "created": 1663244295.293,
+        "lastModified": 1663244295.293,
         "badge": {
             "badgeEnabled": false
         },
@@ -3489,7 +3568,7 @@ aws codebuild create-project \
 
 ## CodeDeploy作成
 
-Duration: 0:05:00
+Duration: 0:10:00
 
 ### ■CodeDeploy用Role作成
 
@@ -3532,9 +3611,9 @@ aws iam create-role \
     "Role": {
         "Path": "/",
         "RoleName": "ContainerHandsOnForCodeDeploy",
-        "RoleId": "AROASHENIAIFMRHKSS3UR",
-        "Arn": "arn:aws:iam::123456789012:role/ContainerHandsOnForCodeDeploy",
-        "CreateDate": "2022-09-11T06:39:05Z",
+        "RoleId": "AROASHENIAIFBSQTXUQW5",
+        "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForCodeDeploy",
+        "CreateDate": "2022-09-15T12:18:50Z",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [
@@ -3625,7 +3704,7 @@ aws deploy create-application \
 
 ```Cloud9
 {
-    "applicationId": "84eb81cb-1e84-46cb-9209-c17334e7bc15"
+    "applicationId": "600579a4-9101-4a98-8915-7fab2fed747a"
 }
 ```
 
@@ -3653,11 +3732,11 @@ aws elbv2 create-target-group \
 {
     "TargetGroups": [
         {
-            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4",
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/71b573e9a3227e50",
             "TargetGroupName": "ContainerHandsOn8080",
             "Protocol": "HTTP",
             "Port": 8080,
-            "VpcId": "vpc-0320e7bf74af8bd72",
+            "VpcId": "vpc-010a940bbd8f747c2",
             "HealthCheckProtocol": "HTTP",
             "HealthCheckPort": "traffic-port",
             "HealthCheckEnabled": true,
@@ -3715,22 +3794,23 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0320e7bf74af8bd72
-SubnetId1aPublic : subnet-059ff12a72e014ca1
-SubnetId1cPublic : subnet-0076bf4756ca680d1
-SubnetId1aPrivate : subnet-000d7e1758777eb85
-SubnetId1cPrivate : subnet-04ec5cc1209d3c566
-InternetGatewayId : igw-015b39463b346214a
-RouteTableIdPublic : rtb-00a15f36fcbabe379
-RouteTableIdPrivate : rtb-086e760ddf493b0c3
-PublicSecurityGroupsId : sg-04a6d799d221392dc
-PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
-LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
-TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
-RevisionNo : 2
-TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
+LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148
+RevisionNo : 11
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/71b573e9a3227e50
 ```
 
 ### ■リスナーの作成
@@ -3753,18 +3833,18 @@ aws elbv2 create-listener \
 {
     "Listeners": [
         {
-            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854",
-            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff",
+            "ListenerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/b392eaa096f09053/b27b8d32f0e78f30",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053",
             "Port": 8080,
             "Protocol": "HTTP",
             "DefaultActions": [
                 {
                     "Type": "forward",
-                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/71b573e9a3227e50",
                     "ForwardConfig": {
                         "TargetGroups": [
                             {
-                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4",
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/71b573e9a3227e50",
                                 "Weight": 1
                             }
                         ],
@@ -3842,24 +3922,25 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0320e7bf74af8bd72
-SubnetId1aPublic : subnet-059ff12a72e014ca1
-SubnetId1cPublic : subnet-0076bf4756ca680d1
-SubnetId1aPrivate : subnet-000d7e1758777eb85
-SubnetId1cPrivate : subnet-04ec5cc1209d3c566
-InternetGatewayId : igw-015b39463b346214a
-RouteTableIdPublic : rtb-00a15f36fcbabe379
-RouteTableIdPrivate : rtb-086e760ddf493b0c3
-PublicSecurityGroupsId : sg-04a6d799d221392dc
-PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
-LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
-TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
-RevisionNo : 2
-TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
-ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
-ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
+LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148
+RevisionNo : 11
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/71b573e9a3227e50
+ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/b392eaa096f09053/b5d7e272d5152d8d
+ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/b392eaa096f09053/b27b8d32f0e78f30
 ```
 
 ### ■PublicSubnetのインバウンドルールを追加
@@ -3883,9 +3964,9 @@ aws ec2 authorize-security-group-ingress \
     "Return": true,
     "SecurityGroupRules": [
         {
-            "SecurityGroupRuleId": "sgr-0d94c6066ce720a52",
-            "GroupId": "sg-04a6d799d221392dc",
-            "GroupOwnerId": "123456789012",
+            "SecurityGroupRuleId": "sgr-01d5cd037c7937b18",
+            "GroupId": "sg-065a7c8eceb9759d4",
+            "GroupOwnerId": "152767562250",
             "IsEgress": false,
             "IpProtocol": "tcp",
             "FromPort": 8080,
@@ -3966,7 +4047,7 @@ aws deploy create-deployment-group \
 
 ```Cloud9
 {
-    "deploymentGroupId": "66c261d6-481c-411c-a450-408e4582d3a3"
+    "deploymentGroupId": "78905a92-a80f-4ac5-8b0f-fcb52b042b58"
 }
 ```
 
@@ -4011,9 +4092,9 @@ aws iam create-role \
     "Role": {
         "Path": "/",
         "RoleName": "ContainerHandsOnForPipeLine",
-        "RoleId": "AROASHENIAIFE3VFSOI5C",
-        "Arn": "arn:aws:iam::123456789012:role/ContainerHandsOnForPipeLine",
-        "CreateDate": "2022-09-11T07:29:04Z",
+        "RoleId": "AROASHENIAIFGCB5OQPDX",
+        "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine",
+        "CreateDate": "2022-09-15T12:22:42Z",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [
@@ -4273,25 +4354,26 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
-VpcId : vpc-0320e7bf74af8bd72
-SubnetId1aPublic : subnet-059ff12a72e014ca1
-SubnetId1cPublic : subnet-0076bf4756ca680d1
-SubnetId1aPrivate : subnet-000d7e1758777eb85
-SubnetId1cPrivate : subnet-04ec5cc1209d3c566
-InternetGatewayId : igw-015b39463b346214a
-RouteTableIdPublic : rtb-00a15f36fcbabe379
-RouteTableIdPrivate : rtb-086e760ddf493b0c3
-PublicSecurityGroupsId : sg-04a6d799d221392dc
-PrivateSecurityGroupsId : sg-0ce0e72015ca72d09
-LoadBalancersDnsName : ContainerHandsOn-1258418044.ap-northeast-1.elb.amazonaws.com
-LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadbalancer/app/ContainerHandsOn/09fd839792d722ff
-TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
-RevisionNo : 2
-TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn8080/e27bdcbab658f9d4
-ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/06feb1b2e81f0f88
-ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:listener/app/ContainerHandsOn/09fd839792d722ff/c39cf5572d2a4854
-S3Name : shigeru-oda-container-handson-20220911072649
+AccoutID : 152767562250
+VpcId : vpc-010a940bbd8f747c2
+SubnetId1aPublic : subnet-0356b36ba2daa766c
+SubnetId1cPublic : subnet-0dabe411bfdc835fb
+SubnetId1aPrivate : subnet-0d99180ac3baeb5fa
+SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
+InternetGatewayId : igw-082f42082d7748713
+RouteTableIdPublic : rtb-000a11e6eacc5c263
+RouteTableIdPrivate : rtb-077b87e7eb65d1f43
+PublicSecurityGroupsId : sg-065a7c8eceb9759d4
+PrivateSecurityGroupsId : sg-0f59547a1185820b5
+InstanceId : i-0ddf413a91a008a52
+LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
+LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:loadbalancer/app/ContainerHandsOn/b392eaa096f09053
+TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn/b2da630c91ed7148
+RevisionNo : 11
+TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:targetgroup/ContainerHandsOn8080/71b573e9a3227e50
+ListenerArn : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/b392eaa096f09053/b5d7e272d5152d8d
+ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:152767562250:listener/app/ContainerHandsOn/b392eaa096f09053/b27b8d32f0e78f30
+S3Name : shigeru-oda-container-handson-20220915122328
 ```
 
 #### cmd
@@ -4427,10 +4509,10 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 {
     "pipeline": {
         "name": "ContainerHandsOn",
-        "roleArn": "arn:aws:iam::123456789012:role/ContainerHandsOnForPipeLine",
+        "roleArn": "arn:aws:iam::152767562250:role/ContainerHandsOnForPipeLine",
         "artifactStore": {
             "type": "S3",
-            "location": "shigeru-oda-container-handson-20220911072649"
+            "location": "shigeru-oda-container-handson-20220915122328"
         },
         "stages": [
             {
@@ -4534,11 +4616,13 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 
 ## 動作確認２−１（Blue/Green Deployの確認）
 
-Duration: 0:05:00
+Duration: 0:15:00
 
 ### ■CodePipelineの流れ
 
 ![img](./image/drowio-16-1.png)
+
+
 
 ### ■Bule/Greenデプロイの流れ
 
@@ -4556,16 +4640,16 @@ Duration: 0:05:00
 ![img](./image/img16-1.png)
 ![img](./image/img16-2.png)
 
-- Blue（オリジナル）にトラフィックが向いていることが確認できます。
+- Step1でGreen（置換）に対してタスクセットのデプロイが動きます
+- Step2でGreen（置換）に対してトラフィックをルーティングします
+- Step3で待機状態になることを確認します
 ![img](./image/img16-3.png)
 
-- 上部の検索バーで「Elastic Container Service」と検索
+- 上部の検索バーで「ECS」と検索
 - クラスター一覧の画面が表示されるのでContainerHandsOnを選択
-- タスクタブを選択
+- タスクTABを選択
 - リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。
 ![img](./image/img16-8.png)
-
-- リビジョンが異なる2 * 2のタスクが稼働していることが確認できます。
 
 ### ■アドレス確認 Blue（オリジナル）
 
@@ -4578,7 +4662,7 @@ echo "http://"${LoadBalancersDnsName}
 #### result
 
 ```Cloud9
-http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+http://ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
 ```
 
 #### 画面
@@ -4604,7 +4688,7 @@ echo "http://"${LoadBalancersDnsName}:8080
 #### result
 
 ```Cloud9
-http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
+http://ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com:8080
 ```
 
 #### 画面
@@ -4628,8 +4712,16 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 
 ![img](./image/img16-9.png)
 
-- 暫くするとトラフィックがGreen（置換）に切り替わっていることが確認できます。
+- Step3での待機が完了します
+- Step4でBlue/Greenの入れ替えが行われます。
+- Step5で待機状態になることを確認します
+![img](./image/img16-13.png)
 
+- 「元のタスクセットの終了」ボタン押下
+![img](./image/img16-14.png)
+
+- Step5での待機が完了します
+- Step6で元のタスクセットの終了されます
 ![img](./image/img16-10.png)
 
 ### ■Blue/Greenの置換後
@@ -4684,9 +4776,9 @@ aws iam create-role \
     "Role": {
         "Path": "/",
         "RoleName": "ContainerHandsOnForEventBridge",
-        "RoleId": "AROASHENIAIFKIXIOXE3I",
+        "RoleId": "AROASHENIAIFOJWCZEAQ3",
         "Arn": "arn:aws:iam::152767562250:role/ContainerHandsOnForEventBridge",
-        "CreateDate": "2022-09-13T05:32:16Z",
+        "CreateDate": "2022-09-15T12:51:00Z",
         "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [
@@ -4736,6 +4828,7 @@ aws iam put-role-policy \
 #### result
 
 ```Cloud9
+（なし）
 ```
 
 ### ■EventBridgeを作成
@@ -4766,7 +4859,7 @@ aws events put-rule \
 
 ```Cloud9
 {
-    "RuleArn": "arn:aws:events:ap-northeast-1:152767562250:rule/ContainerHandsOnForEventBridge"
+    "RuleArn": "arn:aws:events:ap-northeast-1:152767562250:rule/ContainerHandsOn"
 }
 ```
 
@@ -4815,7 +4908,7 @@ cat << EOF > index.php
   </head>
   <body>
     <p>Hello! Jaws Days 2022!!</p>
-    <p>CICD ContainerHandOn!!!</p>
+    <p>CICD ContainerHandsOn!!!</p>
     <?php echo gethostname(); ?>
   </body>
 </html>
@@ -4830,14 +4923,14 @@ git diff index.php
 
 ```Cloud9
 diff --git a/src/index.php b/src/index.php
-index 3e2ebff..f6a5cd5 100644
+index 3e2ebff..d408a39 100644
 --- a/src/index.php
 +++ b/src/index.php
 @@ -5,6 +5,7 @@
    </head>
    <body>
      <p>Hello! Jaws Days 2022!!</p>
-+    <p>CICD ContainerHandOn!!!</p>
++    <p>CICD ContainerHandsOn!!!</p>
      <?php echo gethostname(); ?>
    </body>
  </html>
@@ -4856,18 +4949,17 @@ git push
 #### result
 
 ```Cloud9
-[master 1f49fba] CICD TEST
+[master e2743e5] CICD TEST
  1 file changed, 1 insertion(+)
-
 
 Enumerating objects: 7, done.
 Counting objects: 100% (7/7), done.
 Delta compression using up to 2 threads
 Compressing objects: 100% (3/3), done.
-Writing objects: 100% (4/4), 361 bytes | 361.00 KiB/s, done.
+Writing objects: 100% (4/4), 362 bytes | 362.00 KiB/s, done.
 Total 4 (delta 2), reused 0 (delta 0), pack-reused 0
 To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
-   dc004ac..1f49fba  master -> master
+   15052c6..e2743e5  master -> master
 ```
 
 ### ■CodePipeline確認
@@ -4880,7 +4972,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 ![img](./image/img18-1.png)
 ![img](./image/img18-2.png)
 
-- ステップ１- ２が完了済みであることを確認
+- ステップ１・２が完了済みであることを確認
 ![img](./image/img18-3.png)
 
 ### ■アドレス確認
@@ -4896,7 +4988,7 @@ echo "http://"${LoadBalancersDnsName}
 #### result
 
 ```Cloud9
-http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
+http://ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com
 ```
 
 ### ■画面
@@ -4916,34 +5008,25 @@ echo "http://"${LoadBalancersDnsName}":8080"
 #### result
 
 ```Cloud9
-http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
+http://ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.com:8080
 ```
 
 ### ■画面
 
-- CICD-ContainerHandONと表示されていることを確認
+- CICD ContainerHandsOn!!!と表示されていることを確認
 ![img](./image/img18-5.png)
 
 ### ■トラフィックの再ルーティング
 
 - 「トラフィックの再ルーティング」ボタンを押下
-- Blue/Greenの切り替えが行われる
 ![img](./image/img18-3.png)
 
-### ■元のタスクセットの終了
-
-- 「元のタスクセットの終了」ボタンを押下
-- Blueのタスクセットを終了させる
+- ステップ３・４が完了済みであることを確認
 ![img](./image/img18-6.png)
-
-### ■画面
-
-- 全ての処理が終了する
-![img](./image/img18-7.png)
 
 ### ■アドレス確認
 
-- Blue（オリジナル）でのアクセスを確認する
+- オリジナルのアドレスで更新後の内容に変更されていることを確認する
 
 #### cmd
 
@@ -4958,8 +5041,19 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ```
 
 ### ■画面
-
 ![img](./image/img18-5.png)
+
+### ■元のタスクセットの終了
+
+- 「元のタスクセットの終了」ボタンを押下
+![img](./image/img18-6.png)
+
+### ■画面
+
+- 全ての処理が終了する
+![img](./image/img18-7.png)
+
+
 
 ## 片付け
 
@@ -4997,12 +5091,20 @@ Duration: 0:05:00
 ### ■ECS
 - タスク定義 > ContainerHandsOn > 全てのリビジョンを１つずつ登録解除
 - クラスター > ContainerHandsOn > サービスTAB > ContainerHandsOn > サービスを削除(強制削除)
+- クラスター > ContainerHandsOn > タスクTAB > 実行中タスクを選択 > 停止
 - クラスター > ContainerHandsOn > クラスターの削除
 
 ### ■VPC
 - エンドポイント > ContainerHandsOnの4行 > アクション > 削除
 （削除に数分時間を要しますが、お待ちください）
 - お使いのVPC > ContainerHandsOn > アクション > VPCの削除
+
+### ■Elastic Container Registry
+- リポジトリ > jaws-days-2022/container-hands-on > 削除
+
+### ■S3
+- バケット > ${YourName}-container-handson-yyymmddhh24miss > 空にする
+- バケット > ${YourName}-container-handson-yyymmddhh24miss > 削除
 
 ### ■CloudWatch
 - ロググループ > awslogs-container-hands-on > アクション > ロググループの削除
