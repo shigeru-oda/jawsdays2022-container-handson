@@ -3078,7 +3078,7 @@ export RevisionNo="11"
 
 ## CodeCommit作成
 
-Duration: 0:15:00
+Duration: 0:10:00
 
 ### ■CodeCommitの作成
 
@@ -4053,7 +4053,7 @@ aws deploy create-deployment-group \
 
 ## CodePipeline作成
 
-Duration: 0:05:00
+Duration: 0:10:00
 
 ### ■CodePipeline用Role作成
 
@@ -4885,7 +4885,7 @@ aws events put-targets \
 
 ## 動作確認２−２（Codeシリーズを利用）
 
-Duration: 0:05:00
+Duration: 0:10:00
 ### ■CodePipelineの流れ
 
 ![img](./image/drowio-18-1.png)
@@ -5057,7 +5057,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ## 片付け
 
-Duration: 0:05:00
+Duration: 0:10:00
 - 削除部分はGUIで対応します
 - CLIが苦手な方も削除漏れにより課金が発生しないように確認をお願いします
 
