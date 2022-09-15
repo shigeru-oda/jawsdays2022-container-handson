@@ -75,8 +75,6 @@ IDなどは個々に異なりますので
 ```Sample
 cmd実行後の結果です
 ```
-#### 画面
-画面と記載された項目にある内容はコンソール操作の手順を記載したモノとなります
 
 ## ハンズオンを通して学ぶこと
 
@@ -84,7 +82,7 @@ Duration: 0:05:00
 
 ### ■ハンズオン１
 
-- VPCを使ったネットワーク関係の構築
+- VPCを使ったネットワーク環境の構築
 - VPCエンドポイントを使ったセキュア環境の構築
 - ECS /Fargateを使ったサーバーレスコンテナ運用の構築
 
@@ -101,23 +99,23 @@ Duration: 0:05:00
 
 ## 事前準備とネットワーク周りの構築
 
-Duration: 0:05:00
+Duration: 0:15:00
 
 ### ■CloudShellの起動
 
 #### AWS コンソールにログイン
 
-・Administrator権限のIAMユーザーでAWSコンソールにログイン
+- Administrator権限のIAMユーザーでAWSコンソールにログイン
 
 ![img](./image/img3-1.png)
 
-・リージョンを"アジアパシフィック（東京）"に変更
+- リージョンを"アジアパシフィック（東京）"に変更
 
 ![img](./image/img3-2.png)
 
 #### CloudShellボタン押下
 
-・画面右上のCloudShellボタンを押下  
+- 画面右上のCloudShellボタンを押下  
 ![img](./image/img3-3.png)
 
 #### CloudShellを起動
@@ -126,9 +124,9 @@ Duration: 0:05:00
 
 ### ■AWS Account IDの取得
 
-![img](./image/drowio-3-1.png)
+- IDを取得し、変数に格納・確認を行います
 
-・IDを取得し、変数に格納・確認を行います
+![img](./image/drowio-3-1.png)
 
 #### cmd
 
@@ -150,9 +148,9 @@ AccoutID : 123456789012
 
 ### ■ECSタスクの実行Roleの存在確認
 
-![img](./image/drowio-3-2.png)
+- ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います
 
-・ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います
+![img](./image/drowio-3-2.png)
 
 #### cmd
 
@@ -174,9 +172,9 @@ aws iam list-roles | grep "RoleName" | grep "ecsTaskExecutionRole"
 
 ### ■ECSの実行Role作成（Roleが存在しない場合のみ実行）
 
-![img](./image/drowio-3-2.png)
+- ecsTaskExecutionRoleが存在しない場合のみ実行します
 
-・ecsTaskExecutionRoleが存在しない場合のみ実行します
+![img](./image/drowio-3-2.png)
 
 #### cmd
 
@@ -233,9 +231,9 @@ aws iam create-role \
 
 ### ■RoleにPolicyをアタッチ（Roleが存在しない場合のみ実行）
 
-![img](./image/drowio-3-3.png)
+- 作成したRoleにPolicyをアタッチします
 
-・作成したRoleにPolicyをアタッチします
+![img](./image/drowio-3-3.png)
 
 #### cmd
 
@@ -251,7 +249,7 @@ aws iam attach-role-policy \
 （なし）
 ```
 
-・Policyがアタッチされたことを確認します
+- Policyがアタッチされたことを確認します
 
 #### cmd
 
@@ -275,9 +273,9 @@ aws iam list-attached-role-policies \
 
 ### ■VPCの作成
 
-![img](./image/drowio-3-4.png)
+- VPCを新規に作成します
 
-・VPCを新規に作成します
+![img](./image/drowio-3-4.png)
 
 #### cmd
 
@@ -321,7 +319,7 @@ aws ec2 create-vpc \
 
 ### ■VpcIdの取得
 
-・IDを取得し、変数に格納・確認を行います
+- IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -349,8 +347,8 @@ VpcId : vpc-0d3c1c88db46cfba7
 
 #### ■DNS名前解決をONにする
 
-・作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします  
-・後程作成するVPCエンドポイントに必要な為です  
+- 作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします  
+- 後程作成するVPCエンドポイントに必要な為です  
 
 ### cmd
 
@@ -368,7 +366,7 @@ VpcId : vpc-0d3c1c88db46cfba7
 
 #### ■DNS名前解決の状態確認
 
-・設定内容が正しく反映されているか確認を行います
+- 設定内容が正しく反映されているか確認を行います
 
 ### cmd
 
@@ -389,8 +387,8 @@ aws ec2 describe-vpc-attribute \
 
 #### ■DNSホスト名をONにする
 
-・VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します  
-・後程作成するVPCエンドポイントに必要な為です  
+- VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します  
+- 後程作成するVPCエンドポイントに必要な為です  
 
 ### cmd
 
@@ -408,7 +406,7 @@ aws ec2 describe-vpc-attribute \
 
 #### ■DNSホスト名の状態確認
 
-・設定内容が正しく反映されているか確認を行います
+- 設定内容が正しく反映されているか確認を行います
 
 ### cmd
 
@@ -429,10 +427,10 @@ aws ec2 describe-vpc-attribute \
 
 ### ■Subnetの作成
 
-![img](./image/drowio-3-5.png)
+- 作成したVPCの中にSubnetを4つ作成します  
+- Private Subnetが2つ、Public Subnetが2つです  
 
-・作成したVPCの中にSubnetを4つ作成します  
-・Private Subnetが2つ、Public Subnetが2つです  
+![img](./image/drowio-3-5.png)
 
 #### cmd (Public Subnet 1つ目)
 
@@ -616,7 +614,7 @@ aws ec2 create-subnet \
 
 ### ■Subnet IDの取得
 
-・IDを取得し、変数に格納・確認を行います
+- IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -682,7 +680,7 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 
 ![img](./image/drowio-3-6.png)
 
-・Internetの出入り口であるInternetGatewayを作成する
+- Internetの出入り口であるInternetGatewayを作成する
 
 #### cmd
 
@@ -711,7 +709,7 @@ aws ec2 create-internet-gateway \
 
 ### ■InternetGateway IDの取得
 
-・IDを取得し、変数に格納・確認を行います
+- IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -749,9 +747,9 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 
 ### ■InternetGatewayをVPCにAttach
 
-![img](./image/drowio-3-7.png)
+- VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します
 
-・VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します
+![img](./image/drowio-3-7.png)
 
 #### cmd
 
@@ -769,7 +767,7 @@ aws ec2 attach-internet-gateway \
 
 ### ■InternetGatewayをVPCに紐付けされていることを確認
 
-・アタッチされていることを確認
+- アタッチされていることを確認
 
 #### cmd
 
@@ -790,10 +788,10 @@ available
 
 ### ■RouteTableの作成
 
-![img](./image/drowio-3-8.png)
+- PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します  
+- 現時点ではRouteTableとSubnetの紐付けはないです  
 
-・PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します  
-・現時点ではRouteTableとSubnetの紐付けはないです  
+![img](./image/drowio-3-8.png)
 
 #### cmd (PublicSubnet)
 
@@ -869,7 +867,7 @@ aws ec2 create-route-table \
 
 ### ■RouteTable IDの取得
 
-・IDを取得し、変数に格納・確認を行います
+- IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -921,9 +919,9 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 
 ### ■RouteTableにSubnetを紐付け
 
-![img](./image/drowio-3-9.png)
+- RouteTableとSubnetを紐付けします
 
-・RouteTableとSubnetを紐付けします
+![img](./image/drowio-3-9.png)
 
 #### cmd (PublicSubnet 1つ目)
 
@@ -1003,9 +1001,9 @@ aws ec2 associate-route-table \
 
 ### ■RouteTableにInternetGatewayを紐付け
 
-![img](./image/drowio-3-10.png)
+- PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします
 
-・PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします
+![img](./image/drowio-3-10.png)
 
 #### cmd
 
@@ -1026,9 +1024,9 @@ aws ec2 create-route \
 
 ### ■PublicSubnet用のSecurityGroup作成
 
-![img](./image/drowio-3-11.png)
+- PublicSubnet用のSecurityGroup作成
 
-・PublicSubnet用のSecurityGroup作成
+![img](./image/drowio-3-11.png)
 
 #### cmd
 
@@ -1056,7 +1054,7 @@ aws ec2 create-security-group \
 
 ### ■PublicSunetのSecurityGroupsIdの取得
 
-・IDを取得し、変数に格納・確認を行います
+- IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -1100,9 +1098,9 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 
 ### ■PrivateSubnet用のSecurityGroup作成
 
-![img](./image/drowio-3-12.png)
+- PrivateSubnet用のSecurityGroup作成
 
-・PrivateSubnet用のSecurityGroup作成
+![img](./image/drowio-3-12.png)
 
 #### cmd
 
@@ -1130,7 +1128,7 @@ aws ec2 create-security-group \
 
 ### ■PublicSunetのSecurityGroupsIdの取得
 
-・IDを取得し、変数に格納・確認を行います
+- IDを取得し、変数に格納・確認を行います
 
 ```CloudShell
 PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
@@ -1173,8 +1171,10 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 ```
 
 ### ■PublicSubnetのインバウンドルールを追加
+
+- InternetからのHTTP（プロトコルtcp ポート80）でのアクセスを許可します
+
 ![img](./image/drowio-3-13.png)
-・InternetからのHTTPでのアクセスを許可します
 
 #### cmd
 
@@ -1207,8 +1207,10 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 ### ■PrivateSubnetのインバウンドルールを追加１
+
+- PublicSubnet経由でのHTTPでのアクセスを許可します
+
 ![img](./image/drowio-3-14.png)
-・PublicSubnet経由でのHTTPでのアクセスを許可します
 
 #### cmd
 
@@ -1244,7 +1246,7 @@ aws ec2 authorize-security-group-ingress \
 
 ### ■PrivateSubnetのインバウンドルールを追加２
 
-・後で設定するVPCエンドポイントの為にHTTPSアクセスを許可します
+- 後で設定するVPCエンドポイントの為にHTTPSアクセスを許可します
 
 #### cmd
 
@@ -1278,9 +1280,9 @@ aws ec2 authorize-security-group-ingress \
 
 ### ■CloudWatch LogGroupの作成
 
-![img](./image/drowio-3-15.png)
+- ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。
 
-・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。
+![img](./image/drowio-3-15.png)
 
 #### cmd
 
@@ -1320,13 +1322,13 @@ aws logs describe-log-groups --log-group-name-prefix awslogs-container-hands-on
 
 ## Cloud9作成
 
-Duration: 0:05:00
+Duration: 0:10:00
 
 ### ■Cloud9の作成
 
-![img](./image/drowio-4-1.png)
+- コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成
 
-・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成
+![img](./image/drowio-4-1.png)
 
 #### cmd
 
@@ -1348,6 +1350,9 @@ aws cloud9 create-environment-ec2 \
 ```
 
 ### ■Cloud9環境Roleを作成
+
+- Cloud9上でAWSリソースを作成するため、Roleを作成します
+
 ![img](./image/drowio-4-2.png)
 
 #### cmd
@@ -1414,6 +1419,8 @@ aws iam list-attached-role-policies \
 
 ### ■instance-profileを作成
 
+- Cloud9を稼働しているEC2にRoleを付与するため、instance-profileを作成
+
 #### cmd
 
 ```CloudShell
@@ -1454,7 +1461,7 @@ aws iam add-role-to-instance-profile \
 
 ### ■Cloud9のInstanceIdの取得
 
-・IDを取得し、変数に格納・確認を行います
+- IDを取得し、変数に格納・確認を行います
 
 #### cmd
 
@@ -1527,7 +1534,7 @@ aws ec2 associate-iam-instance-profile \
 
 ### ■環境変数をメモ
 
-・Cloud9で使うため、取得した変数をエディターに残して下さい
+- Cloud9で使うため、取得した変数をエディターに残して下さい
 
 #### cmd
 
@@ -1571,10 +1578,10 @@ export InstanceId="i-04c7c620fef60c9cb"
 - `AWS Cloud9 > Your environments`に`ContainerHandsOn`が作成されているので`Open IDE`ボタン押下
 - Cloud9の画面が表示される
 
-・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます
+- 今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます
 <a href="./image/img4-1.png" target="_blank" rel="noopener noreferrer">![img](./image/img4-1.png)</a>
 
-・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください
+- 間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください
 <a href="./image/img4-2.png" target="_blank" rel="noopener noreferrer">![img](./image/img4-2.png)</a>
 
 ### ■Cloud9でCredentialsを切り替え
@@ -1591,23 +1598,23 @@ Duration: 0:05:00
 
 ### ■環境変数を貼り付け
 
-・CloudShellで取得した環境変数をCloud9へ移設
+- CloudShellで取得した環境変数をCloud9へ移設
 
 #### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
-$ export AccoutID="123456789012"
-$ export VpcId="vpc-0d3c1c88db46cfba7"
-$ export SubnetId1aPublic="subnet-0f66f257f167a1d47"
-$ export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
-$ export SubnetId1aPrivate="subnet-049f0119237ff00a0"
-$ export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
-$ export InternetGatewayId="igw-0a511ba68ceb84ed8"
-$ export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
-$ export RouteTableIdPrivate="rtb-0afaac377925bca9a"
-$ export PublicSecurityGroupsId="sg-01cc901415c240504"
-$ export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
-$ export InstanceId="i-04c7c620fef60c9cb"
+export AccoutID="123456789012"
+export VpcId="vpc-0d3c1c88db46cfba7"
+export SubnetId1aPublic="subnet-0f66f257f167a1d47"
+export SubnetId1cPublic="subnet-0a1e2afffc8c140d8"
+export SubnetId1aPrivate="subnet-049f0119237ff00a0"
+export SubnetId1cPrivate="subnet-0ea89b6bc85e0ec61"
+export InternetGatewayId="igw-0a511ba68ceb84ed8"
+export RouteTableIdPublic="rtb-00cf30796b25b9bc9"
+export RouteTableIdPrivate="rtb-0afaac377925bca9a"
+export PublicSecurityGroupsId="sg-01cc901415c240504"
+export PrivateSecurityGroupsId="sg-040aff209e1fe59cc"
+export InstanceId="i-04c7c620fef60c9cb"
 ```
 
 ``` Cloud9
@@ -1660,9 +1667,9 @@ export AWS_DEFAULT_OUTPUT=json
 
 ### ■ECRの作成
 
-![img](./image/drowio-5-1.png)
+- コンテナイメージのレジストリであるECRを作成
 
-・コンテナイメージのレジストリであるECRを作成
+![img](./image/drowio-5-1.png)
 
 #### cmd
 
@@ -1695,7 +1702,7 @@ aws ecr create-repository \
 
 ## Docker Image作成
 
-Duration: 0:05:00
+Duration: 0:10:00
 
 ### ■Cloud9上にdockerセットアップされていることを確認
 
@@ -1823,13 +1830,13 @@ dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 
 #### 画面
 
+![img](./image/img5-1.png)
+
 - Cloud9のヘッダ部分の`Preview`-> `Preview Runnnig Application`のボタン押下  
 - `Hello! Jaws Days 2022!!`と記載された画面が表示されること  
 
-![img](./image/img5-1.png)
-
 Positive
-: 何か間違ってコンテナを止めたい場合には以下を実行ください
+: 作業ミス等によりコンテナを止めたい場合には以下を実行ください
 
 ```Cloud9
 docker stop $(docker ps -q)
@@ -1892,6 +1899,8 @@ Login Succeeded
 
 ### ■Docker ImageをECRにPush
 
+- Cloud9で作成したイメージをECRに格納します
+
 ![img](./image/drowio-6-1.png)
 
 #### cmd
@@ -1936,6 +1945,8 @@ ECRに格納されたイメージを取得するためには通常Internet経由
 - com.amazonaws.ap-northeast-1.logs
 
 ### ■com.amazonaws.ap-northeast-1.s3
+
+- S3はGateway型のエンドポイントを利用します
 
 ![img](./image/drowio-7-1.png)
 
@@ -1983,6 +1994,8 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.ecr.dkr
+
+- ECRはInterface型のエンドポイントを利用します
 
 ![img](./image/drowio-7-2.png)
 
@@ -2061,6 +2074,8 @@ aws ec2 create-vpc-endpoint \
 
 ### ■com.amazonaws.ap-northeast-1.ecr.api
 
+- ECRはInterface型のエンドポイントを利用します
+
 ![img](./image/drowio-7-3.png)
 
 #### cmd
@@ -2133,6 +2148,8 @@ aws ec2 create-vpc-endpoint \
 ```
 
 ### ■com.amazonaws.ap-northeast-1.logs
+
+- CloudWatch LogsはInterface型のエンドポイントを利用します
 
 ![img](./image/drowio-7-4.png)
 
@@ -2211,8 +2228,8 @@ Duration: 0:05:00
 
 ### ■アプリケーションロードバランサーの作成
 
+- 実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します
 ![img](./image/drowio-8-1.png)
-・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します
 
 #### cmd
 
@@ -2456,7 +2473,7 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 
 ### ■リスナーの追加
 
-・アプリケーションロードバランサーとターゲットグループを紐付けします
+- アプリケーションロードバランサーとターゲットグループを紐付けします
 
 #### cmd
 
@@ -2500,7 +2517,7 @@ aws elbv2 create-listener \
 }
 ```
 
-## Fargate作成
+## ECS/Fargate作成
 
 Duration: 0:05:00
 
@@ -2520,25 +2537,25 @@ Duration: 0:05:00
 
 #### ECS on Fargateの構成図
 
-![img](./image/img9-2.png)
-
 - しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです
 - EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate
 
-#### ECSの主要要素
+![img](./image/img9-2.png)
 
-![img](./image/img9-3.png)
+#### ECSの主要要素
 
 - クラスター：実行環境の境界線
 - サービス：タスクを維持する機能
 - タスク：タスク定義に記載された内容を実行するコンテナ群
 - タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義
 
+![img](./image/img9-3.png)
+
 ### ■クラスターの作成
 
-![img](./image/drowio-9-1.png)
+- クラスターという実行環境の境界線を作成します
 
-・クラスターという実行環境の境界線を作成します
+![img](./image/drowio-9-1.png)
 
 #### cmd
 
@@ -2581,9 +2598,9 @@ aws ecs create-cluster \
 
 ### ■タスク定義の作成
 
-![img](./image/drowio-9-2.png)
+- どのようなタスクが稼働するかを定義します
 
-・どのようなタスクが稼働するかを定義します
+![img](./image/drowio-9-2.png)
 
 #### cmd
 
@@ -2707,7 +2724,7 @@ aws ecs register-task-definition \
 
 ### ■タスク定義のリビジョン取得
 
-・タスク定義は作成する度にカウントアップされるので、最新のリビジョン番号を取得します
+- タスク定義は作成する度にカウントアップされるので、最新のリビジョン番号を取得します
 
 #### cmd
 
@@ -2762,9 +2779,9 @@ RevisionNo : 2
 
 ### ■サービスの作成
 
-![img](./image/drowio-9-3.png)
+- 実行数やネットワーク周りを定義したサービスを作成します
 
-・実行数やネットワーク周りをまとめます
+![img](./image/drowio-9-3.png)
 
 #### cmd
 
@@ -2889,6 +2906,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ```
 
 ### ■ブラウザ確認
+
 - 上記で取得されたアドレスをChromeなどのブラウザに貼り付け、以下のような表示になること
 - 503エラーの場合にはデプロイ中のため、1分程度待って、リトライをお願いします
 - 更新を行うと2行目のhostnameが変更されていること（ALBで負荷分散されている確認）
@@ -2910,6 +2928,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 - "ロードバランサーのアクセスログ" と "ブラウザアクセスログ"をそれぞれのログストリームで確認
 
 #### 画面
+
 - ログストリームを確認
 
 ![img](./image/img10-3.png)
@@ -2932,7 +2951,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ### ■ここまで取得された変数を整理
 
-・後続のため、取得した変数をエディターに残して下さい
+- 後続のため、取得した変数をエディターに残して下さい
 
 #### cmd
 
@@ -2983,9 +3002,10 @@ export RevisionNo="6"
 Duration: 0:05:00
 
 ### ■CodeCommitの作成
-![img](./image/drowio-12-1.png)
 
-・git互換のソースリポジトリであるCodeCommitを作成
+- git互換のソースリポジトリであるCodeCommitを作成
+
+![img](./image/drowio-12-1.png)
 
 #### cmd
 
@@ -3015,9 +3035,8 @@ aws codecommit create-repository \
 ```
 
 ### ■CodeCommitリポジトリのクローン
-![img](./image/drowio-12-2.png)
 
-・git cloneでリポジトリをcloneします、中身は空です
+- git cloneでリポジトリをcloneします、中身は空です
 
 #### cmd
 
@@ -3035,12 +3054,12 @@ warning: You appear to have cloned an empty repository.
 
 ### ■資材の準備
 
-・事前に作成した資材をgit管理ディレクトリにcopyします
+- 事前に作成した資材をgit管理ディレクトリにcopyします
 
 #### cmd
 
 ```Cloud9
-cd ContainerHandsOn
+cd ~/environment/ContainerHandsOn
 cp -p ../Dockerfile ./
 cp -pr ../src ./
 ls -lR
@@ -3061,7 +3080,7 @@ total 4
 
 ### ■buildspec.ymlの新規作成
 
-・CodeBuildの仕様を記述したファイルを作成します
+- CodeBuildの仕様を記述したファイルを作成します
 
 #### cmd
 
@@ -3124,7 +3143,8 @@ ls -l buildspec.yml
 
 ### ■appspec.ymlの新規作成
 
-・CodeDeployの仕様を記述したファイルを作成します
+- CodeDeployの仕様を記述したファイルを作成します
+- <TASK_DEFINITION>と記載されている箇所は後ほどCodePipelineで更新します
 
 #### cmd
 
@@ -3164,8 +3184,8 @@ ls -l appspec.yml
 
 ### ■taskdef.jsonの新規作成
 
-・ECS Taskの仕様を記述したファイルを作成します  
-・前半のハンズオンで作成した内容を出力しています  
+- ECS Taskの仕様を記述したファイルを作成します  
+- 前半のハンズオンで作成した内容を出力しています  
 
 #### cmd
 
@@ -3183,9 +3203,10 @@ aws ecs describe-task-definition \
 
 ### ■taskdef.jsonの変更
 
-・Cloud9のエディター機能を使って、6行目を変更します  
-・変更後、Ctrl+Sでの保存をお忘れなく  
-・sedでやりたい・・・
+- Cloud9のエディター機能を使って、6行目を変更します  
+- <IMAGE_NAME>はPipeLine処理で作成された最新のイメージに置換されます  
+- 変更後、Ctrl+Sでの保存をお忘れなく  
+- sedでやりたい- - -
 
 #### 変更前
 
@@ -3201,7 +3222,7 @@ aws ecs describe-task-definition \
 
 ### ■CodeCommitへのPush
 
-・作成したファイルをCodeCommitへPushし格納します
+- 作成したファイルをCodeCommitへPushし格納します
 
 #### cmd
 
@@ -3240,8 +3261,10 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 Duration: 0:05:00
 
 ### ■CodeBuild用Role作成
+
+- CodeBuildのためにRoleを作成します。
+
 ![img](./image/drowio-13-1.png)
-・CodeBuildのためにRoleを作成します。
 
 #### cmd
 
@@ -3406,7 +3429,9 @@ EOF
 ```
 
 ### ■CodeBuild作成
+
 ![img](./image/drowio-13-2.png)
+
 #### cmd
 
 ```Cloud9
@@ -3467,7 +3492,9 @@ aws codebuild create-project \
 Duration: 0:05:00
 
 ### ■CodeDeploy用Role作成
+
 ![img](./image/drowio-14-1.png)
+
 #### cmd
 
 ```Cloud9
@@ -3580,9 +3607,10 @@ aws iam list-attached-role-policies \
 ```
 
 ### ■アプリケーションを作成
-![img](./image/drowio-14-2.png)
 
 - デプロイするアプリケーションを識別する名前を定義します。
+
+![img](./image/drowio-14-2.png)
 
 #### cmd
 
@@ -3602,6 +3630,7 @@ aws deploy create-application \
 ```
 
 ### ■ターゲットグループの作成
+
 - ALBのターゲットグループを新規作成します、テスト用として通常利用とはポートは変更します
 
 #### cmd
@@ -3649,6 +3678,7 @@ aws elbv2 create-target-group \
 ```
 
 ### ■ターゲットグループのARN取得
+
 - 上記で作成したターゲットグループのARNを取得します
 
 #### cmd
@@ -3704,7 +3734,9 @@ TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:ta
 ```
 
 ### ■リスナーの作成
+
 - ALBに対する接続リクエストを追加します。8080ポートでテスト用として受け口となるリスナーです。
+
 #### cmd
 
 ```Cloud9
@@ -3748,6 +3780,7 @@ aws elbv2 create-listener \
 ```
 
 ### ■リスナーのARN取得
+
 - リスナーのARNを取得します
 
 #### cmd
@@ -3830,7 +3863,9 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
 ```
 
 ### ■PublicSubnetのインバウンドルールを追加
+
 - リスナーとして8080ポートを追加するので、セキュリティグループにも8080ポートを許可します
+
 #### cmd
 
 ```Cloud9
@@ -3862,6 +3897,7 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 ### ■デプロイグループの作成
+
 - デプロイ環境の定義を行います
 
 #### cmd
@@ -3939,7 +3975,9 @@ aws deploy create-deployment-group \
 Duration: 0:05:00
 
 ### ■CodePipeline用Role作成
+
 ![img](./image/drowio-15-1.png)
+
 #### cmd
 
 ```Cloud9
@@ -4188,7 +4226,8 @@ aws iam put-role-policy \
 （なし）
 ```
 
-### ■S3 artifactStoreを作成
+### ■artifactStoreとしてS3を作成
+
 ![img](./image/drowio-15-2.png)
 
 #### cmd
@@ -4262,7 +4301,9 @@ aws s3 mb s3://${S3Name}
 ```
 
 ### ■CodePipelineを作成
+
 ![img](./image/drowio-15-3.png)
+
 #### cmd
 
 ```Cloud9
@@ -4495,6 +4536,17 @@ aws codepipeline create-pipeline --cli-input-json file://create-pipeline.json
 
 Duration: 0:05:00
 
+### ■CodePipelineの流れ
+
+![img](./image/drowio-16-1.png)
+
+### ■Bule/Greenデプロイの流れ
+
+- 参考元：[20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
+![img](./image/BlackBelt-16-1.png)
+![img](./image/BlackBelt-16-2.png)
+![img](./image/BlackBelt-16-3.png)
+
 ### ■AWS コンソールでCodePipelineを検索
 
 - 上部の検索バーでCodePipelineと検索
@@ -4593,7 +4645,9 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 Duration: 0:05:00
 
 ### ■EventBridge用Role作成
+
 ![img](./image/drowio-17-1.png)
+
 #### cmd
 
 ```Cloud9
@@ -4685,6 +4739,7 @@ aws iam put-role-policy \
 ```
 
 ### ■EventBridgeを作成
+![img](./image/drowio-17-2.png)
 
 #### cmd
 
@@ -4716,6 +4771,7 @@ aws events put-rule \
 ```
 
 ### ■targetを作成
+![img](./image/drowio-17-3.png)
 
 #### cmd
 
@@ -4734,13 +4790,13 @@ aws events put-targets \
 }
 ```
 
-## 動作確認２−２（Codeシリーズを利用)）
+## 動作確認２−２（Codeシリーズを利用）
 
 Duration: 0:05:00
 
 ### ■srcの変更
 
-・Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する
+- Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する
 
 #### cmd
 
@@ -4822,7 +4878,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 ![img](./image/img18-1.png)
 ![img](./image/img18-2.png)
 
-- ステップ１・２が完了済みであることを確認
+- ステップ１- ２が完了済みであることを確認
 ![img](./image/img18-3.png)
 
 ### ■アドレス確認
@@ -4879,6 +4935,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com:8080
 ![img](./image/img18-6.png)
 
 ### ■画面
+
 - 全ての処理が終了する
 ![img](./image/img18-7.png)
 
@@ -4905,5 +4962,3 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ## 片付け
 
 Duration: 0:05:00
-
-

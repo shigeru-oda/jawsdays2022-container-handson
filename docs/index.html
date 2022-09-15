@@ -70,8 +70,6 @@
 <p>を確認ください</p>
 <pre><code language="language-Sample" class="language-Sample">cmd実行後の結果です
 </code></pre>
-<h3 is-upgraded>画面</h3>
-<p>画面と記載された項目にある内容はコンソール操作の手順を記載したモノとなります</p>
 
 
       </google-codelab-step>
@@ -79,7 +77,7 @@
       <google-codelab-step label="ハンズオンを通して学ぶこと" duration="5">
         <h2 is-upgraded>■ハンズオン１</h2>
 <ul>
-<li>VPCを使ったネットワーク関係の構築</li>
+<li>VPCを使ったネットワーク環境の構築</li>
 <li>VPCエンドポイントを使ったセキュア環境の構築</li>
 <li>ECS /Fargateを使ったサーバーレスコンテナ運用の構築</li>
 </ul>
@@ -96,20 +94,28 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="事前準備とネットワーク周りの構築" duration="5">
+      <google-codelab-step label="事前準備とネットワーク周りの構築" duration="15">
         <h2 is-upgraded>■CloudShellの起動</h2>
 <h3 is-upgraded>AWS コンソールにログイン</h3>
-<p>・Administrator権限のIAMユーザーでAWSコンソールにログイン</p>
+<ul>
+<li>Administrator権限のIAMユーザーでAWSコンソールにログイン</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/8ec695a05f461637.png"></p>
-<p>・リージョンを&#34;アジアパシフィック（東京）&#34;に変更</p>
+<ul>
+<li>リージョンを&#34;アジアパシフィック（東京）&#34;に変更</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/a700f74d7e2e97dd.png"></p>
 <h3 is-upgraded>CloudShellボタン押下</h3>
-<p>・画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></p>
+<ul>
+<li>画面右上のCloudShellボタンを押下<br><img alt="img" src="img/1bbb070a4cf9999c.png"></li>
+</ul>
 <h3 is-upgraded>CloudShellを起動</h3>
 <p class="image-container"><img alt="img" src="img/9b0f4ff0313865b9.png"></p>
 <h2 is-upgraded>■AWS Account IDの取得</h2>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/54f3afc539095974.png"></p>
-<p>・IDを取得し、変数に格納・確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID=`aws sts get-caller-identity --query Account --output text`
 </code></pre>
@@ -121,8 +127,10 @@ EOF
 <pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
 </code></pre>
 <h2 is-upgraded>■ECSタスクの実行Roleの存在確認</h2>
+<ul>
+<li>ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/dc49b865deb5e1fe.png"></p>
-<p>・ECSタスクを実行するRole(ecsTaskExecutionRole)の存在確認を行います</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam list-roles | grep &#34;RoleName&#34; | grep &#34;ecsTaskExecutionRole&#34;
 </code></pre>
@@ -133,8 +141,10 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■ECSの実行Role作成（Roleが存在しない場合のみ実行）</h2>
+<ul>
+<li>ecsTaskExecutionRoleが存在しない場合のみ実行します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/dc49b865deb5e1fe.png"></p>
-<p>・ecsTaskExecutionRoleが存在しない場合のみ実行します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
@@ -181,8 +191,10 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■RoleにPolicyをアタッチ（Roleが存在しない場合のみ実行）</h2>
+<ul>
+<li>作成したRoleにPolicyをアタッチします</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/7d76bf6d6743da53.png"></p>
-<p>・作成したRoleにPolicyをアタッチします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam attach-role-policy \
   --role-name ecsTaskExecutionRole \
@@ -191,7 +203,9 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code>（なし）
 </code></pre>
-<p>・Policyがアタッチされたことを確認します</p>
+<ul>
+<li>Policyがアタッチされたことを確認します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws iam list-attached-role-policies \
   --role-name ecsTaskExecutionRole
@@ -207,8 +221,10 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■VPCの作成</h2>
+<ul>
+<li>VPCを新規に作成します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/9624902962ab2ee9.png"></p>
-<p>・VPCを新規に作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-vpc \
     --cidr-block 10.0.0.0/16 \
@@ -244,7 +260,9 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■VpcIdの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">VpcId=`aws ec2 describe-vpcs \
     --query &#39;Vpcs[*].VpcId&#39; \
@@ -262,7 +280,10 @@ EOF
 VpcId : vpc-0d3c1c88db46cfba7
 </code></pre>
 <h3 is-upgraded>■DNS名前解決をONにする</h3>
-<p>・作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします<br> ・後程作成するVPCエンドポイントに必要な為です</p>
+<ul>
+<li>作成したVPCで「ドメイン名からIPアドレスへの変換、またはその逆」を可能にします<br></li>
+<li>後程作成するVPCエンドポイントに必要な為です<br></li>
+</ul>
 <h2 is-upgraded>cmd</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell"> aws ec2 modify-vpc-attribute \
   --vpc-id ${VpcId}  \
@@ -272,7 +293,9 @@ VpcId : vpc-0d3c1c88db46cfba7
 <pre><code language="language-CloudShell" class="language-CloudShell">（なし）
 </code></pre>
 <h3 is-upgraded>■DNS名前解決の状態確認</h3>
-<p>・設定内容が正しく反映されているか確認を行います</p>
+<ul>
+<li>設定内容が正しく反映されているか確認を行います</li>
+</ul>
 <h2 is-upgraded>cmd</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-vpc-attribute \
   --query EnableDnsSupport \
@@ -285,7 +308,10 @@ VpcId : vpc-0d3c1c88db46cfba7
 }
 </code></pre>
 <h3 is-upgraded>■DNSホスト名をONにする</h3>
-<p>・VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します<br> ・後程作成するVPCエンドポイントに必要な為です</p>
+<ul>
+<li>VPC内でDNSホスト名(ex : ip-10-0-0-23.ap-northeast-1.compute.internal)を持つように設定します<br></li>
+<li>後程作成するVPCエンドポイントに必要な為です<br></li>
+</ul>
 <h2 is-upgraded>cmd</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell"> aws ec2 modify-vpc-attribute \
   --vpc-id ${VpcId}  \
@@ -295,7 +321,9 @@ VpcId : vpc-0d3c1c88db46cfba7
 <pre><code language="language-CloudShell" class="language-CloudShell">（なし）
 </code></pre>
 <h3 is-upgraded>■DNSホスト名の状態確認</h3>
-<p>・設定内容が正しく反映されているか確認を行います</p>
+<ul>
+<li>設定内容が正しく反映されているか確認を行います</li>
+</ul>
 <h2 is-upgraded>cmd</h2>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-vpc-attribute \
   --query EnableDnsHostnames \
@@ -308,8 +336,11 @@ VpcId : vpc-0d3c1c88db46cfba7
 }
 </code></pre>
 <h2 is-upgraded>■Subnetの作成</h2>
+<ul>
+<li>作成したVPCの中にSubnetを4つ作成します<br></li>
+<li>Private Subnetが2つ、Public Subnetが2つです<br></li>
+</ul>
 <p class="image-container"><img alt="img" src="img/4b6c8ed3cde1b482.png"></p>
-<p>・作成したVPCの中にSubnetを4つ作成します<br> ・Private Subnetが2つ、Public Subnetが2つです</p>
 <h3 is-upgraded>cmd (Public Subnet 1つ目)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-subnet \
     --vpc-id $VpcId \
@@ -467,7 +498,9 @@ VpcId : vpc-0d3c1c88db46cfba7
 }
 </code></pre>
 <h2 is-upgraded>■Subnet IDの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">SubnetId1aPublic=`aws ec2 describe-subnets \
     --filters &#34;Name=tag-key,Values=Name&#34; \
@@ -516,7 +549,9 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 </code></pre>
 <h2 is-upgraded>■InternetGatewayの作成</h2>
 <p class="image-container"><img alt="img" src="img/45a631880772ed3d.png"></p>
-<p>・Internetの出入り口であるInternetGatewayを作成する</p>
+<ul>
+<li>Internetの出入り口であるInternetGatewayを作成する</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-internet-gateway \
     --tag-specifications &#34;ResourceType=internet-gateway,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
@@ -537,7 +572,9 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 }
 </code></pre>
 <h2 is-upgraded>■InternetGateway IDの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">InternetGatewayId=`aws ec2 describe-internet-gateways \
     --query &#39;InternetGateways[*].InternetGatewayId&#39; \
@@ -565,8 +602,10 @@ SubnetId1cPrivate : subnet-0ea89b6bc85e0ec61
 InternetGatewayId : igw-0a511ba68ceb84ed8
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCにAttach</h2>
+<ul>
+<li>VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/57c1596c33ffed93.png"></p>
-<p>・VPCとInternetGatewayを紐付けし、Internetとの接続点を作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 attach-internet-gateway \
     --internet-gateway-id ${InternetGatewayId} \
@@ -576,7 +615,9 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 <pre><code language="language-CloudShell" class="language-CloudShell">（なし）
 </code></pre>
 <h2 is-upgraded>■InternetGatewayをVPCに紐付けされていることを確認</h2>
-<p>・アタッチされていることを確認</p>
+<ul>
+<li>アタッチされていることを確認</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 describe-internet-gateways \
     --internet-gateway-ids ${InternetGatewayId} \
@@ -589,8 +630,11 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 <pre><code language="language-CloudShell" class="language-CloudShell">available
 </code></pre>
 <h2 is-upgraded>■RouteTableの作成</h2>
+<ul>
+<li>PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します<br></li>
+<li>現時点ではRouteTableとSubnetの紐付けはないです<br></li>
+</ul>
 <p class="image-container"><img alt="img" src="img/ed1a5faf3cef0944.png"></p>
-<p>・PublicSubnetとPrivateSubnetのデータの流れを制御するルートテーブルを作成します<br> ・現時点ではRouteTableとSubnetの紐付けはないです</p>
 <h3 is-upgraded>cmd (PublicSubnet)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route-table \
   --vpc-id ${VpcId} \
@@ -652,7 +696,9 @@ InternetGatewayId : igw-0a511ba68ceb84ed8
 }
 </code></pre>
 <h2 is-upgraded>■RouteTable IDの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">RouteTableIdPublic=`aws ec2 describe-route-tables \
   --query &#34;RouteTables[*].RouteTableId&#34; \
@@ -692,8 +738,10 @@ RouteTableIdPublic : rtb-00cf30796b25b9bc9
 RouteTableIdPrivate : rtb-0afaac377925bca9a
 </code></pre>
 <h2 is-upgraded>■RouteTableにSubnetを紐付け</h2>
+<ul>
+<li>RouteTableとSubnetを紐付けします</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/aa08c9402ecac2c6.png"></p>
-<p>・RouteTableとSubnetを紐付けします</p>
 <h3 is-upgraded>cmd (PublicSubnet 1つ目)</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 associate-route-table \
   --route-table-id ${RouteTableIdPublic} \
@@ -747,8 +795,10 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 }
 </code></pre>
 <h2 is-upgraded>■RouteTableにInternetGatewayを紐付け</h2>
+<ul>
+<li>PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/5f8c0b4a1ae909b9.png"></p>
-<p>・PublicSubnet用のRouteTableにInternetGatewayを紐付け、Internetに接続できるようにします</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-route \
   --route-table-id ${RouteTableIdPublic} \
@@ -761,8 +811,10 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 }
 </code></pre>
 <h2 is-upgraded>■PublicSubnet用のSecurityGroup作成</h2>
+<ul>
+<li>PublicSubnet用のSecurityGroup作成</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/24c36db597450cbb.png"></p>
-<p>・PublicSubnet用のSecurityGroup作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
   --group-name PublicSecurityGroup \
@@ -782,7 +834,9 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 }
 </code></pre>
 <h2 is-upgraded>■PublicSunetのSecurityGroupsIdの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code>PublicSecurityGroupsId=`aws ec2 describe-security-groups \
   --query &#39;SecurityGroups[*].GroupId&#39; \
@@ -816,8 +870,10 @@ RouteTableIdPrivate : rtb-0afaac377925bca9a
 PublicSecurityGroupsId : sg-01cc901415c240504
 </code></pre>
 <h2 is-upgraded>■PrivateSubnet用のSecurityGroup作成</h2>
+<ul>
+<li>PrivateSubnet用のSecurityGroup作成</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/b314e27b8454719.png"></p>
-<p>・PrivateSubnet用のSecurityGroup作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 create-security-group \
   --group-name PrivateSecurityGroup \
@@ -837,7 +893,9 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 }
 </code></pre>
 <h2 is-upgraded>■PublicSunetのSecurityGroupsIdの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <pre><code language="language-CloudShell" class="language-CloudShell">PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
   --query &#39;SecurityGroups[*].GroupId&#39; \
   --filters &#34;Name=tag-key,Values=Name&#34; \
@@ -872,7 +930,10 @@ PublicSecurityGroupsId : sg-01cc901415c240504
 PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 </code></pre>
 <h2 is-upgraded>■PublicSubnetのインバウンドルールを追加</h2>
-<p><img alt="img" src="img/4f75c4cd8ddf9874.png"> ・InternetからのHTTPでのアクセスを許可します</p>
+<ul>
+<li>InternetからのHTTP（プロトコルtcp ポート80）でのアクセスを許可します</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/4f75c4cd8ddf9874.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
     --group-id ${PublicSecurityGroupsId} \
@@ -898,7 +959,10 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■PrivateSubnetのインバウンドルールを追加１</h2>
-<p><img alt="img" src="img/bc805771477af86.png"> ・PublicSubnet経由でのHTTPでのアクセスを許可します</p>
+<ul>
+<li>PublicSubnet経由でのHTTPでのアクセスを許可します</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/bc805771477af86.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
     --group-id ${PrivateSecurityGroupsId} \
@@ -926,7 +990,9 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■PrivateSubnetのインバウンドルールを追加２</h2>
-<p>・後で設定するVPCエンドポイントの為にHTTPSアクセスを許可します</p>
+<ul>
+<li>後で設定するVPCエンドポイントの為にHTTPSアクセスを許可します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws ec2 authorize-security-group-ingress \
     --group-id ${PrivateSecurityGroupsId} \
@@ -952,8 +1018,10 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■CloudWatch LogGroupの作成</h2>
+<ul>
+<li>ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/fe856b76c8cbed22.png"></p>
-<p>・ecsTaskExecutionRoleがLogGroupを作成できないので、手作成します。</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws logs create-log-group --log-group-name awslogs-container-hands-on
 </code></pre>
@@ -981,10 +1049,12 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 
       </google-codelab-step>
     
-      <google-codelab-step label="Cloud9作成" duration="5">
+      <google-codelab-step label="Cloud9作成" duration="10">
         <h2 is-upgraded>■Cloud9の作成</h2>
+<ul>
+<li>コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/6bb3dcef091abeb0.png"></p>
-<p>・コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws cloud9 create-environment-ec2 \
   --name ContainerHandsOn \
@@ -999,6 +1069,9 @@ PrivateSecurityGroupsId : sg-040aff209e1fe59cc
 }
 </code></pre>
 <h2 is-upgraded>■Cloud9環境Roleを作成</h2>
+<ul>
+<li>Cloud9上でAWSリソースを作成するため、Roleを作成します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/80b44a9435aa14dc.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
@@ -1045,6 +1118,9 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■instance-profileを作成</h2>
+<ul>
+<li>Cloud9を稼働しているEC2にRoleを付与するため、instance-profileを作成</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">aws iam create-instance-profile \
     --instance-profile-name ContainerHandsOnForCloud9
@@ -1071,7 +1147,9 @@ EOF
 <pre><code language="language-CloudShell" class="language-CloudShell">（なし）
 </code></pre>
 <h2 is-upgraded>■Cloud9のInstanceIdの取得</h2>
-<p>・IDを取得し、変数に格納・確認を行います</p>
+<ul>
+<li>IDを取得し、変数に格納・確認を行います</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">InstanceId=`aws ec2 describe-instances \
     --query &#34;Reservations[*].Instances[*].InstanceId&#34; \
@@ -1127,7 +1205,9 @@ InstanceId : i-04c7c620fef60c9cb
 }
 </code></pre>
 <h2 is-upgraded>■環境変数をメモ</h2>
-<p>・Cloud9で使うため、取得した変数をエディターに残して下さい</p>
+<ul>
+<li>Cloud9で使うため、取得した変数をエディターに残して下さい</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
 export AccoutID=&#34;${AccoutID}&#34;
@@ -1163,9 +1243,9 @@ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
 <li>上部の検索バーで<code>Cloud9</code>と検索</li>
 <li><code>AWS Cloud9 &gt; Your environments</code>に<code>ContainerHandsOn</code>が作成されているので<code>Open IDE</code>ボタン押下</li>
 <li>Cloud9の画面が表示される</li>
+<li>今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます <a href="./image/img4-1.png" target="_blank"><img alt="img" src="img/ccb3ac339b93cb8e.png"></a></li>
+<li>間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください <a href="./image/img4-2.png" target="_blank"><img alt="img" src="img/944649a354b83dff.png"></a></li>
 </ul>
-<p>・今後のcmdはCloud9のbashと書かれたTABの下に貼り付けていきます <a href="./image/img4-1.png" target="_blank"><img alt="img" src="img/ccb3ac339b93cb8e.png"></a></p>
-<p>・間違えてTABを閉じてしまった場合には以下で新しくTABを開いてください <a href="./image/img4-2.png" target="_blank"><img alt="img" src="img/944649a354b83dff.png"></a></p>
 <h2 is-upgraded>■Cloud9でCredentialsを切り替え</h2>
 <ul>
 <li>画面右上の歯車マークをクリックし、Preferencesを開く</li>
@@ -1179,20 +1259,22 @@ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
     
       <google-codelab-step label="ECR作成" duration="5">
         <h2 is-upgraded>■環境変数を貼り付け</h2>
-<p>・CloudShellで取得した環境変数をCloud9へ移設</p>
+<ul>
+<li>CloudShellで取得した環境変数をCloud9へ移設</li>
+</ul>
 <h3 is-upgraded>cmd (以下はサンプルです、エディターに退避した結果を利用ください)</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">$ export AccoutID=&#34;123456789012&#34;
-$ export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
-$ export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
-$ export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
-$ export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
-$ export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
-$ export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
-$ export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
-$ export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
-$ export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
-$ export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
-$ export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
+export VpcId=&#34;vpc-0d3c1c88db46cfba7&#34;
+export SubnetId1aPublic=&#34;subnet-0f66f257f167a1d47&#34;
+export SubnetId1cPublic=&#34;subnet-0a1e2afffc8c140d8&#34;
+export SubnetId1aPrivate=&#34;subnet-049f0119237ff00a0&#34;
+export SubnetId1cPrivate=&#34;subnet-0ea89b6bc85e0ec61&#34;
+export InternetGatewayId=&#34;igw-0a511ba68ceb84ed8&#34;
+export RouteTableIdPublic=&#34;rtb-00cf30796b25b9bc9&#34;
+export RouteTableIdPrivate=&#34;rtb-0afaac377925bca9a&#34;
+export PublicSecurityGroupsId=&#34;sg-01cc901415c240504&#34;
+export PrivateSecurityGroupsId=&#34;sg-040aff209e1fe59cc&#34;
+export InstanceId=&#34;i-04c7c620fef60c9cb&#34;
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 AccoutID : ${AccoutID}
@@ -1231,8 +1313,10 @@ export AWS_DEFAULT_OUTPUT=json
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■ECRの作成</h2>
+<ul>
+<li>コンテナイメージのレジストリであるECRを作成</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/347a1df18f53d23.png"></p>
-<p>・コンテナイメージのレジストリであるECRを作成</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecr create-repository \
     --repository-name jaws-days-2022/container-hands-on \
@@ -1260,7 +1344,7 @@ export AWS_DEFAULT_OUTPUT=json
 
       </google-codelab-step>
     
-      <google-codelab-step label="Docker Image作成" duration="5">
+      <google-codelab-step label="Docker Image作成" duration="10">
         <h2 is-upgraded>■Cloud9上にdockerセットアップされていることを確認</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker -v
@@ -1345,12 +1429,12 @@ jaws-days-2022/container-hands-on   latest    98c14fa37bab   10 seconds ago   41
 <pre><code language="language-Cloud9" class="language-Cloud9">dcaf3423f6abeea3a67bab0c01a33e7b9d2c97131c8b304900f0455ee73da7b7
 </code></pre>
 <h3 is-upgraded>画面</h3>
+<p class="image-container"><img alt="img" src="img/2be66bb659acb02.png"></p>
 <ul>
 <li>Cloud9のヘッダ部分の<code>Preview</code>-&gt; <code>Preview Runnnig Application</code>のボタン押下<br></li>
 <li><code>Hello! Jaws Days 2022!!</code>と記載された画面が表示されること<br></li>
 </ul>
-<p class="image-container"><img alt="img" src="img/2be66bb659acb02.png"></p>
-<aside class="special"><p>何か間違ってコンテナを止めたい場合には以下を実行ください</p>
+<aside class="special"><p>作業ミス等によりコンテナを止めたい場合には以下を実行ください</p>
 </aside>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker stop $(docker ps -q)
 docker rm $(docker ps -q -a)
@@ -1389,6 +1473,9 @@ https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 Login Succeeded
 </code></pre>
 <h2 is-upgraded>■Docker ImageをECRにPush</h2>
+<ul>
+<li>Cloud9で作成したイメージをECRに格納します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/5b6a2a96098bbb08.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker push \
@@ -1425,6 +1512,9 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 <li>com.amazonaws.ap-northeast-1.logs</li>
 </ul>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.s3</h2>
+<ul>
+<li>S3はGateway型のエンドポイントを利用します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/3871c4d228880be6.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
@@ -1464,6 +1554,9 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.dkr</h2>
+<ul>
+<li>ECRはInterface型のエンドポイントを利用します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/f3bae0dc8785c261.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
@@ -1533,6 +1626,9 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.ecr.api</h2>
+<ul>
+<li>ECRはInterface型のエンドポイントを利用します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/365d8818452e3a9a.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
@@ -1598,6 +1694,9 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
 }
 </code></pre>
 <h2 is-upgraded>■com.amazonaws.ap-northeast-1.logs</h2>
+<ul>
+<li>CloudWatch LogsはInterface型のエンドポイントを利用します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/2d766fe3db95705c.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 create-vpc-endpoint \
@@ -1668,7 +1767,9 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     
       <google-codelab-step label="ALB作成" duration="5">
         <h2 is-upgraded>■アプリケーションロードバランサーの作成</h2>
-<p><img alt="img" src="img/a058c202c2286c2a.png"> ・実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します</p>
+<ul>
+<li>実行されるコンテナのタスクを複数立てた場合に、処理を振り分けるようにアプリケーションロードバランサーを作成します <img alt="img" src="img/a058c202c2286c2a.png"></li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-load-balancer \
     --name ContainerHandsOn \
@@ -1871,7 +1972,9 @@ LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadb
 TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/d6ccd892547e534d
 </code></pre>
 <h2 is-upgraded>■リスナーの追加</h2>
-<p>・アプリケーションロードバランサーとターゲットグループを紐付けします</p>
+<ul>
+<li>アプリケーションロードバランサーとターゲットグループを紐付けします</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-listener \
     --load-balancer-arn ${LoadBalancerArn} \
@@ -1912,7 +2015,7 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 
       </google-codelab-step>
     
-      <google-codelab-step label="Fargate作成" duration="5">
+      <google-codelab-step label="ECS/Fargate作成" duration="5">
         <h2 is-upgraded>■ECS/Fargate周辺の説明</h2>
 <h3 is-upgraded>参考</h3>
 <p><a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></p>
@@ -1924,22 +2027,24 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 <li>クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です</li>
 </ul>
 <h3 is-upgraded>ECS on Fargateの構成図</h3>
-<p class="image-container"><img alt="img" src="img/7c6d141c13fa6ae9.png"></p>
 <ul>
 <li>しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです</li>
 <li>EC2の管理はやりたくないので、そこをマネージドしてくれるのがFargate</li>
 </ul>
+<p class="image-container"><img alt="img" src="img/7c6d141c13fa6ae9.png"></p>
 <h3 is-upgraded>ECSの主要要素</h3>
-<p class="image-container"><img alt="img" src="img/907d8c5dea096b30.png"></p>
 <ul>
 <li>クラスター：実行環境の境界線</li>
 <li>サービス：タスクを維持する機能</li>
 <li>タスク：タスク定義に記載された内容を実行するコンテナ群</li>
 <li>タスク定義：CPU/メモリ、稼働するコンテナイメージ等、何を稼働させるのかの定義</li>
 </ul>
+<p class="image-container"><img alt="img" src="img/907d8c5dea096b30.png"></p>
 <h2 is-upgraded>■クラスターの作成</h2>
+<ul>
+<li>クラスターという実行環境の境界線を作成します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/5ce6317e570bede.png"></p>
-<p>・クラスターという実行環境の境界線を作成します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-cluster \
     --cluster-name ContainerHandsOn \
@@ -1974,8 +2079,10 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 }
 </code></pre>
 <h2 is-upgraded>■タスク定義の作成</h2>
+<ul>
+<li>どのようなタスクが稼働するかを定義します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/1fd769514e68d504.png"></p>
-<p>・どのようなタスクが稼働するかを定義します</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; register-task-definition.json
 {
@@ -2089,7 +2196,9 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■タスク定義のリビジョン取得</h2>
-<p>・タスク定義は作成する度にカウントアップされるので、最新のリビジョン番号を取得します</p>
+<ul>
+<li>タスク定義は作成する度にカウントアップされるので、最新のリビジョン番号を取得します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">RevisionNo=`aws ecs list-task-definitions \
   --family-prefix ContainerHandsOn \
@@ -2134,8 +2243,10 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 RevisionNo : 2
 </code></pre>
 <h2 is-upgraded>■サービスの作成</h2>
+<ul>
+<li>実行数やネットワーク周りを定義したサービスを作成します</li>
+</ul>
 <p class="image-container"><img alt="img" src="img/fb913af7e7473432.png"></p>
-<p>・実行数やネットワーク周りをまとめます</p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs create-service \
     --cluster ContainerHandsOn \
@@ -2286,7 +2397,9 @@ RevisionNo : 2
     
       <google-codelab-step label="変数整理" duration="0">
         <h2 is-upgraded>■ここまで取得された変数を整理</h2>
-<p>・後続のため、取得した変数をエディターに残して下さい</p>
+<ul>
+<li>後続のため、取得した変数をエディターに残して下さい</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
 export AccoutID=&#34;${AccoutID}&#34;
@@ -2331,8 +2444,10 @@ export RevisionNo=&#34;6&#34;
     
       <google-codelab-step label="CodeCommit作成" duration="5">
         <h2 is-upgraded>■CodeCommitの作成</h2>
-<p class="image-container"><img alt="img" src="img/c74b19da9b070356.png"></p>
-<p>・git互換のソースリポジトリであるCodeCommitを作成</p>
+<ul>
+<li>git互換のソースリポジトリであるCodeCommitを作成</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/39d398c8ea9a7489.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws codecommit create-repository \
   --repository-name ContainerHandsOn \
@@ -2355,8 +2470,9 @@ export RevisionNo=&#34;6&#34;
 }
 </code></pre>
 <h2 is-upgraded>■CodeCommitリポジトリのクローン</h2>
-<p class="image-container"><img alt="img" src="img/5fc6f9a3318822a8.png"></p>
-<p>・git cloneでリポジトリをcloneします、中身は空です</p>
+<ul>
+<li>git cloneでリポジトリをcloneします、中身は空です</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/
 git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
@@ -2366,9 +2482,11 @@ git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/Container
 warning: You appear to have cloned an empty repository.
 </code></pre>
 <h2 is-upgraded>■資材の準備</h2>
-<p>・事前に作成した資材をgit管理ディレクトリにcopyします</p>
+<ul>
+<li>事前に作成した資材をgit管理ディレクトリにcopyします</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cd ContainerHandsOn
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn
 cp -p ../Dockerfile ./
 cp -pr ../src ./
 ls -lR
@@ -2384,7 +2502,9 @@ total 4
 -rw-rw-r-- 1 ec2-user ec2-user 190 Sep  9 01:32 index.php
 </code></pre>
 <h2 is-upgraded>■buildspec.ymlの新規作成</h2>
-<p>・CodeBuildの仕様を記述したファイルを作成します</p>
+<ul>
+<li>CodeBuildの仕様を記述したファイルを作成します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; buildspec.yml
 version: 0.2
@@ -2432,7 +2552,10 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 1192 Sep 11 04:59 buildspec.yml
 </code></pre>
 <h2 is-upgraded>■appspec.ymlの新規作成</h2>
-<p>・CodeDeployの仕様を記述したファイルを作成します</p>
+<ul>
+<li>CodeDeployの仕様を記述したファイルを作成します</li>
+<li>と記載されている箇所は後ほどCodePipelineで更新します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; appspec.yml
 version: 0.0
@@ -2457,7 +2580,10 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 240 Sep 11 05:04 appspec.yml
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの新規作成</h2>
-<p>・ECS Taskの仕様を記述したファイルを作成します<br> ・前半のハンズオンで作成した内容を出力しています</p>
+<ul>
+<li>ECS Taskの仕様を記述したファイルを作成します<br></li>
+<li>前半のハンズオンで作成した内容を出力しています<br></li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ecs describe-task-definition \
   --task-definition ContainerHandsOn:${RevisionNo} \
@@ -2467,7 +2593,12 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの変更</h2>
-<p>・Cloud9のエディター機能を使って、6行目を変更します<br> ・変更後、Ctrl+Sでの保存をお忘れなく<br> ・sedでやりたい・・・</p>
+<ul>
+<li>Cloud9のエディター機能を使って、6行目を変更します<br></li>
+<li>はPipeLine処理で作成された最新のイメージに置換されます<br></li>
+<li>変更後、Ctrl+Sでの保存をお忘れなく<br></li>
+<li>sedでやりたい- - -</li>
+</ul>
 <h3 is-upgraded>変更前</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
 </code></pre>
@@ -2475,7 +2606,9 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;&lt;IMAGE_NAME&gt;&#34;,
 </code></pre>
 <h2 is-upgraded>■CodeCommitへのPush</h2>
-<p>・作成したファイルをCodeCommitへPushし格納します</p>
+<ul>
+<li>作成したファイルをCodeCommitへPushし格納します</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">git config --global user.name &#34;Your Name&#34;
 git config --global user.email you@example.com
@@ -2508,7 +2641,10 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
     
       <google-codelab-step label="CodeBuild作成" duration="5">
         <h2 is-upgraded>■CodeBuild用Role作成</h2>
-<p><img alt="img" src="img/cf566afd00aff913.png"> ・CodeBuildのためにRoleを作成します。</p>
+<ul>
+<li>CodeBuildのためにRoleを作成します。</li>
+</ul>
+<p class="image-container"><img alt="img" src="img/d7c15dd0de89714f.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
 </code></pre>
@@ -2630,7 +2766,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■CodeBuild作成</h2>
-<p class="image-container"><img alt="img" src="img/9567040e4860af92.png"></p>
+<p class="image-container"><img alt="img" src="img/38073fde7f331d0c.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
@@ -2686,7 +2822,7 @@ EOF
     
       <google-codelab-step label="CodeDeploy作成" duration="5">
         <h2 is-upgraded>■CodeDeploy用Role作成</h2>
-<p class="image-container"><img alt="img" src="img/d414988313bc067f.png"></p>
+<p class="image-container"><img alt="img" src="img/b6f0bfd9eb825285.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
 </code></pre>
@@ -2770,10 +2906,10 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■アプリケーションを作成</h2>
-<p class="image-container"><img alt="img" src="img/d807a59bffeb79b4.png"></p>
 <ul>
 <li>デプロイするアプリケーションを識別する名前を定義します。</li>
 </ul>
+<p class="image-container"><img alt="img" src="img/560ed237dbf0d33c.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws deploy create-application \
   --application-name ContainerHandsOn \
@@ -2877,9 +3013,9 @@ TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:ta
 </code></pre>
 <h2 is-upgraded>■リスナーの作成</h2>
 <ul>
-<li>ALBに対する接続リクエストを追加します。8080ポートでテスト用として受け口となるリスナーです。  <h3 is-upgraded>cmd</h3>
-</li>
+<li>ALBに対する接続リクエストを追加します。8080ポートでテスト用として受け口となるリスナーです。</li>
 </ul>
+<h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-listener \
     --load-balancer-arn ${LoadBalancerArn} \
     --protocol HTTP \
@@ -2982,9 +3118,9 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
 </code></pre>
 <h2 is-upgraded>■PublicSubnetのインバウンドルールを追加</h2>
 <ul>
-<li>リスナーとして8080ポートを追加するので、セキュリティグループにも8080ポートを許可します  <h3 is-upgraded>cmd</h3>
-</li>
+<li>リスナーとして8080ポートを追加するので、セキュリティグループにも8080ポートを許可します</li>
 </ul>
+<h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws ec2 authorize-security-group-ingress \
     --group-id ${PublicSecurityGroupsId} \
     --protocol tcp \
@@ -3080,7 +3216,7 @@ EOF
     
       <google-codelab-step label="CodePipeline作成" duration="5">
         <h2 is-upgraded>■CodePipeline用Role作成</h2>
-<p class="image-container"><img alt="img" src="img/aee3e2d4381aa00f.png"></p>
+<p class="image-container"><img alt="img" src="img/1fe36997a007e059.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
@@ -3312,8 +3448,8 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
-<h2 is-upgraded>■S3 artifactStoreを作成</h2>
-<p class="image-container"><img alt="img" src="img/b47c7963da53d3c3.png"></p>
+<h2 is-upgraded>■artifactStoreとしてS3を作成</h2>
+<p class="image-container"><img alt="img" src="img/e06348f6ae86238b.png"></p>
 <h3 is-upgraded>cmd</h3>
 <aside class="special"><p>あなたのフルネームを記載下さい、英語小文字でお願いします</p>
 </aside>
@@ -3370,7 +3506,7 @@ S3Name : shigeru-oda-container-handson-20220911072649
 <pre><code language="language-Cloud9" class="language-Cloud9">aws s3 mb s3://${S3Name}
 </code></pre>
 <h2 is-upgraded>■CodePipelineを作成</h2>
-<p class="image-container"><img alt="img" src="img/405850217c0ff27a.png"></p>
+<p class="image-container"><img alt="img" src="img/99e49b6290818cc8.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; create-pipeline.json
 {
@@ -3596,7 +3732,13 @@ EOF
       </google-codelab-step>
     
       <google-codelab-step label="動作確認２−１（Blue/Green Deployの確認）" duration="5">
-        <h2 is-upgraded>■AWS コンソールでCodePipelineを検索</h2>
+        <h2 is-upgraded>■CodePipelineの流れ</h2>
+<p class="image-container"><img alt="img" src="img/51af4b273c2f60d.png"></p>
+<h2 is-upgraded>■Bule/Greenデプロイの流れ</h2>
+<ul>
+<li>参考元：<a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a><img alt="img" src="img/b95d2baad2f7a5cd.png"><img alt="img" src="img/7825aed5ef52e498.png"><img alt="img" src="img/32b3107414e63ec.png"></li>
+</ul>
+<h2 is-upgraded>■AWS コンソールでCodePipelineを検索</h2>
 <ul>
 <li>上部の検索バーでCodePipelineと検索</li>
 <li>パイプラインの画面が表示されるのでContainerHandsOnを選択</li>
@@ -3668,7 +3810,7 @@ EOF
     
       <google-codelab-step label="EventBridge作成" duration="5">
         <h2 is-upgraded>■EventBridge用Role作成</h2>
-<p class="image-container"><img alt="img" src="img/b1728a242aa60278.png"></p>
+<p class="image-container"><img alt="img" src="img/c793d9e2bdf5e0f4.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
 </code></pre>
@@ -3741,6 +3883,7 @@ EOF
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9"></code></pre>
 <h2 is-upgraded>■EventBridgeを作成</h2>
+<p class="image-container"><img alt="img" src="img/d21e2ea946b1146b.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws events put-rule \
   --name &#34;ContainerHandsOnForEventBridge&#34; \
@@ -3765,6 +3908,7 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■targetを作成</h2>
+<p class="image-container"><img alt="img" src="img/85d398d7114cad00.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws events put-targets \
   --rule ContainerHandsOnForEventBridge \
@@ -3780,9 +3924,11 @@ EOF
 
       </google-codelab-step>
     
-      <google-codelab-step label="動作確認２−２（Codeシリーズを利用)）" duration="5">
+      <google-codelab-step label="動作確認２−２（Codeシリーズを利用）" duration="5">
         <h2 is-upgraded>■srcの変更</h2>
-<p>・Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する</p>
+<ul>
+<li>Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する</li>
+</ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn/src
 </code></pre>
@@ -3844,7 +3990,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 </ul>
 <p class="image-container"><img alt="img" src="img/f9b856f1b85b8e71.png"><img alt="img" src="img/2b20bdad4ba63bab.png"></p>
 <ul>
-<li>ステップ１・２が完了済みであることを確認 <img alt="img" src="img/746e4a78f321468a.png"></li>
+<li>ステップ１- ２が完了済みであることを確認 <img alt="img" src="img/746e4a78f321468a.png"></li>
 </ul>
 <h2 is-upgraded>■アドレス確認</h2>
 <ul>
