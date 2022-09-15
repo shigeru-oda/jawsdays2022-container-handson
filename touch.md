@@ -1958,7 +1958,7 @@ aws ec2 create-vpc-endpoint \
     --vpc-endpoint-type Gateway \
     --service-name com.amazonaws.ap-northeast-1.s3 \
     --route-table-ids ${RouteTableIdPrivate} \
-    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
 #### result
@@ -2008,7 +2008,7 @@ aws ec2 create-vpc-endpoint \
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${PrivateSecurityGroupsId} \
-    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
 #### result
@@ -2087,7 +2087,7 @@ aws ec2 create-vpc-endpoint \
     --service-name com.amazonaws.ap-northeast-1.ecr.api \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${PrivateSecurityGroupsId} \
-    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
 #### result
@@ -2162,7 +2162,7 @@ aws ec2 create-vpc-endpoint \
     --service-name com.amazonaws.ap-northeast-1.logs \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${PrivateSecurityGroupsId} \
-    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]"
+    --tag-specifications "ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]"
 ```
 
 #### result
@@ -4745,9 +4745,9 @@ aws iam put-role-policy \
 
 ```Cloud9
 aws events put-rule \
-  --name "ContainerHandsOnForEventBridge" \
+  --name "ContainerHandsOn" \
   --state "ENABLED" \
-  --description "ContainerHandsOnForEventBridge" \
+  --description "ContainerHandsOn" \
   --event-bus-name "default" \
   --event-pattern "{ \
     \"source\":[\"aws.codecommit\"], \
@@ -4777,7 +4777,7 @@ aws events put-rule \
 
 ```Cloud9
 aws events put-targets \
-  --rule ContainerHandsOnForEventBridge \
+  --rule ContainerHandsOn \
   --targets "Id"="1","Arn"="arn:aws:codepipeline:ap-northeast-1:${AccoutID}:ContainerHandsOn","RoleArn"="arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge"
 ```
 
@@ -4793,7 +4793,9 @@ aws events put-targets \
 ## 動作確認２−２（Codeシリーズを利用）
 
 Duration: 0:05:00
+### ■CodePipelineの流れ
 
+![img](./image/drowio-18-1.png)
 ### ■srcの変更
 
 - Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する
@@ -4962,3 +4964,53 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ## 片付け
 
 Duration: 0:05:00
+- 削除部分はGUIで対応します
+- CLIが苦手な方も削除漏れにより課金が発生しないように確認をお願いします
+
+### ■CodePipeline
+- パイプライン > ContainerHandsOn > パイプラインを削除する
+
+### ■CodeDeploy
+- アプリケーション > ContainerHandsOn > アプリケーションの削除
+
+### ■CodeBuild
+- ビルドプロジェクト > ContainerHandsOn > ビルドプロジェクトの削除
+- ビルド履歴 > 検索バーに「ContainerHandsOn」 > ビルドの削除
+
+### ■CodeCommit
+- リポジトリ > ContainerHandsOn > リポジトリの削除
+
+### ■EventBridge
+- ルール > ContainerHandsOn > 削除
+
+### ■Cloud9
+- Your environments > ContainerHandsOn > Delete
+
+### ■EC2
+- セキュリティグループ > ContainerHandsOn-PrivateSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
+- セキュリティグループ > ContainerHandsOn-PublicSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
+- ロードバランサー > ContainerHandsOn > リスナーTAB > 2行削除
+- ロードバランサー > ContainerHandsOn > アクション > 削除
+- ターゲットグループ > ContainerHandsOn > アクション > 削除
+- ターゲットグループ > ContainerHandsOn8080 > アクション > 削除
+
+### ■ECS
+- タスク定義 > ContainerHandsOn > 全てのリビジョンを１つずつ登録解除
+- クラスター > ContainerHandsOn > サービスTAB > ContainerHandsOn > サービスを削除(強制削除)
+- クラスター > ContainerHandsOn > クラスターの削除
+
+### ■VPC
+- エンドポイント > ContainerHandsOnの4行 > アクション > 削除
+（削除に数分時間を要しますが、お待ちください）
+- お使いのVPC > ContainerHandsOn > アクション > VPCの削除
+
+### ■CloudWatch
+- ロググループ > awslogs-container-hands-on > アクション > ロググループの削除
+- ロググループ > /aws/codebuild/ContainerHandsOn > アクション > ロググループの削除
+
+### ■IAM
+- ロール > ContainerHandsOnForCloud9 > 削除
+- ロール > ContainerHandsOnForCodeBuild > 削除
+- ロール > ContainerHandsOnForCodeDeploy > 削除
+- ロール > ContainerHandsOnForPipeLine > 削除
+- ロール > ContainerHandsOnForEventBridge > 削除

@@ -89,7 +89,7 @@
 <li>CodeDeployを使ったECS/Fargateへのデプロイ</li>
 <li>CodePipelineを使ったCI/CDパイプラインの構築</li>
 </ul>
-<p class="image-container"><img alt="img" src="img/b1728a242aa60278.png"></p>
+<p class="image-container"><img alt="img" src="img/d3138990e9dc3264.png"></p>
 
 
       </google-codelab-step>
@@ -1522,7 +1522,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     --vpc-endpoint-type Gateway \
     --service-name com.amazonaws.ap-northeast-1.s3 \
     --route-table-ids ${RouteTableIdPrivate} \
-    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
@@ -1565,7 +1565,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     --service-name com.amazonaws.ap-northeast-1.ecr.dkr \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${PrivateSecurityGroupsId} \
-    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
@@ -1637,7 +1637,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     --service-name com.amazonaws.ap-northeast-1.ecr.api \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${PrivateSecurityGroupsId} \
-    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
@@ -1705,7 +1705,7 @@ latest: digest: sha256:1fb5a3ac5ea1e7d60c24f371564a8c2c7bbc8072be0e80a3c53c30e1c
     --service-name com.amazonaws.ap-northeast-1.logs \
     --subnet-ids ${SubnetId1aPrivate} ${SubnetId1cPrivate} \
     --security-group-id ${PrivateSecurityGroupsId} \
-    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHands}]&#34;
+    --tag-specifications &#34;ResourceType=vpc-endpoint,Tags=[{Key=Name,Value=ContainerHandsOn}]&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
@@ -3886,9 +3886,9 @@ EOF
 <p class="image-container"><img alt="img" src="img/d21e2ea946b1146b.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws events put-rule \
-  --name &#34;ContainerHandsOnForEventBridge&#34; \
+  --name &#34;ContainerHandsOn&#34; \
   --state &#34;ENABLED&#34; \
-  --description &#34;ContainerHandsOnForEventBridge&#34; \
+  --description &#34;ContainerHandsOn&#34; \
   --event-bus-name &#34;default&#34; \
   --event-pattern &#34;{ \
     \&#34;source\&#34;:[\&#34;aws.codecommit\&#34;], \
@@ -3911,7 +3911,7 @@ EOF
 <p class="image-container"><img alt="img" src="img/85d398d7114cad00.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws events put-targets \
-  --rule ContainerHandsOnForEventBridge \
+  --rule ContainerHandsOn \
   --targets &#34;Id&#34;=&#34;1&#34;,&#34;Arn&#34;=&#34;arn:aws:codepipeline:ap-northeast-1:${AccoutID}:ContainerHandsOn&#34;,&#34;RoleArn&#34;=&#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
@@ -3925,7 +3925,9 @@ EOF
       </google-codelab-step>
     
       <google-codelab-step label="動作確認２−２（Codeシリーズを利用）" duration="5">
-        <h2 is-upgraded>■srcの変更</h2>
+        <h2 is-upgraded>■CodePipelineの流れ</h2>
+<p class="image-container"><img alt="img" src="img/ababf706ffdf491f.png"></p>
+<h2 is-upgraded>■srcの変更</h2>
 <ul>
 <li>Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する</li>
 </ul>
@@ -4049,7 +4051,69 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
       </google-codelab-step>
     
       <google-codelab-step label="片付け" duration="5">
-        
+        <ul>
+<li>削除部分はGUIで対応します</li>
+<li>CLIが苦手な方も削除漏れにより課金が発生しないように確認をお願いします</li>
+</ul>
+<h2 is-upgraded>■CodePipeline</h2>
+<ul>
+<li>パイプライン &gt; ContainerHandsOn &gt; パイプラインを削除する</li>
+</ul>
+<h2 is-upgraded>■CodeDeploy</h2>
+<ul>
+<li>アプリケーション &gt; ContainerHandsOn &gt; アプリケーションの削除</li>
+</ul>
+<h2 is-upgraded>■CodeBuild</h2>
+<ul>
+<li>ビルドプロジェクト &gt; ContainerHandsOn &gt; ビルドプロジェクトの削除</li>
+<li>ビルド履歴 &gt; 検索バーに「ContainerHandsOn」 &gt; ビルドの削除</li>
+</ul>
+<h2 is-upgraded>■CodeCommit</h2>
+<ul>
+<li>リポジトリ &gt; ContainerHandsOn &gt; リポジトリの削除</li>
+</ul>
+<h2 is-upgraded>■EventBridge</h2>
+<ul>
+<li>ルール &gt; ContainerHandsOn &gt; 削除</li>
+</ul>
+<h2 is-upgraded>■Cloud9</h2>
+<ul>
+<li>Your environments &gt; ContainerHandsOn &gt; Delete</li>
+</ul>
+<h2 is-upgraded>■EC2</h2>
+<ul>
+<li>セキュリティグループ &gt; ContainerHandsOn-PrivateSecurityGroup &gt; インバウンドルール &gt; インバウンドのルールを編集 &gt; 2行削除</li>
+<li>セキュリティグループ &gt; ContainerHandsOn-PublicSecurityGroup &gt; インバウンドルール &gt; インバウンドのルールを編集 &gt; 2行削除</li>
+<li>ロードバランサー &gt; ContainerHandsOn &gt; リスナーTAB &gt; 2行削除</li>
+<li>ロードバランサー &gt; ContainerHandsOn &gt; アクション &gt; 削除</li>
+<li>ターゲットグループ &gt; ContainerHandsOn &gt; アクション &gt; 削除</li>
+<li>ターゲットグループ &gt; ContainerHandsOn8080 &gt; アクション &gt; 削除</li>
+</ul>
+<h2 is-upgraded>■ECS</h2>
+<ul>
+<li>タスク定義 &gt; ContainerHandsOn &gt; 全てのリビジョンを１つずつ登録解除</li>
+<li>クラスター &gt; ContainerHandsOn &gt; サービスTAB &gt; ContainerHandsOn &gt; サービスを削除(強制削除)</li>
+<li>クラスター &gt; ContainerHandsOn &gt; クラスターの削除</li>
+</ul>
+<h2 is-upgraded>■VPC</h2>
+<ul>
+<li>エンドポイント &gt; ContainerHandsOnの4行 &gt; アクション &gt; 削除 （削除に数分時間を要しますが、お待ちください）</li>
+<li>お使いのVPC &gt; ContainerHandsOn &gt; アクション &gt; VPCの削除</li>
+</ul>
+<h2 is-upgraded>■CloudWatch</h2>
+<ul>
+<li>ロググループ &gt; awslogs-container-hands-on &gt; アクション &gt; ロググループの削除</li>
+<li>ロググループ &gt; /aws/codebuild/ContainerHandsOn &gt; アクション &gt; ロググループの削除</li>
+</ul>
+<h2 is-upgraded>■IAM</h2>
+<ul>
+<li>ロール &gt; ContainerHandsOnForCloud9 &gt; 削除</li>
+<li>ロール &gt; ContainerHandsOnForCodeBuild &gt; 削除</li>
+<li>ロール &gt; ContainerHandsOnForCodeDeploy &gt; 削除</li>
+<li>ロール &gt; ContainerHandsOnForPipeLine &gt; 削除</li>
+<li>ロール &gt; ContainerHandsOnForEventBridge &gt; 削除</li>
+</ul>
+
 
       </google-codelab-step>
     
