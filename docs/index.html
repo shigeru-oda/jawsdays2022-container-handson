@@ -56,6 +56,11 @@
 <li><a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></li>
 <li><a href="https://www.slideshare.net/AmazonWebServicesJapan/202106-aws-black-belt-online-seminar-con110-249613926" target="_blank">202106 AWS Black Belt Online Seminar CON110 なぜ今コンテナなのか</a></li>
 </ul>
+<h2 is-upgraded>■ブラウザについて</h2>
+<ul>
+<li>Chrome もしくは Firefoxをご利用下さい。</li>
+<li>IE もしくは Safariでは正しい挙動にならない可能性がございます</li>
+</ul>
 <h2 is-upgraded>■手順について</h2>
 <p>貼り付けるコマンドは準備しているので、基本的にはCopy &amp; Pasteで手順を進めることができます</p>
 <h3 is-upgraded>cmd</h3>
@@ -4207,6 +4212,11 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 <li>ロール &gt; ContainerHandsOnForPipeLine &gt; 削除</li>
 <li>ロール &gt; ContainerHandsOnForEventBridge &gt; 削除</li>
 </ul>
+<h2 is-upgraded>■IAM（任意）</h2>
+<ul>
+<li>ロール &gt; ecsTaskExecutionRole &gt; 削除<br></li>
+</ul>
+<p>ecsTaskExecutionRoleは、画面コンソールでのECSのタスク定義作成時に、「新しいロールの作成」を選択する自動的に作成されます。今後もECSサービスを利用するのであれば、残しておいても問題ないです。<br><a href="https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html" target="_blank">Amazon ECS タスク実行IAM ロール</a></p>
 
 
       </google-codelab-step>

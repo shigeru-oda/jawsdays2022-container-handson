@@ -51,6 +51,10 @@ Duration: 0:10:00
 - [20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
 - [202106 AWS Black Belt Online Seminar CON110 なぜ今コンテナなのか](https://www.slideshare.net/AmazonWebServicesJapan/202106-aws-black-belt-online-seminar-con110-249613926)
 
+### ■ブラウザについて
+- Chrome もしくは Firefoxをご利用下さい。
+- IE もしくは Safariでは正しい挙動にならない可能性がございます
+
 ### ■手順について
 
 貼り付けるコマンドは準備しているので、基本的にはCopy & Pasteで手順を進めることができます
@@ -5116,3 +5120,9 @@ Duration: 0:10:00
 - ロール > ContainerHandsOnForCodeDeploy > 削除
 - ロール > ContainerHandsOnForPipeLine > 削除
 - ロール > ContainerHandsOnForEventBridge > 削除
+
+### ■IAM（任意）
+- ロール > ecsTaskExecutionRole > 削除  
+
+ecsTaskExecutionRoleは、画面コンソールでのECSのタスク定義作成時に、「新しいロールの作成」を選択する自動的に作成されます。今後もECSサービスを利用するのであれば、残しておいても問題ないです。  
+[Amazon ECS タスク実行IAM ロール](https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/task_execution_IAM_role.html)
