@@ -3317,37 +3317,37 @@ aws ecs describe-task-definition \
 
 ### ■taskdef.jsonの変更
 
-- 以下の変更を行います  
+以下の変更を行います  
 <変更前>  
 
-```
+```Cloud9
 "image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest"  
 ```
 
 <変更後>  
 
-```
+```Cloud9
 "image": "<IMAGE_NAME>"  
 ```
 
-- \<IMAGE_NAME\>は後述のCodePipelineにて、最新のImage URIに置換する処理が組み込まれます
+\<IMAGE_NAME\>は後述のCodePipelineにて、最新のImage URIに置換する処理が組み込まれます
 
 #### cmd（変更前確認）
 
-```
+```Cloud9
 cd ~/environment/ContainerHandsOn
 grep '"image":' taskdef.json
 ```
 
 #### result（変更前確認）
 
-```
+```Cloud9
             "image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
 ```
 
 #### cmd（変更処理＆変更後確認）
 
-```
+```Cloud9
 cd ~/environment/ContainerHandsOn
 sed -i -e 's/\"image\".*/\"image\": \"<IMAGE_NAME>\",/g' taskdef.json
 grep '"image":' taskdef.json
@@ -3355,7 +3355,7 @@ grep '"image":' taskdef.json
 
 #### result
 
-```
+```Cloud9
             "image": "<IMAGE_NAME>",
 ```
 
