@@ -2873,6 +2873,8 @@ LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadb
 TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:targetgroup/ContainerHandsOn/b2da630c91ed7148
 RevisionNo : 11
 ```
+Positive
+: RevisionNoは基本的には1になる予定です、再作成をする度にカウントアップされていきます。
 
 ### ■サービスの作成
 
