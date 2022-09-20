@@ -1659,18 +1659,20 @@ Duration: 0:05:00
 #### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
-export AccountID="123456789012"
-export VpcId="vpc-010a940bbd8f747c2"
-export SubnetId1aPublic="subnet-0356b36ba2daa766c"
-export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
-export SubnetId1aPrivate="subnet-0d99180ac3baeb5fa"
-export SubnetId1cPrivate="subnet-0a66f1c2d5ce3b939"
-export InternetGatewayId="igw-082f42082d7748713"
-export RouteTableIdPublic="rtb-000a11e6eacc5c263"
-export RouteTableIdPrivate="rtb-077b87e7eb65d1f43"
-export PublicSecurityGroupsId="sg-065a7c8eceb9759d4"
-export PrivateSecurityGroupsId="sg-0f59547a1185820b5"
-export InstanceId="i-0ddf413a91a008a52"
+このままコピペするとエラーになります。エディターに退避した結果を利用ください
+
+これはサンプルです。export AccountID="123456789012"
+これはサンプルです。export VpcId="vpc-010a940bbd8f747c2"
+これはサンプルです。export SubnetId1aPublic="subnet-0356b36ba2daa766c"
+これはサンプルです。export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
+これはサンプルです。export SubnetId1aPrivate="subnet-0d99180ac3baeb5fa"
+これはサンプルです。export SubnetId1cPrivate="subnet-0a66f1c2d5ce3b939"
+これはサンプルです。export InternetGatewayId="igw-082f42082d7748713"
+これはサンプルです。export RouteTableIdPublic="rtb-000a11e6eacc5c263"
+これはサンプルです。export RouteTableIdPrivate="rtb-077b87e7eb65d1f43"
+これはサンプルです。export PublicSecurityGroupsId="sg-065a7c8eceb9759d4"
+これはサンプルです。export PrivateSecurityGroupsId="sg-0f59547a1185820b5"
+これはサンプルです。export InstanceId="i-0ddf413a91a008a52"
 ```
 
 ``` Cloud9
