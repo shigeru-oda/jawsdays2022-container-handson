@@ -123,14 +123,14 @@
 </ul>
 <p class="image-container"><img alt="img" src="img/54f3afc539095974.png"></p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID=`aws sts get-caller-identity --query Account --output text`
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID=`aws sts get-caller-identity --query Account --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 </code></pre>
 <h2 is-upgraded>■ECSタスクの実行Roleの存在確認</h2>
 <ul>
@@ -152,7 +152,8 @@ EOF
 </ul>
 <p class="image-container"><img alt="img" src="img/dc49b865deb5e1fe.png"></p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/
+cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
   &#34;Version&#34;: &#34;2012-10-17&#34;,
   &#34;Statement&#34;: [
@@ -277,12 +278,12 @@ EOF
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 EOF
 </code></pre>
 <h3 is-upgraded>results</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 </code></pre>
 <h3 is-upgraded>■DNS名前解決をONにする</h3>
@@ -537,7 +538,7 @@ VpcId : vpc-010a940bbd8f747c2
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -546,7 +547,7 @@ SubnetId1cPrivate : ${SubnetId1cPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -589,7 +590,7 @@ SubnetId1cPrivate : subnet-0a66f1c2d5ce3b939
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -599,7 +600,7 @@ InternetGatewayId : ${InternetGatewayId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -721,7 +722,7 @@ InternetGatewayId : igw-082f42082d7748713
   --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -733,7 +734,7 @@ RouteTableIdPrivate : ${RouteTableIdPrivate}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -851,7 +852,7 @@ RouteTableIdPrivate : rtb-077b87e7eb65d1f43
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -864,7 +865,7 @@ PublicSecurityGroupsId : ${PublicSecurityGroupsId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -909,7 +910,7 @@ PublicSecurityGroupsId : sg-065a7c8eceb9759d4
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -923,7 +924,7 @@ PrivateSecurityGroupsId : ${PrivateSecurityGroupsId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1081,7 +1082,8 @@ PrivateSecurityGroupsId : sg-0f59547a1185820b5
 </ul>
 <p class="image-container"><img alt="img" src="img/80b44a9435aa14dc.png"></p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+<pre><code language="language-CloudShell" class="language-CloudShell">cd ~/
+cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
   &#34;Version&#34;: &#34;2012-10-17&#34;,
   &#34;Statement&#34;: [
@@ -1188,7 +1190,7 @@ EOF
     --output text`
 </code></pre>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1203,7 +1205,7 @@ InstanceId : ${InstanceId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">AccoutID : 123456789012
+<pre><code language="language-CloudShell" class="language-CloudShell">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1241,7 +1243,7 @@ InstanceId : i-0ddf413a91a008a52
 </ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-CloudShell" class="language-CloudShell">clear; cat &lt;&lt; EOF
-export AccoutID=&#34;${AccoutID}&#34;
+export AccountID=&#34;${AccountID}&#34;
 export VpcId=&#34;${VpcId}&#34;
 export SubnetId1aPublic=&#34;${SubnetId1aPublic}&#34;
 export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
@@ -1256,7 +1258,7 @@ export InstanceId=&#34;${InstanceId}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-CloudShell" class="language-CloudShell">export AccoutID=&#34;123456789012&#34;
+<pre><code language="language-CloudShell" class="language-CloudShell">export AccountID=&#34;123456789012&#34;
 export VpcId=&#34;vpc-010a940bbd8f747c2&#34;
 export SubnetId1aPublic=&#34;subnet-0356b36ba2daa766c&#34;
 export SubnetId1cPublic=&#34;subnet-0dabe411bfdc835fb&#34;
@@ -1295,7 +1297,7 @@ export InstanceId=&#34;i-0ddf413a91a008a52&#34;
 <pre><code language="language-Cloud9" class="language-Cloud9">{
     &#34;UserId&#34;: &#34;AROARSZZ5OK6XKSLV6L7V:i-0a1d7ee9d83080bff&#34;,
     &#34;Account&#34;: &#34;123456789012&#34;,
-    &#34;Arn&#34;: &#34;arn:aws:sts::123456789012:assumed-role/ContainerHandsOnForCloud9/i-0a1d7ee9d83080bff&#34;
+    &#34;Arn&#34;: &#34;arn:aws:sts::123456789012:assumed-role/ContainerHandsOnForCloud9/i-0ddf413a91a008a52&#34;
 }
 </code></pre>
 
@@ -1308,7 +1310,7 @@ export InstanceId=&#34;i-0ddf413a91a008a52&#34;
 <li>CloudShellで取得した環境変数をCloud9へ移設</li>
 </ul>
 <h3 is-upgraded>cmd (以下はサンプルです、エディターに退避した結果を利用ください)</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">export AccountID=&#34;123456789012&#34;
 export VpcId=&#34;vpc-010a940bbd8f747c2&#34;
 export SubnetId1aPublic=&#34;subnet-0356b36ba2daa766c&#34;
 export SubnetId1cPublic=&#34;subnet-0dabe411bfdc835fb&#34;
@@ -1322,7 +1324,7 @@ export PrivateSecurityGroupsId=&#34;sg-0f59547a1185820b5&#34;
 export InstanceId=&#34;i-0ddf413a91a008a52&#34;
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1337,7 +1339,7 @@ InstanceId : ${InstanceId}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1350,7 +1352,7 @@ PublicSecurityGroupsId : sg-065a7c8eceb9759d4
 PrivateSecurityGroupsId : sg-0f59547a1185820b5
 InstanceId : i-0ddf413a91a008a52
 </code></pre>
-<h2 is-upgraded>■AWS CLI・gitの環境設定実施</h2>
+<h2 is-upgraded>■AWS CLIの環境設定実施</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">export AWS_DEFAULT_REGION=ap-northeast-1
 export AWS_DEFAULT_OUTPUT=json
@@ -1400,7 +1402,8 @@ export AWS_DEFAULT_OUTPUT=json
 </code></pre>
 <h2 is-upgraded>■Cloud9上にDockerfileを作成</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; Dockerfile
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+cat &lt;&lt; EOF &gt; Dockerfile
 FROM php:7.4.0-apache
 COPY src/ /var/www/html/
 EOF
@@ -1488,7 +1491,7 @@ docker rm $(docker ps -q -a)
 <h2 is-upgraded>■Docker ImageにTag付けを行う</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker tag \
-  jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+  jaws-days-2022/container-hands-on:latest `echo ${AccountID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
@@ -1496,7 +1499,7 @@ docker rm $(docker ps -q -a)
 <h2 is-upgraded>■Docker ImageにTag付けの確認</h2>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker images \
-  --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+  --filter reference=`echo ${AccountID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">REPOSITORY                                                                            TAG       IMAGE ID       CREATED              SIZE
@@ -1508,7 +1511,7 @@ docker rm $(docker ps -q -a)
   --region ap-northeast-1 | \
   docker login \
   --username AWS \
-  --password-stdin `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com
+  --password-stdin `echo ${AccountID}`.dkr.ecr.ap-northeast-1.amazonaws.com
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">WARNING! Your password will be stored unencrypted in /home/ec2-user/.docker/config.json.
@@ -1524,7 +1527,7 @@ Login Succeeded
 <p class="image-container"><img alt="img" src="img/5b6a2a96098bbb08.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">docker push \
-  ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+  ${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">The push refers to repository [123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on]
@@ -1919,7 +1922,7 @@ latest: digest: sha256:385537de56b405bf07d5218a21eb9160bf023021713bbe05582cd9a2d
   --output text`
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1935,7 +1938,7 @@ LoadBalancersDnsName : ${LoadBalancersDnsName}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1957,7 +1960,7 @@ LoadBalancersDnsName : ContainerHandsOn-681708310.ap-northeast-1.elb.amazonaws.c
   --output text`
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1974,7 +1977,7 @@ LoadBalancerArn : ${LoadBalancerArn}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1997,7 +2000,7 @@ LoadBalancerArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:loadb
   --output text`
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -2015,7 +2018,7 @@ TargetGroupArn : ${TargetGroupArn}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -2080,12 +2083,12 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 <h3 is-upgraded>参考</h3>
 <p><a href="https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987" target="_blank">20190731 Black Belt Online Seminar Amazon ECS Deep Dive</a></p>
 <h3 is-upgraded>ECS on EC2の構成図</h3>
-<p class="image-container"><img alt="img" src="img/f1a8c502f37f27d.png"></p>
 <ul>
 <li>EC2上で稼働するTaskでコンテナが処理されます</li>
 <li>EC2を複数個まとめてクラスターとして扱います</li>
 <li>クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です</li>
 </ul>
+<p class="image-container"><img alt="img" src="img/f1a8c502f37f27d.png"></p>
 <h3 is-upgraded>ECS on Fargateの構成図</h3>
 <ul>
 <li>しかし僕らが注力したいのはコンテナでどのような処理が稼働するかです</li>
@@ -2144,15 +2147,16 @@ TargetGroupArn : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:target
 </ul>
 <p class="image-container"><img alt="img" src="img/1fd769514e68d504.png"></p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; register-task-definition.json
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+cat &lt;&lt; EOF &gt; register-task-definition.json
 {
     &#34;family&#34;: &#34;ContainerHandsOn&#34;, 
-    &#34;executionRoleArn&#34;: &#34;arn:aws:iam::${AccoutID}:role/ecsTaskExecutionRole&#34;, 
+    &#34;executionRoleArn&#34;: &#34;arn:aws:iam::${AccountID}:role/ecsTaskExecutionRole&#34;, 
     &#34;networkMode&#34;: &#34;awsvpc&#34;, 
     &#34;containerDefinitions&#34;: [
         {
             &#34;name&#34;: &#34;ContainerHandsOn&#34;, 
-            &#34;image&#34;: &#34;${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;, 
+            &#34;image&#34;: &#34;${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;, 
             &#34;portMappings&#34;: [
                 {
                     &#34;containerPort&#34;: 80, 
@@ -2288,7 +2292,7 @@ EOF
   grep ContainerHandsOn | tail -1 | sed -e &#39;s/&#34;//g&#39; | cut -f 7 --delim=&#34;:&#34;`
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -2307,7 +2311,7 @@ RevisionNo : ${RevisionNo}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -2499,7 +2503,7 @@ RevisionNo : 11
 </ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-export AccoutID=&#34;${AccoutID}&#34;
+export AccountID=&#34;${AccountID}&#34;
 export VpcId=&#34;${VpcId}&#34;
 export SubnetId1aPublic=&#34;${SubnetId1aPublic}&#34;
 export SubnetId1cPublic=&#34;${SubnetId1cPublic}&#34;
@@ -2518,7 +2522,7 @@ export RevisionNo=&#34;${RevisionNo}&#34;
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">export AccoutID=&#34;123456789012&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">export AccountID=&#34;123456789012&#34;
 export VpcId=&#34;vpc-010a940bbd8f747c2&#34;
 export SubnetId1aPublic=&#34;subnet-0356b36ba2daa766c&#34;
 export SubnetId1cPublic=&#34;subnet-0dabe411bfdc835fb&#34;
@@ -2603,7 +2607,8 @@ total 4
 <li>CodeBuildの仕様を記述したファイルを作成します</li>
 </ul>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; buildspec.yml
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn
+cat &lt;&lt; EOF &gt; buildspec.yml
 version: 0.2
 phases:
   install:
@@ -2614,8 +2619,8 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - docker version
-      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com
-      - RepositoryUri=${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com
+      - RepositoryUri=${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
       - ImageTag=\$(echo \$CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
   build:
@@ -2643,7 +2648,8 @@ EOF
 </code></pre>
 <h2 is-upgraded>■buildspec.ymlの確認</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">ls -l buildspec.yml
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn
+ls -l buildspec.yml
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 1193 Sep 15 12:14 buildspec.yml
@@ -2654,7 +2660,8 @@ EOF
 <li>と記載されている箇所は後ほどCodePipelineで更新します</li>
 </ul>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; appspec.yml
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn
+cat &lt;&lt; EOF &gt; appspec.yml
 version: 0.0
 Resources:
   - TargetService:
@@ -2671,7 +2678,8 @@ EOF
 </code></pre>
 <h2 is-upgraded>■appspec.ymlの確認</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">ls -l appspec.yml
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn
+ls -l appspec.yml
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">-rw-rw-r-- 1 ec2-user ec2-user 240 Sep 15 12:14 appspec.yml
@@ -2691,23 +2699,36 @@ EOF
 </code></pre>
 <h2 is-upgraded>■taskdef.jsonの変更</h2>
 <ul>
-<li>Cloud9のエディター機能を使って、6行目を変更します<br></li>
-<li>はPipeLine処理で作成された最新のイメージに置換されます<br></li>
-<li>変更後、Ctrl+Sでの保存をお忘れなく<br></li>
-<li>sedでやりたい- - -</li>
+<li>以下の変更を行います<br> &lt;変更前&gt;<br><br><code>&#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;  <br></code></li>
 </ul>
-<h3 is-upgraded>変更前</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
+<p>&lt;変更後&gt;</p>
+<pre><code>&#34;image&#34;: &#34;&lt;IMAGE_NAME&gt;&#34;  
 </code></pre>
-<h3 is-upgraded>変更前</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">&#34;image&#34;: &#34;&lt;IMAGE_NAME&gt;&#34;,
+<ul>
+<li>&lt;IMAGE_NAME&gt;は後述のCodePipelineにて、最新のImage URIに置換する処理が組み込まれます</li>
+</ul>
+<h3 is-upgraded>cmd（変更前確認）</h3>
+<pre><code>cd ~/environment/ContainerHandsOn
+grep &#39;&#34;image&#34;:&#39; taskdef.json
+</code></pre>
+<h3 is-upgraded>result（変更前確認）</h3>
+<pre><code>            &#34;image&#34;: &#34;123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest&#34;,
+</code></pre>
+<h3 is-upgraded>cmd（変更処理＆変更後確認）</h3>
+<pre><code>cd ~/environment/ContainerHandsOn
+sed -i -e &#39;s/\&#34;image\&#34;.*/\&#34;image\&#34;: \&#34;&lt;IMAGE_NAME&gt;\&#34;,/g&#39; taskdef.json
+grep &#39;&#34;image&#34;:&#39; taskdef.json
+</code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code>            &#34;image&#34;: &#34;&lt;IMAGE_NAME&gt;&#34;,
 </code></pre>
 <h2 is-upgraded>■CodeCommitへのPush</h2>
 <ul>
 <li>作成したファイルをCodeCommitへPushし格納します</li>
 </ul>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">git config --global user.name &#34;Your Name&#34;
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn
+git config --global user.name &#34;Your Name&#34;
 git config --global user.email you@example.com
 
 git add -A
@@ -2744,8 +2765,7 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 <p class="image-container"><img alt="img" src="img/d7c15dd0de89714f.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
-</code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
   &#34;Version&#34;: &#34;2012-10-17&#34;,
   &#34;Statement&#34;: [
@@ -2837,8 +2857,10 @@ EOF
 }
 </code></pre>
 <h2 is-upgraded>■CodeBuild設定</h2>
+<p class="image-container"><img alt="img" src="img/38073fde7f331d0c.png"></p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; codebuild-create-project.json
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+cat &lt;&lt; EOF &gt; codebuild-create-project.json
 {
     &#34;name&#34;: &#34;ContainerHandsOn&#34;,
     &#34;source&#34;: {
@@ -2855,7 +2877,7 @@ EOF
         &#34;computeType&#34;: &#34;BUILD_GENERAL1_SMALL&#34;,
         &#34;privilegedMode&#34;: true
     },
-    &#34;serviceRole&#34;: &#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeBuild&#34;
+    &#34;serviceRole&#34;: &#34;arn:aws:iam::${AccountID}:role/ContainerHandsOnForCodeBuild&#34;
 }
 EOF
 </code></pre>
@@ -2863,7 +2885,6 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">（なし）
 </code></pre>
 <h2 is-upgraded>■CodeBuild作成</h2>
-<p class="image-container"><img alt="img" src="img/38073fde7f331d0c.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws codebuild create-project \
   --cli-input-json file://codebuild-create-project.json \
@@ -2922,8 +2943,7 @@ EOF
 <p class="image-container"><img alt="img" src="img/b6f0bfd9eb825285.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
-</code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
   &#34;Version&#34;: &#34;2012-10-17&#34;,
   &#34;Statement&#34;: [
@@ -3020,7 +3040,7 @@ EOF
 </code></pre>
 <h2 is-upgraded>■ターゲットグループの作成</h2>
 <ul>
-<li>ALBのターゲットグループを新規作成します、テスト用として通常利用とはポートは変更します</li>
+<li>ALBのターゲットグループを新規作成します。テスト用として、通常利用とは異なるポート番号を指定します。</li>
 </ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws elbv2 create-target-group \
@@ -3071,7 +3091,7 @@ EOF
   --output text`
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -3091,7 +3111,7 @@ TargetGroupArn8080 : ${TargetGroupArn8080}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -3173,7 +3193,7 @@ TargetGroupArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:ta
 </code></pre>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -3195,7 +3215,7 @@ ListenerArn8080 : ${ListenerArn8080}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -3248,12 +3268,13 @@ ListenerArn8080 : arn:aws:elasticloadbalancing:ap-northeast-1:123456789012:liste
 <li>デプロイ環境の定義を行います</li>
 </ul>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; create-deployment-group.json
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+cat &lt;&lt; EOF &gt; create-deployment-group.json
 {
     &#34;applicationName&#34;: &#34;ContainerHandsOn&#34;,
     &#34;deploymentGroupName&#34;: &#34;ContainerHandsOn&#34;,
     &#34;deploymentConfigName&#34;: &#34;CodeDeployDefault.ECSAllAtOnce&#34;,
-    &#34;serviceRoleArn&#34;: &#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeDeploy&#34;,
+    &#34;serviceRoleArn&#34;: &#34;arn:aws:iam::${AccountID}:role/ContainerHandsOnForCodeDeploy&#34;,
     &#34;deploymentStyle&#34;: {
         &#34;deploymentType&#34;: &#34;BLUE_GREEN&#34;,
         &#34;deploymentOption&#34;: &#34;WITH_TRAFFIC_CONTROL&#34;
@@ -3317,7 +3338,8 @@ EOF
         <h2 is-upgraded>■CodePipeline用Role作成</h2>
 <p class="image-container"><img alt="img" src="img/1fe36997a007e059.png"></p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
   &#34;Version&#34;: &#34;2012-10-17&#34;,
   &#34;Statement&#34;: [
@@ -3558,7 +3580,7 @@ EOF
 <pre><code language="language-Cloud9" class="language-Cloud9">S3Name=${YourName}-container-handson-`date +&#34;%Y%m%d%H%M%S&#34;`
 </code></pre>
 <pre><code language="language-Cloud9" class="language-Cloud9">clear; cat &lt;&lt; EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -3581,7 +3603,7 @@ S3Name : ${S3Name}
 EOF
 </code></pre>
 <h3 is-upgraded>result</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">AccoutID : 123456789012
+<pre><code language="language-Cloud9" class="language-Cloud9">AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -3605,14 +3627,18 @@ S3Name : shigeru-oda-container-handson-20220915122328
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws s3 mb s3://${S3Name}
 </code></pre>
+<h3 is-upgraded>result</h3>
+<pre><code language="language-Cloud9" class="language-Cloud9">make_bucket: shigeru-oda-container-handson-20220920055436
+</code></pre>
 <h2 is-upgraded>■CodePipelineを作成</h2>
 <p class="image-container"><img alt="img" src="img/99e49b6290818cc8.png"></p>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; create-pipeline.json
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+cat &lt;&lt; EOF &gt; create-pipeline.json
 {
     &#34;pipeline&#34;: {
         &#34;name&#34;: &#34;ContainerHandsOn&#34;,
-        &#34;roleArn&#34;: &#34;arn:aws:iam::`echo ${AccoutID}`:role/ContainerHandsOnForPipeLine&#34;,
+        &#34;roleArn&#34;: &#34;arn:aws:iam::`echo ${AccountID}`:role/ContainerHandsOnForPipeLine&#34;,
         &#34;artifactStore&#34;: {
             &#34;type&#34;: &#34;S3&#34;,
             &#34;location&#34;: &#34;`echo ${S3Name}`&#34;
@@ -3918,8 +3944,7 @@ EOF
 <p class="image-container"><img alt="img" src="img/c793d9e2bdf5e0f4.png"></p>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
-</code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; assume-role-policy-document.json
+cat &lt;&lt; EOF &gt; assume-role-policy-document.json
 {
     &#34;Version&#34;: &#34;2012-10-17&#34;,
     &#34;Statement&#34;: [
@@ -3963,7 +3988,8 @@ EOF
 </code></pre>
 <h2 is-upgraded>■EventBridge用RoleにPolicyをアタッチ</h2>
 <h3 is-upgraded>cmd</h3>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; InlinePolicy.json
+<pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment
+cat &lt;&lt; EOF &gt; InlinePolicy.json
 {
     &#34;Version&#34;: &#34;2012-10-17&#34;,
     &#34;Statement&#34;: [
@@ -3973,7 +3999,7 @@ EOF
                 &#34;codepipeline:StartPipelineExecution&#34;
             ],
             &#34;Resource&#34;: [
-                &#34;arn:aws:codepipeline:ap-northeast-1:${AccoutID}:*&#34;
+                &#34;arn:aws:codepipeline:ap-northeast-1:${AccountID}:*&#34;
             ]
         }
     ]
@@ -3999,14 +4025,14 @@ EOF
   --event-pattern &#34;{ \
     \&#34;source\&#34;:[\&#34;aws.codecommit\&#34;], \
     \&#34;detail-type\&#34;:[\&#34;CodeCommit Repository State Change\&#34;], \
-    \&#34;resources\&#34;:[\&#34;arn:aws:codecommit:ap-northeast-1:${AccoutID}:ContainerHandsOn\&#34;], \
+    \&#34;resources\&#34;:[\&#34;arn:aws:codecommit:ap-northeast-1:${AccountID}:ContainerHandsOn\&#34;], \
     \&#34;detail\&#34;:{ \
         \&#34;event\&#34;:[\&#34;referenceCreated\&#34;,\&#34;referenceUpdated\&#34;], \
         \&#34;referenceType\&#34;: [\&#34;branch\&#34;], \
         \&#34;referenceName\&#34;:[\&#34;master\&#34;] \
     } \
   }&#34; \
-  --role-arn &#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge&#34;
+  --role-arn &#34;arn:aws:iam::${AccountID}:role/ContainerHandsOnForEventBridge&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
@@ -4018,7 +4044,7 @@ EOF
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">aws events put-targets \
   --rule ContainerHandsOn \
-  --targets &#34;Id&#34;=&#34;1&#34;,&#34;Arn&#34;=&#34;arn:aws:codepipeline:ap-northeast-1:${AccoutID}:ContainerHandsOn&#34;,&#34;RoleArn&#34;=&#34;arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge&#34;
+  --targets &#34;Id&#34;=&#34;1&#34;,&#34;Arn&#34;=&#34;arn:aws:codepipeline:ap-northeast-1:${AccountID}:ContainerHandsOn&#34;,&#34;RoleArn&#34;=&#34;arn:aws:iam::${AccountID}:role/ContainerHandsOnForEventBridge&#34;
 </code></pre>
 <h3 is-upgraded>result</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">{
@@ -4039,8 +4065,7 @@ EOF
 </ul>
 <h3 is-upgraded>cmd</h3>
 <pre><code language="language-Cloud9" class="language-Cloud9">cd ~/environment/ContainerHandsOn/src
-</code></pre>
-<pre><code language="language-Cloud9" class="language-Cloud9">cat &lt;&lt; EOF &gt; index.php
+cat &lt;&lt; EOF &gt; index.php
 &lt;!DOCTYPE html&gt;
 &lt;html lang=&#34;ja&#34;&gt;
   &lt;head&gt;
@@ -4184,15 +4209,6 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 <ul>
 <li>Your environments &gt; ContainerHandsOn &gt; Delete</li>
 </ul>
-<h2 is-upgraded>■EC2</h2>
-<ul>
-<li>セキュリティグループ &gt; ContainerHandsOn-PrivateSecurityGroup &gt; インバウンドルール &gt; インバウンドのルールを編集 &gt; 2行削除</li>
-<li>セキュリティグループ &gt; ContainerHandsOn-PublicSecurityGroup &gt; インバウンドルール &gt; インバウンドのルールを編集 &gt; 2行削除</li>
-<li>ロードバランサー &gt; ContainerHandsOn &gt; リスナーTAB &gt; 2行削除</li>
-<li>ロードバランサー &gt; ContainerHandsOn &gt; アクション &gt; 削除</li>
-<li>ターゲットグループ &gt; ContainerHandsOn &gt; アクション &gt; 削除</li>
-<li>ターゲットグループ &gt; ContainerHandsOn8080 &gt; アクション &gt; 削除</li>
-</ul>
 <h2 is-upgraded>■ECS</h2>
 <ul>
 <li>タスク定義 &gt; ContainerHandsOn &gt; 全てのリビジョンを１つずつ登録解除</li>
@@ -4200,9 +4216,21 @@ To https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/ContainerHandsOn
 <li>クラスター &gt; ContainerHandsOn &gt; タスクTAB &gt; 実行中タスクを選択 &gt; 停止</li>
 <li>クラスター &gt; ContainerHandsOn &gt; クラスターの削除</li>
 </ul>
-<h2 is-upgraded>■VPC</h2>
+<h2 is-upgraded>■VPC（エンドポイント）</h2>
 <ul>
-<li>エンドポイント &gt; ContainerHandsOnの4行 &gt; アクション &gt; 削除 （削除に数分時間を要しますが、お待ちください）</li>
+<li>エンドポイント &gt; ContainerHandsOnの4行 &gt; アクション &gt; 削除<br> （削除に数分時間を要しますが、お待ちください）</li>
+</ul>
+<h2 is-upgraded>■EC2</h2>
+<ul>
+<li>ロードバランサー &gt; ContainerHandsOn &gt; リスナーTAB &gt; 2行削除</li>
+<li>ロードバランサー &gt; ContainerHandsOn &gt; アクション &gt; 削除</li>
+<li>ターゲットグループ &gt; ContainerHandsOn &gt; アクション &gt; 削除</li>
+<li>ターゲットグループ &gt; ContainerHandsOn8080 &gt; アクション &gt; 削除</li>
+<li>セキュリティグループ &gt; ContainerHandsOn-PrivateSecurityGroup &gt; インバウンドルール &gt; インバウンドのルールを編集 &gt; 2行削除</li>
+<li>セキュリティグループ &gt; ContainerHandsOn-PublicSecurityGroup &gt; インバウンドルール &gt; インバウンドのルールを編集 &gt; 2行削除</li>
+</ul>
+<h2 is-upgraded>■VPC（VPCの削除）</h2>
+<ul>
 <li>お使いのVPC &gt; ContainerHandsOn &gt; アクション &gt; VPCの削除</li>
 </ul>
 <h2 is-upgraded>■Elastic Container Registry</h2>

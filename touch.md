@@ -137,19 +137,19 @@ Duration: 0:15:00
 #### cmd
 
 ```CloudShell
-AccoutID=`aws sts get-caller-identity --query Account --output text`
+AccountID=`aws sts get-caller-identity --query Account --output text`
 ```
 
 ```CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 EOF
 ```
 
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 ```
 
 ### ■ECSタスクの実行Roleの存在確認
@@ -185,6 +185,7 @@ aws iam list-roles | grep "RoleName" | grep "ecsTaskExecutionRole"
 #### cmd
 
 ```Cloud9
+cd ~/
 cat << EOF > assume-role-policy-document.json
 {
   "Version": "2012-10-17",
@@ -339,7 +340,7 @@ VpcId=`aws ec2 describe-vpcs \
 
 ```CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 EOF
 ```
@@ -347,7 +348,7 @@ EOF
 #### results
 
 ```CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 ```
 
@@ -662,7 +663,7 @@ SubnetId1cPrivate=`aws ec2 describe-subnets \
 
 ```CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -674,7 +675,7 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -729,7 +730,7 @@ InternetGatewayId=`aws ec2 describe-internet-gateways \
 
 ``` CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -742,7 +743,7 @@ EOF
 #### result
 
 ``` CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -897,7 +898,7 @@ RouteTableIdPrivate=`aws ec2 describe-route-tables \
 
 ```CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -912,7 +913,7 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1074,7 +1075,7 @@ PublicSecurityGroupsId=`aws ec2 describe-security-groups \
 
 ```CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1090,7 +1091,7 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1146,7 +1147,7 @@ PrivateSecurityGroupsId=`aws ec2 describe-security-groups \
 
 ```CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1163,7 +1164,7 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1365,6 +1366,7 @@ aws cloud9 create-environment-ec2 \
 #### cmd
 
 ```CloudShell
+cd ~/
 cat << EOF > assume-role-policy-document.json
 {
   "Version": "2012-10-17",
@@ -1508,7 +1510,7 @@ InstanceId=`aws ec2 describe-instances \
 
 ```CloudShell
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1526,7 +1528,7 @@ EOF
 #### result
 
 ```CloudShell
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1574,7 +1576,7 @@ aws ec2 associate-iam-instance-profile \
 
 ```CloudShell
 clear; cat << EOF
-export AccoutID="${AccoutID}"
+export AccountID="${AccountID}"
 export VpcId="${VpcId}"
 export SubnetId1aPublic="${SubnetId1aPublic}"
 export SubnetId1cPublic="${SubnetId1cPublic}"
@@ -1592,7 +1594,7 @@ EOF
 #### result
 
 ```CloudShell
-export AccoutID="123456789012"
+export AccountID="123456789012"
 export VpcId="vpc-010a940bbd8f747c2"
 export SubnetId1aPublic="subnet-0356b36ba2daa766c"
 export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
@@ -1642,7 +1644,7 @@ aws sts get-caller-identity
 {
     "UserId": "AROARSZZ5OK6XKSLV6L7V:i-0a1d7ee9d83080bff",
     "Account": "123456789012",
-    "Arn": "arn:aws:sts::123456789012:assumed-role/ContainerHandsOnForCloud9/i-0a1d7ee9d83080bff"
+    "Arn": "arn:aws:sts::123456789012:assumed-role/ContainerHandsOnForCloud9/i-0ddf413a91a008a52"
 }
 ```
 
@@ -1657,7 +1659,7 @@ Duration: 0:05:00
 #### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
-export AccoutID="123456789012"
+export AccountID="123456789012"
 export VpcId="vpc-010a940bbd8f747c2"
 export SubnetId1aPublic="subnet-0356b36ba2daa766c"
 export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
@@ -1673,7 +1675,7 @@ export InstanceId="i-0ddf413a91a008a52"
 
 ``` Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -1691,7 +1693,7 @@ EOF
 #### result
 
 ``` Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -1705,7 +1707,7 @@ PrivateSecurityGroupsId : sg-0f59547a1185820b5
 InstanceId : i-0ddf413a91a008a52
 ```
 
-### ■AWS CLI・gitの環境設定実施
+### ■AWS CLIの環境設定実施
 
 #### cmd
 
@@ -1778,6 +1780,7 @@ Docker version 20.10.13, build a224086
 #### cmd
 
 ```Cloud9
+cd ~/environment
 cat << EOF > Dockerfile
 FROM php:7.4.0-apache
 COPY src/ /var/www/html/
@@ -1904,7 +1907,7 @@ docker rm $(docker ps -q -a)
 
 ```Cloud9
 docker tag \
-  jaws-days-2022/container-hands-on:latest `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+  jaws-days-2022/container-hands-on:latest `echo ${AccountID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
@@ -1919,7 +1922,7 @@ docker tag \
 
 ```Cloud9
 docker images \
-  --filter reference=`echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+  --filter reference=`echo ${AccountID}`.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
@@ -1938,7 +1941,7 @@ aws ecr get-login-password \
   --region ap-northeast-1 | \
   docker login \
   --username AWS \
-  --password-stdin `echo ${AccoutID}`.dkr.ecr.ap-northeast-1.amazonaws.com
+  --password-stdin `echo ${AccountID}`.dkr.ecr.ap-northeast-1.amazonaws.com
 ```
 
 #### result
@@ -1961,7 +1964,7 @@ Login Succeeded
 
 ```Cloud9
 docker push \
-  ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
+  ${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest
 ```
 
 #### result
@@ -2406,7 +2409,7 @@ LoadBalancersDnsName=`aws elbv2 describe-load-balancers \
 
 ```Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -2425,7 +2428,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -2453,7 +2456,7 @@ LoadBalancerArn=`aws elbv2 describe-load-balancers \
 
 ```Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -2473,7 +2476,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -2502,7 +2505,7 @@ TargetGroupArn=`aws elbv2 describe-target-groups \
 
 ```Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -2523,7 +2526,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -2598,11 +2601,11 @@ Duration: 0:15:00
 
 #### ECS on EC2の構成図
 
-![img](./image/img9-1.png)
-
 - EC2上で稼働するTaskでコンテナが処理されます
 - EC2を複数個まとめてクラスターとして扱います
 - クラスター管理をし、どのEC2へ新規タスクを設けるかはECSの役目です
+
+![img](./image/img9-1.png)
 
 #### ECS on Fargateの構成図
 
@@ -2674,15 +2677,16 @@ aws ecs create-cluster \
 #### cmd
 
 ```Cloud9
+cd ~/environment
 cat << EOF > register-task-definition.json
 {
     "family": "ContainerHandsOn", 
-    "executionRoleArn": "arn:aws:iam::${AccoutID}:role/ecsTaskExecutionRole", 
+    "executionRoleArn": "arn:aws:iam::${AccountID}:role/ecsTaskExecutionRole", 
     "networkMode": "awsvpc", 
     "containerDefinitions": [
         {
             "name": "ContainerHandsOn", 
-            "image": "${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest", 
+            "image": "${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest", 
             "portMappings": [
                 {
                     "containerPort": 80, 
@@ -2828,7 +2832,7 @@ RevisionNo=`aws ecs list-task-definitions \
 
 ```Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -2850,7 +2854,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -3063,7 +3067,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 
 ```Cloud9
 clear; cat << EOF
-export AccoutID="${AccoutID}"
+export AccountID="${AccountID}"
 export VpcId="${VpcId}"
 export SubnetId1aPublic="${SubnetId1aPublic}"
 export SubnetId1cPublic="${SubnetId1cPublic}"
@@ -3085,7 +3089,7 @@ EOF
 #### result
 
 ```Cloud9
-export AccoutID="123456789012"
+export AccountID="123456789012"
 export VpcId="vpc-010a940bbd8f747c2"
 export SubnetId1aPublic="subnet-0356b36ba2daa766c"
 export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
@@ -3191,6 +3195,7 @@ total 4
 #### cmd
 
 ```Cloud9
+cd ~/environment/ContainerHandsOn
 cat << EOF > buildspec.yml
 version: 0.2
 phases:
@@ -3202,8 +3207,8 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - docker version
-      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com
-      - RepositoryUri=${AccoutID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin ${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com
+      - RepositoryUri=${AccountID}.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on
       - ImageTag=\$(echo \$CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
   build:
@@ -3238,6 +3243,7 @@ EOF
 #### cmd
 
 ```Cloud9
+cd ~/environment/ContainerHandsOn
 ls -l buildspec.yml
 ```
 
@@ -3255,6 +3261,7 @@ ls -l buildspec.yml
 #### cmd
 
 ```Cloud9
+cd ~/environment/ContainerHandsOn
 cat << EOF > appspec.yml
 version: 0.0
 Resources:
@@ -3279,6 +3286,7 @@ EOF
 #### cmd
 
 ```Cloud9
+cd ~/environment/ContainerHandsOn
 ls -l appspec.yml
 ```
 
@@ -3309,21 +3317,46 @@ aws ecs describe-task-definition \
 
 ### ■taskdef.jsonの変更
 
-- Cloud9のエディター機能を使って、6行目を変更します  
-- <IMAGE_NAME>はPipeLine処理で作成された最新のイメージに置換されます  
-- 変更後、Ctrl+Sでの保存をお忘れなく  
-- sedでやりたい- - -
+- 以下の変更を行います  
+<変更前>  
 
-#### 変更前
-
-```Cloud9
-"image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
+```
+"image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest"  
 ```
 
-#### 変更前
+<変更後>  
 
-```Cloud9
-"image": "<IMAGE_NAME>",
+```
+"image": "<IMAGE_NAME>"  
+```
+
+- \<IMAGE_NAME\>は後述のCodePipelineにて、最新のImage URIに置換する処理が組み込まれます
+
+#### cmd（変更前確認）
+
+```
+cd ~/environment/ContainerHandsOn
+grep '"image":' taskdef.json
+```
+
+#### result（変更前確認）
+
+```
+            "image": "123456789012.dkr.ecr.ap-northeast-1.amazonaws.com/jaws-days-2022/container-hands-on:latest",
+```
+
+#### cmd（変更処理＆変更後確認）
+
+```
+cd ~/environment/ContainerHandsOn
+sed -i -e 's/\"image\".*/\"image\": \"<IMAGE_NAME>\",/g' taskdef.json
+grep '"image":' taskdef.json
+```
+
+#### result
+
+```
+            "image": "<IMAGE_NAME>",
 ```
 
 ### ■CodeCommitへのPush
@@ -3333,6 +3366,7 @@ aws ecs describe-task-definition \
 #### cmd
 
 ```Cloud9
+cd ~/environment/ContainerHandsOn
 git config --global user.name "Your Name"
 git config --global user.email you@example.com
 
@@ -3376,9 +3410,6 @@ Duration: 0:10:00
 
 ```Cloud9
 cd ~/environment
-```
-
-```Cloud9
 cat << EOF > assume-role-policy-document.json
 {
   "Version": "2012-10-17",
@@ -3503,9 +3534,12 @@ aws iam list-attached-role-policies \
 
 ### ■CodeBuild設定
 
+![img](./image/drowio-13-2.png)
+
 #### cmd
 
 ```Cloud9
+cd ~/environment
 cat << EOF > codebuild-create-project.json
 {
     "name": "ContainerHandsOn",
@@ -3523,7 +3557,7 @@ cat << EOF > codebuild-create-project.json
         "computeType": "BUILD_GENERAL1_SMALL",
         "privilegedMode": true
     },
-    "serviceRole": "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeBuild"
+    "serviceRole": "arn:aws:iam::${AccountID}:role/ContainerHandsOnForCodeBuild"
 }
 EOF
 ```
@@ -3535,8 +3569,6 @@ EOF
 ```
 
 ### ■CodeBuild作成
-
-![img](./image/drowio-13-2.png)
 
 #### cmd
 
@@ -3605,9 +3637,6 @@ Duration: 0:10:00
 
 ```Cloud9
 cd ~/environment
-```
-
-```Cloud9
 cat << EOF > assume-role-policy-document.json
 {
   "Version": "2012-10-17",
@@ -3737,7 +3766,7 @@ aws deploy create-application \
 
 ### ■ターゲットグループの作成
 
-- ALBのターゲットグループを新規作成します、テスト用として通常利用とはポートは変更します
+- ALBのターゲットグループを新規作成します。テスト用として、通常利用とは異なるポート番号を指定します。
 
 #### cmd
 
@@ -3798,7 +3827,7 @@ TargetGroupArn8080=`aws elbv2 describe-target-groups \
 
 ```Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -3821,7 +3850,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -3924,7 +3953,7 @@ ListenerArn8080=`aws elbv2 describe-listeners \
 
 ```Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -3949,7 +3978,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -4011,12 +4040,13 @@ aws ec2 authorize-security-group-ingress \
 #### cmd
 
 ```Cloud9
+cd ~/environment
 cat << EOF > create-deployment-group.json
 {
     "applicationName": "ContainerHandsOn",
     "deploymentGroupName": "ContainerHandsOn",
     "deploymentConfigName": "CodeDeployDefault.ECSAllAtOnce",
-    "serviceRoleArn": "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForCodeDeploy",
+    "serviceRoleArn": "arn:aws:iam::${AccountID}:role/ContainerHandsOnForCodeDeploy",
     "deploymentStyle": {
         "deploymentType": "BLUE_GREEN",
         "deploymentOption": "WITH_TRAFFIC_CONTROL"
@@ -4089,6 +4119,7 @@ Duration: 0:10:00
 #### cmd
 
 ```Cloud9
+cd ~/environment
 cat << EOF > assume-role-policy-document.json
 {
   "Version": "2012-10-17",
@@ -4355,7 +4386,7 @@ S3Name=${YourName}-container-handson-`date +"%Y%m%d%H%M%S"`
 
 ```Cloud9
 clear; cat << EOF
-AccoutID : ${AccoutID}
+AccountID : ${AccountID}
 VpcId : ${VpcId}
 SubnetId1aPublic : ${SubnetId1aPublic}
 SubnetId1cPublic : ${SubnetId1cPublic}
@@ -4381,7 +4412,7 @@ EOF
 #### result
 
 ```Cloud9
-AccoutID : 123456789012
+AccountID : 123456789012
 VpcId : vpc-010a940bbd8f747c2
 SubnetId1aPublic : subnet-0356b36ba2daa766c
 SubnetId1cPublic : subnet-0dabe411bfdc835fb
@@ -4409,6 +4440,12 @@ S3Name : shigeru-oda-container-handson-20220915122328
 aws s3 mb s3://${S3Name}
 ```
 
+#### result
+
+```Cloud9
+make_bucket: shigeru-oda-container-handson-20220920055436
+```
+
 ### ■CodePipelineを作成
 
 ![img](./image/drowio-15-3.png)
@@ -4416,11 +4453,12 @@ aws s3 mb s3://${S3Name}
 #### cmd
 
 ```Cloud9
+cd ~/environment
 cat << EOF > create-pipeline.json
 {
     "pipeline": {
         "name": "ContainerHandsOn",
-        "roleArn": "arn:aws:iam::`echo ${AccoutID}`:role/ContainerHandsOnForPipeLine",
+        "roleArn": "arn:aws:iam::`echo ${AccountID}`:role/ContainerHandsOnForPipeLine",
         "artifactStore": {
             "type": "S3",
             "location": "`echo ${S3Name}`"
@@ -4769,9 +4807,6 @@ Duration: 0:05:00
 
 ```Cloud9
 cd ~/environment
-```
-
-```Cloud9
 cat << EOF > assume-role-policy-document.json
 {
     "Version": "2012-10-17",
@@ -4825,6 +4860,7 @@ aws iam create-role \
 #### cmd
 
 ```Cloud9
+cd ~/environment
 cat << EOF > InlinePolicy.json
 {
     "Version": "2012-10-17",
@@ -4835,7 +4871,7 @@ cat << EOF > InlinePolicy.json
                 "codepipeline:StartPipelineExecution"
             ],
             "Resource": [
-                "arn:aws:codepipeline:ap-northeast-1:${AccoutID}:*"
+                "arn:aws:codepipeline:ap-northeast-1:${AccountID}:*"
             ]
         }
     ]
@@ -4871,14 +4907,14 @@ aws events put-rule \
   --event-pattern "{ \
     \"source\":[\"aws.codecommit\"], \
     \"detail-type\":[\"CodeCommit Repository State Change\"], \
-    \"resources\":[\"arn:aws:codecommit:ap-northeast-1:${AccoutID}:ContainerHandsOn\"], \
+    \"resources\":[\"arn:aws:codecommit:ap-northeast-1:${AccountID}:ContainerHandsOn\"], \
     \"detail\":{ \
         \"event\":[\"referenceCreated\",\"referenceUpdated\"], \
         \"referenceType\": [\"branch\"], \
         \"referenceName\":[\"master\"] \
     } \
   }" \
-  --role-arn "arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge"
+  --role-arn "arn:aws:iam::${AccountID}:role/ContainerHandsOnForEventBridge"
 ```
 
 #### result
@@ -4898,7 +4934,7 @@ aws events put-rule \
 ```Cloud9
 aws events put-targets \
   --rule ContainerHandsOn \
-  --targets "Id"="1","Arn"="arn:aws:codepipeline:ap-northeast-1:${AccoutID}:ContainerHandsOn","RoleArn"="arn:aws:iam::${AccoutID}:role/ContainerHandsOnForEventBridge"
+  --targets "Id"="1","Arn"="arn:aws:codepipeline:ap-northeast-1:${AccountID}:ContainerHandsOn","RoleArn"="arn:aws:iam::${AccountID}:role/ContainerHandsOnForEventBridge"
 ```
 
 #### result
@@ -4926,9 +4962,6 @@ Duration: 0:10:00
 
 ```Cloud9
 cd ~/environment/ContainerHandsOn/src
-```
-
-```Cloud9
 cat << EOF > index.php
 <!DOCTYPE html>
 <html lang="ja">
@@ -5115,15 +5148,6 @@ Duration: 0:10:00
 
 - Your environments > ContainerHandsOn > Delete
 
-### ■EC2
-
-- セキュリティグループ > ContainerHandsOn-PrivateSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
-- セキュリティグループ > ContainerHandsOn-PublicSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
-- ロードバランサー > ContainerHandsOn > リスナーTAB > 2行削除
-- ロードバランサー > ContainerHandsOn > アクション > 削除
-- ターゲットグループ > ContainerHandsOn > アクション > 削除
-- ターゲットグループ > ContainerHandsOn8080 > アクション > 削除
-
 ### ■ECS
 
 - タスク定義 > ContainerHandsOn > 全てのリビジョンを１つずつ登録解除
@@ -5131,10 +5155,22 @@ Duration: 0:10:00
 - クラスター > ContainerHandsOn > タスクTAB > 実行中タスクを選択 > 停止
 - クラスター > ContainerHandsOn > クラスターの削除
 
-### ■VPC
+### ■VPC（エンドポイント）
 
-- エンドポイント > ContainerHandsOnの4行 > アクション > 削除
+- エンドポイント > ContainerHandsOnの4行 > アクション > 削除  
 （削除に数分時間を要しますが、お待ちください）
+
+### ■EC2
+
+- ロードバランサー > ContainerHandsOn > リスナーTAB > 2行削除
+- ロードバランサー > ContainerHandsOn > アクション > 削除
+- ターゲットグループ > ContainerHandsOn > アクション > 削除
+- ターゲットグループ > ContainerHandsOn8080 > アクション > 削除
+- セキュリティグループ > ContainerHandsOn-PrivateSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
+- セキュリティグループ > ContainerHandsOn-PublicSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
+
+### ■VPC（VPCの削除）
+
 - お使いのVPC > ContainerHandsOn > アクション > VPCの削除
 
 ### ■Elastic Container Registry
