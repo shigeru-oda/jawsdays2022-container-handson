@@ -52,6 +52,7 @@ Duration: 0:10:00
 - [202106 AWS Black Belt Online Seminar CON110 なぜ今コンテナなのか](https://www.slideshare.net/AmazonWebServicesJapan/202106-aws-black-belt-online-seminar-con110-249613926)
 
 ### ■ブラウザについて
+
 - Chrome もしくは Firefoxをご利用下さい。
 - IE もしくは Safariでは正しい挙動にならない可能性がございます
 
@@ -1388,6 +1389,7 @@ aws iam create-role \
 ```
 
 #### result
+
 ```CloudShell
 {
     "Role": {
@@ -1624,6 +1626,26 @@ export InstanceId="i-0ddf413a91a008a52"
 
 <a href="./image/img4-3.png" target="_blank" rel="noopener noreferrer">![img](./image/img4-3.png)</a>
 
+### ■Credential切り替え後の確認
+
+#### cmd
+
+```Cloud9
+aws sts get-caller-identity
+```
+
+#### result
+
+- 表示されるArnとして、次のように`ContainerHandsOnForCloud9`のassumed-roleが表示されればOK
+
+```Cloud9
+{
+    "UserId": "AROARSZZ5OK6XKSLV6L7V:i-0a1d7ee9d83080bff",
+    "Account": "123456789012",
+    "Arn": "arn:aws:sts::123456789012:assumed-role/ContainerHandsOnForCloud9/i-0a1d7ee9d83080bff"
+}
+```
+
 ## ECR作成
 
 Duration: 0:05:00
@@ -1635,18 +1657,18 @@ Duration: 0:05:00
 #### cmd (以下はサンプルです、エディターに退避した結果を利用ください)
 
 ```Cloud9
-$ export AccoutID="123456789012"
-$ export VpcId="vpc-010a940bbd8f747c2"
-$ export SubnetId1aPublic="subnet-0356b36ba2daa766c"
-$ export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
-$ export SubnetId1aPrivate="subnet-0d99180ac3baeb5fa"
-$ export SubnetId1cPrivate="subnet-0a66f1c2d5ce3b939"
-$ export InternetGatewayId="igw-082f42082d7748713"
-$ export RouteTableIdPublic="rtb-000a11e6eacc5c263"
-$ export RouteTableIdPrivate="rtb-077b87e7eb65d1f43"
-$ export PublicSecurityGroupsId="sg-065a7c8eceb9759d4"
-$ export PrivateSecurityGroupsId="sg-0f59547a1185820b5"
-$ export InstanceId="i-0ddf413a91a008a52"
+export AccoutID="123456789012"
+export VpcId="vpc-010a940bbd8f747c2"
+export SubnetId1aPublic="subnet-0356b36ba2daa766c"
+export SubnetId1cPublic="subnet-0dabe411bfdc835fb"
+export SubnetId1aPrivate="subnet-0d99180ac3baeb5fa"
+export SubnetId1cPrivate="subnet-0a66f1c2d5ce3b939"
+export InternetGatewayId="igw-082f42082d7748713"
+export RouteTableIdPublic="rtb-000a11e6eacc5c263"
+export RouteTableIdPrivate="rtb-077b87e7eb65d1f43"
+export PublicSecurityGroupsId="sg-065a7c8eceb9759d4"
+export PrivateSecurityGroupsId="sg-0f59547a1185820b5"
+export InstanceId="i-0ddf413a91a008a52"
 ```
 
 ``` Cloud9
@@ -4627,8 +4649,6 @@ Duration: 0:15:00
 
 ![img](./image/drowio-16-1.png)
 
-
-
 ### ■Bule/Greenデプロイの流れ
 
 - 参考元：[20190731 Black Belt Online Seminar Amazon ECS Deep Dive](https://www.slideshare.net/AmazonWebServicesJapan/20190731-black-belt-online-seminar-amazon-ecs-deep-dive-162160987)
@@ -4837,6 +4857,7 @@ aws iam put-role-policy \
 ```
 
 ### ■EventBridgeを作成
+
 ![img](./image/drowio-17-2.png)
 
 #### cmd
@@ -4869,6 +4890,7 @@ aws events put-rule \
 ```
 
 ### ■targetを作成
+
 ![img](./image/drowio-17-3.png)
 
 #### cmd
@@ -4891,9 +4913,11 @@ aws events put-targets \
 ## 動作確認２−２（Codeシリーズを利用）
 
 Duration: 0:10:00
+
 ### ■CodePipelineの流れ
 
 ![img](./image/drowio-18-1.png)
+
 ### ■srcの変更
 
 - Cloud9上で「/home/ec2-user/environment/ContainerHandsOn/src/index.php」を変更する
@@ -5046,6 +5070,7 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 ```
 
 ### ■画面
+
 ![img](./image/img18-5.png)
 
 ### ■元のタスクセットの終了
@@ -5058,34 +5083,40 @@ http://ContainerHandsOn-610375823.ap-northeast-1.elb.amazonaws.com
 - 全ての処理が終了する
 ![img](./image/img18-7.png)
 
-
-
 ## 片付け
 
 Duration: 0:10:00
+
 - 削除部分はGUIで対応します
 - CLIが苦手な方も削除漏れにより課金が発生しないように確認をお願いします
 
 ### ■CodePipeline
+
 - パイプライン > ContainerHandsOn > パイプラインを削除する
 
 ### ■CodeDeploy
+
 - アプリケーション > ContainerHandsOn > アプリケーションの削除
 
 ### ■CodeBuild
+
 - ビルドプロジェクト > ContainerHandsOn > ビルドプロジェクトの削除
 - ビルド履歴 > 検索バーに「ContainerHandsOn」 > ビルドの削除
 
 ### ■CodeCommit
+
 - リポジトリ > ContainerHandsOn > リポジトリの削除
 
 ### ■EventBridge
+
 - ルール > ContainerHandsOn > 削除
 
 ### ■Cloud9
+
 - Your environments > ContainerHandsOn > Delete
 
 ### ■EC2
+
 - セキュリティグループ > ContainerHandsOn-PrivateSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
 - セキュリティグループ > ContainerHandsOn-PublicSecurityGroup > インバウンドルール > インバウンドのルールを編集 > 2行削除
 - ロードバランサー > ContainerHandsOn > リスナーTAB > 2行削除
@@ -5094,28 +5125,34 @@ Duration: 0:10:00
 - ターゲットグループ > ContainerHandsOn8080 > アクション > 削除
 
 ### ■ECS
+
 - タスク定義 > ContainerHandsOn > 全てのリビジョンを１つずつ登録解除
 - クラスター > ContainerHandsOn > サービスTAB > ContainerHandsOn > サービスを削除(強制削除)
 - クラスター > ContainerHandsOn > タスクTAB > 実行中タスクを選択 > 停止
 - クラスター > ContainerHandsOn > クラスターの削除
 
 ### ■VPC
+
 - エンドポイント > ContainerHandsOnの4行 > アクション > 削除
 （削除に数分時間を要しますが、お待ちください）
 - お使いのVPC > ContainerHandsOn > アクション > VPCの削除
 
 ### ■Elastic Container Registry
+
 - リポジトリ > jaws-days-2022/container-hands-on > 削除
 
 ### ■S3
+
 - バケット > ${YourName}-container-handson-yyymmddhh24miss > 空にする
 - バケット > ${YourName}-container-handson-yyymmddhh24miss > 削除
 
 ### ■CloudWatch
+
 - ロググループ > awslogs-container-hands-on > アクション > ロググループの削除
 - ロググループ > /aws/codebuild/ContainerHandsOn > アクション > ロググループの削除
 
 ### ■IAM
+
 - ロール > ContainerHandsOnForCloud9 > 削除
 - ロール > ContainerHandsOnForCodeBuild > 削除
 - ロール > ContainerHandsOnForCodeDeploy > 削除
@@ -5123,6 +5160,7 @@ Duration: 0:10:00
 - ロール > ContainerHandsOnForEventBridge > 削除
 
 ### ■IAM（任意）
+
 - ロール > ecsTaskExecutionRole > 削除  
 
 ecsTaskExecutionRoleは、画面コンソールでのECSのタスク定義作成時に、「新しいロールの作成」を選択する自動的に作成されます。今後もECSサービスを利用するのであれば、残しておいても問題ないです。  
