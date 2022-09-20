@@ -1332,6 +1332,7 @@ Duration: 0:10:00
 ### ■Cloud9の作成
 
 - コードを記述、実行、デバッグできるクラウドベースの統合開発環境 (IDE)であるCloud9を作成
+- CloudShellでは、Dockerコンテナをサポートしていないため、Dockerが扱えるCloud9上でハンズオン作業を行います
 
 ![img](./image/drowio-4-1.png)
 
