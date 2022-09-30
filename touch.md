@@ -5,7 +5,7 @@ categories: codelab,markdown
 environments: HandsOn
 status: Draft
 feedback link: <https://github.com/shigeru-oda/jawsdays2022-container-handson>
-analytics account: G-HX4N8CPD7E
+analytics account: UA-243683299-1
 
 # [JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～
 
