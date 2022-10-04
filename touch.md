@@ -9,7 +9,7 @@ analytics account: UA-243683299-1
 
 # [JAWS DAYS 2022] ハンズオン～コンテナサービスをCI/CDパイプラインでデプロイしよう～
 
-Duration: 0:10:00
+Duration: 0:05:00
 
 ![img](./image/img1-1.png)
 
