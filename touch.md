@@ -105,7 +105,7 @@ Duration: 0:05:00
 
 ## 事前準備とネットワーク周りの構築
 
-Duration: 0:15:00
+Duration: 0:20:00
 
 ### ■CloudShellの起動
 
