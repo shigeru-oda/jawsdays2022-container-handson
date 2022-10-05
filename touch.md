@@ -1761,7 +1761,10 @@ aws ecr create-repository \
 
 ## Docker Image作成
 
-Duration: 0:10:00
+Duration: 0:15:00
+### ■なぜ今コンテナなのか
+参考  
+[202106 AWS Black Belt Online Seminar CON110 なぜ今コンテナなのか](https://www.slideshare.net/AmazonWebServicesJapan/202106-aws-black-belt-online-seminar-con110-249613926)
 
 ### ■Cloud9上にdockerセットアップされていることを確認
 
