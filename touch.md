@@ -14,6 +14,9 @@ Duration: 0:05:00
 ![img](./image/img1-1.png)
 
 ## ご挨拶
+### ■資料変更について
+cmdのCopy&Pasteが1Clickで対応可能となるように、資料先を変更しました。  
+以降は[こちら](https://zenn.dev/shigeru_oda/books/5e5f5d8d3ddf3ba68bb7)の資料にアクセス下さい  
 
 ### ■ご挨拶
 
